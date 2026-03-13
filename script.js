@@ -30,11 +30,15 @@ const translations = {
       "Vos dons sont une sadaqa jariya (aumône continue) qui profite à la communauté et à votre récompense auprès d’Allah.",
     donationButton: "Faire un don pour la mosquée",
     donationEmbedTitle: "Dons via HelloAsso",
-    donationPageTitle: "Soutenez la Mosquée Bilal",
-    donationPageText: "Mobilisez du monde ! Votre soutien passe aussi par le partage.",
-    donationPageButton: "Faire un don ❤️",
-    donationShareIntro:
-      "Partagez la cagnotte avec vos proches pour multiplier la récompense.",
+    donationHeroTitle: "Soutenez la Mosquée Bilal",
+    donationHeroSubtitle:
+      "Vos dons sont une sadaqa jariya qui profite à toute la communauté.",
+    donationProgressLabel: "65 % de l'objectif atteint",
+    donationHeroShareText:
+      "Mobilisez du monde ! Votre soutien passe aussi par le partage.",
+    donationHeroButton: "Faire un don ❤️",
+    donationVerse:
+      "« L’exemple de ceux qui dépensent leurs biens dans le sentier d’Allah est semblable à un grain qui produit sept épis, dans chaque épi cent grains. » (Coran 2:261)",
     locationTitle: "Localisation de la Mosquée",
     locationText:
       "Retrouvez facilement la Mosquée Bilal et planifiez votre itinéraire.",
@@ -86,11 +90,15 @@ const translations = {
       "تصدّق بصدقة جارية يستمر نفعها للمسلمين ويعود أجرها عليك بإذن الله.",
     donationButton: "التبرع لمسجد بلال",
     donationEmbedTitle: "التبرع عبر HelloAsso",
-    donationPageTitle: "ادعموا مسجد بلال",
-    donationPageText: "حرّكوا القلوب! دعمكم يكون أيضًا بنشر رابط التبرع.",
-    donationPageButton: "التبرع ❤️",
-    donationShareIntro:
-      "انشروا رابط الحملة مع من تعرفون لتتضاعف الأجور إن شاء الله.",
+    donationHeroTitle: "ادعموا مسجد بلال",
+    donationHeroSubtitle:
+      "تبرعاتكم صدقة جارية ينتفع بها مجتمع المسجد كله بإذن الله.",
+    donationProgressLabel: "تم بلوغ ٦٥٪ من الهدف التقريبي",
+    donationHeroShareText:
+      "حرّكوا القلوب! دعمكم يكون أيضًا بنشر رابط التبرع.",
+    donationHeroButton: "التبرع ❤️",
+    donationVerse:
+      "﴿مَثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ﴾ (البقرة: ٢٦١)",
     locationTitle: "موقع المسجد",
     locationText:
       "تعرّف على موقع مسجد بلال وسهّل الوصول إليه.",
