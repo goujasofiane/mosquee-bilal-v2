@@ -245,6 +245,19 @@ function initHeroSliders() {
   setupSlider(fullSlider, false);
 }
 
+function initDonationPopup() {
+  const btn = document.getElementById("donation-popup-btn");
+  if (!btn) return;
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.open(
+      "https://www.cotizup.com/achever-mosquee-bilal",
+      "cotizup",
+      "width=600,height=700,scrollbars=yes"
+    );
+  });
+}
+
 function initYear() {
   const yearSpan = document.getElementById("year");
   if (yearSpan) {
@@ -256,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLanguageSwitch();
   initNavToggle();
   initHeroSliders();
+  initDonationPopup();
   initYear();
   applyTranslations("fr");
 });
