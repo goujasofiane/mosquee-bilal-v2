@@ -1238,12 +1238,112 @@ body.dark-theme .conversation-item.active {
   color: #fff;
 }
 
+.home-social-section {
+  background: radial-gradient(circle at 0 0, #0c7c59, #053628);
+  border-radius: 28px;
+  box-shadow: 0 22px 55px rgba(5, 54, 40, 0.55);
+}
+
+.home-social-section .section-header h2 {
+  color: #fdf9ee;
+}
+
+.home-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.home-social-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.16);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
+    color 0.2s ease;
+  font-size: 1.7rem;
+}
+
+.home-social-icon.instagram {
+  background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285aeb);
+}
+
+.home-social-icon.facebook {
+  background: #1877f2;
+}
+
+.home-social-icon.tiktok {
+  background: radial-gradient(circle at 30% 30%, #25f4ee, #000000, #fe2c55);
+}
+
+.home-social-icon.youtube {
+  background: #ff0000;
+}
+
+.home-social-icon:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, var(--color-gold), #f1dd9c);
+  color: #3a2a11;
+}
+
 .social-section {
   background: linear-gradient(
     145deg,
     rgba(252, 247, 238, 0.98),
     rgba(242, 253, 248, 0.98)
   );
+}
+
+.social-page-section {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 0 0, #021b16, #03130f 40%, #020908 80%);
+}
+
+.social-page-section::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background-image: radial-gradient(
+      circle at 0 0,
+      rgba(200, 161, 91, 0.15),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      rgba(12, 124, 89, 0.2),
+      transparent 55%
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent 0,
+      transparent 6px,
+      rgba(200, 161, 91, 0.08) 6px,
+      rgba(200, 161, 91, 0.08) 12px
+    );
+  opacity: 0.7;
+  mix-blend-mode: soft-light;
+  animation: socialPattern 18s linear infinite alternate;
+}
+
+.social-page-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.social-page-section .section-header h2 {
+  color: var(--color-gold);
+}
+
+.social-page-section .section-header p {
+  color: rgba(245, 242, 233, 0.9);
 }
 
 .social-grid {
@@ -1263,6 +1363,19 @@ body.dark-theme .conversation-item.active {
   align-items: center;
   text-align: center;
   gap: 10px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.social-page-section .social-card-lg {
+  background: rgba(8, 22, 19, 0.9);
+  border-color: rgba(200, 161, 91, 0.45);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65);
+}
+
+.social-card-lg:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.8);
+  border-color: rgba(241, 221, 156, 0.9);
 }
 
 .social-icon-large {
@@ -1305,6 +1418,15 @@ body.dark-theme .conversation-item.active {
   color: var(--color-muted);
 }
 
+.social-page-section .social-card-desc {
+  color: rgba(242, 244, 243, 0.86);
+}
+
+.social-page-section .social-card-stats {
+  color: rgba(241, 221, 156, 0.92);
+  font-size: 0.85rem;
+}
+
 .social-follow-btn {
   background: linear-gradient(
     120deg,
@@ -1314,6 +1436,35 @@ body.dark-theme .conversation-item.active {
   color: #3a2a11;
   border-color: rgba(133, 93, 35, 0.35);
   box-shadow: 0 14px 30px rgba(200, 161, 91, 0.6);
+}
+
+.social-follow-instagram {
+  background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285aeb);
+  color: #ffffff;
+}
+
+.social-follow-facebook {
+  background: #1877f2;
+  color: #ffffff;
+}
+
+.social-follow-tiktok {
+  background: #000000;
+  color: #ffffff;
+}
+
+.social-follow-youtube {
+  background: #ff0000;
+  color: #ffffff;
+}
+
+@keyframes socialPattern {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(-40px, -30px, 0) rotate(4deg);
+  }
 }
 
 .main-footer {

@@ -23,6 +23,7 @@ const translations = {
     gallerySectionText:
       "Découvrez quelques vues de la Mosquée Bilal en attendant l’achèvement complet du projet.",
     gallerySectionButton: "Voir la galerie complète",
+    homeSocialTitle: "Rejoignez-nous sur les réseaux",
     donationTitle: "Soutenir la mosquée",
     donationText:
       "Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.",
@@ -58,6 +59,26 @@ const translations = {
     socialTitle: "Restez connectés",
     socialText:
       "Suivez la Mosquée Bilal pour les annonces, rappels spirituels et événements.",
+    socialPageTitle: "Rejoignez la communauté Mosquée Bilal",
+    socialPageIntro:
+      "Suivez la mosquée sur vos réseaux préférés pour ne rien manquer des rappels, annonces et moments forts de la vie communautaire.",
+    socialInstagramName: "Instagram",
+    socialInstagramDesc:
+      "Stories, rappels et coulisses de la vie de la mosquée.",
+    socialInstagramStats: "12 345 abonnés",
+    socialFacebookName: "Facebook",
+    socialFacebookDesc:
+      "Annonces officielles, événements et informations pratiques.",
+    socialFacebookStats: "8 920 abonnés",
+    socialTiktokName: "TikTok",
+    socialTiktokDesc:
+      "Vidéos courtes, rappels spirituels et extraits inspirants.",
+    socialTiktokStats: "5 430 abonnés",
+    socialYoutubeName: "YouTube",
+    socialYoutubeDesc:
+      "Khutbas, cours et conférences en vidéo, à revoir librement.",
+    socialYoutubeStats: "3 210 abonnés",
+    socialFollowLabel: "Suivre",
     footerText: "© {year} Mosquée Bilal. Tous droits réservés.",
   },
   ar: {
@@ -84,6 +105,7 @@ const translations = {
     gallerySectionText:
       "تعرّف على بعض الصور لمسجد بلال في انتظار اكتمال المشروع بإذن الله.",
     gallerySectionButton: "مشاهدة المعرض الكامل",
+    homeSocialTitle: "انضموا إلينا على الشبكات",
     donationTitle: "دعم المسجد",
     donationText:
       "ساهم في مصاريف المسجد ومشاريعه التعليمية وأنشطته الاجتماعية.",
@@ -119,6 +141,26 @@ const translations = {
     socialTitle: "تابعونا",
     socialText:
       "تابعوا مسجد بلال لمتابعة الإعلانات والتذكير بالإيمانيات والأنشطة.",
+    socialPageTitle: "انضموا إلى مجتمع مسجد بلال",
+    socialPageIntro:
+      "تابعوا المسجد على الشبكات التي تفضلونها حتى لا يفوتكم أي من التذكيرات أو الإعلانات أو اللحظات المميزة.",
+    socialInstagramName: "إنستغرام",
+    socialInstagramDesc:
+      "قصص يومية، تذكيرات، وكواليس من حياة المسجد.",
+    socialInstagramStats: "١٢٬٣٤٥ متابعًا",
+    socialFacebookName: "فيسبوك",
+    socialFacebookDesc:
+      "إعلانات رسمية، فعاليات، ومعلومات عملية للمصلّين.",
+    socialFacebookStats: "٨٬٩٢٠ متابعًا",
+    socialTiktokName: "تيك توك",
+    socialTiktokDesc:
+      "مقاطع قصيرة، تذكيرات إيمانية ومقتطفات ملهمة.",
+    socialTiktokStats: "٥٬٤٣٠ متابعًا",
+    socialYoutubeName: "يوتيوب",
+    socialYoutubeDesc:
+      "خطب الجمعة، دروس ومحاضرات مصورة يمكنكم مشاهدتها في أي وقت.",
+    socialYoutubeStats: "٣٬٢١٠ مشتركين",
+    socialFollowLabel: "متابعة",
     footerText: "© {year} مسجد بلال. جميع الحقوق محفوظة.",
   },
 };
