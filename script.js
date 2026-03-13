@@ -3,9 +3,10 @@ const translations = {
     siteTitle: "Mosquée Bilal",
     siteSubtitle: "Lumière, savoir et sérénité",
     navHome: "Accueil",
-    navQuran: "Coran",
+    navGallery: "Galerie",
     navDonation: "Don",
     navLocation: "Localisation",
+    navSocial: "Réseaux sociaux",
     navContact: "Contact",
     heroTitle: "Mosquée Bilal",
     heroText:
@@ -63,9 +64,10 @@ const translations = {
     siteTitle: "مسجد بلال",
     siteSubtitle: "نور وعلم وسكينة",
     navHome: "الرئيسية",
-    navQuran: "القرآن الكريم",
+    navGallery: "المعرض",
     navDonation: "التبرع",
     navLocation: "الموقع",
+    navSocial: "وسائل التواصل",
     navContact: "اتصال",
     heroTitle: "مسجد بلال",
     heroText:
