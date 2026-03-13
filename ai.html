@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mosquée Bilal - Questions islamiques</title>
+    <title>Mosquée Bilal - Hadiths</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
@@ -13,74 +13,46 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body class="page-single page-single-ai">
+  <body class="page-single">
     <div class="pattern-bg"></div>
-    <div class="chat-layout">
-      <aside class="chat-sidebar">
-        <div class="chat-sidebar-header">
-          <div class="chat-logo">Bilal AI ☪️</div>
-          <button id="new-chat-btn" class="btn-sidebar">Nouvelle conversation</button>
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="logo-mark">
+          <span class="crescent"></span>
+          <span class="minaret"></span>
         </div>
-        <ul id="conversations-list" class="conversations-list"></ul>
-      </aside>
-
-      <div class="chat-main">
-        <header class="chat-main-header">
-          <button id="sidebar-toggle" class="sidebar-toggle-mobile" aria-label="Menu">
-            ☰
-          </button>
-          <div class="chat-main-title" data-i18n="aiTitle">
-            Assistant islamique (IA)
-          </div>
-          <div class="chat-main-actions">
-            <button id="theme-toggle" class="theme-toggle" aria-label="Thème">
-              🌙
-            </button>
-            <div class="lang-switch">
-              <button data-lang="fr" class="active">FR</button>
-              <button data-lang="ar">العربية</button>
-            </div>
-          </div>
-        </header>
-
-        <main class="chat-main-body">
-          <div class="ai-landing-inner">
-            <p class="ai-landing-subtitle">
-              Toujours prêt à répondre à vos questions sur l’islam
-              avec le Coran et la Sunna comme références.
-            </p>
-            <div class="ai-messages-shell">
-              <div id="ai-messages" class="ai-messages" aria-live="polite"></div>
-              <p class="ai-footnote" data-i18n="aiFootnote">
-                L’IA est basée sur un modèle open-source spécialisé dans les textes islamiques.
-                Aucun compte n’est requis pour l’utiliser.
-              </p>
-            </div>
-          </div>
-        </main>
-
-        <form id="ai-form" class="ai-form ai-form-large">
-          <textarea
-            id="ai-input"
-            rows="1"
-            placeholder="Posez une question islamique..."
-            data-i18n-placeholder="aiInputPlaceholder"
-            required
-          ></textarea>
-          <button type="submit" class="ai-send-circle" aria-label="Envoyer">
-            <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </form>
-
-        <footer class="main-footer chat-footer">
-          <p>
-            <span data-i18n="footerText">
-              &copy; <span id="year"></span> Mosquée Bilal. Tous droits réservés.
-            </span>
-          </p>
-        </footer>
+        <div class="logo-text">
+          <span class="logo-title" data-i18n="siteTitle">Mosquée Bilal</span>
+          <span class="logo-subtitle" data-i18n="siteSubtitle">Lumière, savoir et sérénité</span>
+        </div>
       </div>
-    </div>
+      <nav class="main-nav">
+        <button class="nav-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul>
+          <li><a href="index.html" data-i18n="navHome">Accueil</a></li>
+          <li><a href="quran.html" data-i18n="navQuran">Coran</a></li>
+          <li><a href="ai.html" data-i18n="navAI">Hadiths</a></li>
+          <li><a href="donation.html" data-i18n="navDonation">Don</a></li>
+          <li><a href="location.html" data-i18n="navLocation">Localisation</a></li>
+          <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="lang-switch">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="ar">العربية</button>
+      </div>
+    </header>
+
+    <main>
+      <iframe
+        src="https://sunnah.com"
+        loading="lazy"
+        title="Lecture des hadiths"
+        style="width: 100%; height: calc(100vh - 110px); border: none; display: block;"
+      ></iframe>
+    </main>
 
     <script src="script.js"></script>
   </body>
