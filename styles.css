@@ -943,10 +943,21 @@ body.dark-theme .conversation-item.active {
 .home-gallery-grid img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 130px;
   max-height: 130px;
   object-fit: cover;
   transition: transform 0.25s ease-out;
+}
+
+.mosquee-gallery-grid figure {
+  height: 300px;
+  background: #000;
+}
+
+.mosquee-gallery-grid img {
+  height: 100%;
+  max-height: 300px;
+  object-fit: contain;
 }
 
 .home-gallery-grid figure::after {
