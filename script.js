@@ -304,10 +304,22 @@ function initGalleryLightbox() {
 
   const lightboxImg = lightbox.querySelector("img");
   const closeBtn = lightbox.querySelector(".gallery-lightbox-close");
+  const prevBtn = lightbox.querySelector(".gallery-lightbox-prev");
+  const nextBtn = lightbox.querySelector(".gallery-lightbox-next");
+  const sources = Array.from(thumbs).map((img) => ({
+    src: img.src,
+    alt: img.alt || "",
+  }));
+  let currentIndex = 0;
 
-  function openLightbox(src, alt) {
-    lightboxImg.src = src;
-    lightboxImg.alt = alt || "";
+  function showAt(index) {
+    currentIndex = (index + sources.length) % sources.length;
+    lightboxImg.src = sources[currentIndex].src;
+    lightboxImg.alt = sources[currentIndex].alt;
+  }
+
+  function openLightbox(index) {
+    showAt(index);
     lightbox.classList.add("open");
     lightbox.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -319,14 +331,22 @@ function initGalleryLightbox() {
     document.body.style.overflow = "";
   }
 
-  thumbs.forEach((img) => {
-    const open = () => openLightbox(img.src, img.alt);
-    img.addEventListener("click", open);
-    img.addEventListener("mouseenter", open);
+  thumbs.forEach((img, index) => {
+    img.addEventListener("click", () => {
+      openLightbox(index);
+    });
   });
 
   if (closeBtn) {
     closeBtn.addEventListener("click", closeLightbox);
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => showAt(currentIndex - 1));
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => showAt(currentIndex + 1));
   }
 
   lightbox.addEventListener("click", (e) => {
@@ -338,6 +358,10 @@ function initGalleryLightbox() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && lightbox.classList.contains("open")) {
       closeLightbox();
+    } else if (e.key === "ArrowLeft" && lightbox.classList.contains("open")) {
+      showAt(currentIndex - 1);
+    } else if (e.key === "ArrowRight" && lightbox.classList.contains("open")) {
+      showAt(currentIndex + 1);
     }
   });
 }
