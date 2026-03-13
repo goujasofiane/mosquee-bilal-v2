@@ -2,25 +2,8 @@
   "version": 2,
   "functions": {
     "api/chat.js": {
-      "runtime": "nodejs20.x",
-      "memory": 512
+      "runtime": "node@18"
     }
-  },
-  "builds": [
-    { "src": "api/chat.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "quran.html", "use": "@vercel/static" },
-    { "src": "ai.html", "use": "@vercel/static" },
-    { "src": "donation.html", "use": "@vercel/static" },
-    { "src": "location.html", "use": "@vercel/static" },
-    { "src": "contact.html", "use": "@vercel/static" },
-    { "src": "mosquee.html", "use": "@vercel/static" },
-    { "src": "styles.css", "use": "@vercel/static" },
-    { "src": "script.js", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/api/chat", "dest": "/api/chat.js" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  }
 }
 
