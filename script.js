@@ -297,6 +297,29 @@ function initHeroSliders() {
   setupSlider(fullSlider, false);
 }
 
+function initScrollReveal() {
+  const elements = document.querySelectorAll(
+    ".section, .home-gallery-card, .contact-card, .social-card, .donation-text-card"
+  );
+  if (!elements.length) return;
+
+  elements.forEach((el) => el.classList.add("reveal"));
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+}
+
 function initGalleryLightbox() {
   const thumbs = document.querySelectorAll(".home-gallery-grid img");
   const lightbox = document.getElementById("gallery-lightbox");
@@ -390,6 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLanguageSwitch();
   initNavToggle();
   initHeroSliders();
+  initScrollReveal();
   initGalleryLightbox();
   initDonationPopup();
   initYear();
