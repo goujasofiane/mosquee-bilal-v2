@@ -19,10 +19,10 @@ const translations = {
     heroCardTitle: "Horaires de prière",
     heroCardText:
       "Les horaires sont automatiquement fournis par Mawakit pour rester toujours à jour.",
-    quranTitle: "Lecture du Coran",
-    quranText:
-      "Lisez le Noble Coran et écoutez la récitation directement depuis une source fiable.",
-    quranReaderTitle: "Lecteur de Coran (Quran.com)",
+    gallerySectionTitle: "Galerie de la mosquée",
+    gallerySectionText:
+      "Découvrez quelques vues de la Mosquée Bilal en attendant l’achèvement complet du projet.",
+    gallerySectionButton: "Voir la galerie complète",
     donationTitle: "Soutenir la mosquée",
     donationText:
       "Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.",
@@ -80,10 +80,10 @@ const translations = {
     heroCardTitle: "مواقيت الصلاة",
     heroCardText:
       "يتم جلب المواقيت تلقائيًا من موقع مواقيت لضمان حداثة المعلومات.",
-    quranTitle: "قراءة القرآن الكريم",
-    quranText:
-      "اقرأ كتاب الله واستمع إلى التلاوات من مصدر موثوق.",
-    quranReaderTitle: "قارئ القرآن (Quran.com)",
+    gallerySectionTitle: "معرض صور المسجد",
+    gallerySectionText:
+      "تعرّف على بعض الصور لمسجد بلال في انتظار اكتمال المشروع بإذن الله.",
+    gallerySectionButton: "مشاهدة المعرض الكامل",
     donationTitle: "دعم المسجد",
     donationText:
       "ساهم في مصاريف المسجد ومشاريعه التعليمية وأنشطته الاجتماعية.",
