@@ -327,7 +327,9 @@ function initScrollReveal() {
 }
 
 function initGalleryLightbox() {
-  const thumbs = document.querySelectorAll(".home-gallery-grid img");
+  const thumbs = document.querySelectorAll(
+    ".home-gallery-grid img, .mosquee-masonry-grid img"
+  );
   const lightbox = document.getElementById("gallery-lightbox");
   if (!thumbs.length || !lightbox) return;
 
