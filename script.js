@@ -54,7 +54,7 @@ const translations = {
       "Retrouvez facilement la Mosquée Bilal et planifiez votre itinéraire.",
     locationAddressTitle: "Adresse de la mosquée",
     locationAddress:
-      "Mosquée Bilal\nRue Exemple 123\n75000 Ville, France",
+      "Mosquée de Clichy-sous-Bois Bilal\nClichy-sous-Bois\n93390, Seine-Saint-Denis, France",
     locationNote:
       "Cliquez sur la carte pour ouvrir Google Maps, calculer votre itinéraire ou vérifier les transports en commun.",
     locationMapTitle: "Carte Google Maps",
@@ -63,7 +63,7 @@ const translations = {
       "Contactez la mosquée pour toute question ou suivez-nous sur les réseaux sociaux.",
     contactInfoTitle: "Informations de contact",
     contactAddress:
-      "Mosquée Bilal, Rue Exemple 123, 75000 Ville, France",
+      "Mosquée de Clichy-sous-Bois Bilal, 93390 Clichy-sous-Bois",
     socialTitle: "Restez connectés",
     socialText:
       "Suivez la Mosquée Bilal pour les annonces, rappels spirituels et événements.",
