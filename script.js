@@ -297,6 +297,51 @@ function initHeroSliders() {
   setupSlider(fullSlider, false);
 }
 
+function initGalleryLightbox() {
+  const thumbs = document.querySelectorAll(".home-gallery-grid img");
+  const lightbox = document.getElementById("gallery-lightbox");
+  if (!thumbs.length || !lightbox) return;
+
+  const lightboxImg = lightbox.querySelector("img");
+  const closeBtn = lightbox.querySelector(".gallery-lightbox-close");
+
+  function openLightbox(src, alt) {
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || "";
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  thumbs.forEach((img) => {
+    img.addEventListener("click", () => {
+      openLightbox(img.src, img.alt);
+    });
+  });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeLightbox);
+  }
+
+  lightbox.addEventListener("click", (e) => {
+    if (e.target.classList.contains("gallery-lightbox-backdrop")) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && lightbox.classList.contains("open")) {
+      closeLightbox();
+    }
+  });
+}
+
 function initDonationPopup() {
   const btn = document.getElementById("donation-popup-btn");
   if (!btn) return;
@@ -321,6 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initLanguageSwitch();
   initNavToggle();
   initHeroSliders();
+  initGalleryLightbox();
   initDonationPopup();
   initYear();
   applyTranslations("fr");
