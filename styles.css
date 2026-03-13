@@ -394,61 +394,126 @@ main {
 body.mosquee-page {
   background-color: #1a1a1a;
   color: #f5f5f5;
+  position: relative;
 }
 
 .mosquee-page .pattern-bg {
   display: none;
 }
 
+/* Fond géométrique islamique subtil */
+.mosquee-page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: #1a1a1a;
+  opacity: 1;
+}
+
+.mosquee-page-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(200, 161, 91, 0.03) 40px,
+      rgba(200, 161, 91, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(12, 124, 89, 0.025) 40px,
+      rgba(12, 124, 89, 0.025) 41px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(200, 161, 91, 0.02) 80px,
+      rgba(200, 161, 91, 0.02) 81px
+    );
+  pointer-events: none;
+}
+
+.mosquee-page-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 0%,
+    rgba(12, 124, 89, 0.06),
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
 .mosquee-gallery-section {
-  padding-inline: 7vw;
+  padding: 40px 7vw 60px;
+  position: relative;
+  z-index: 0;
 }
 
 .mosquee-gallery-header {
   text-align: center;
-  margin-bottom: 28px;
+  margin-bottom: 44px;
 }
 
 .mosquee-gallery-kicker {
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  font-size: 0.85rem;
-  color: rgba(248, 232, 199, 0.9);
-  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: rgba(248, 232, 199, 0.7);
+  margin-bottom: 12px;
 }
 
 .mosquee-gallery-title {
   margin: 0;
   font-family: "Playfair Display", serif;
-  font-size: 2.1rem;
-  letter-spacing: 0.16em;
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #f9f4e6;
+  color: #f5f0e1;
+  font-weight: 500;
+}
+
+.mosquee-gallery-title-line {
+  width: 120px;
+  height: 3px;
+  margin: 18px auto 0;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  border-radius: 2px;
 }
 
 .mosquee-gallery-subtitle {
-  margin: 10px auto 0 auto;
+  margin: 24px auto 0;
   max-width: 520px;
-  color: rgba(245, 240, 228, 0.72);
-  font-size: 0.96rem;
+  color: rgba(245, 240, 228, 0.65);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .mosquee-masonry-grid {
   column-count: 3;
-  column-gap: 18px;
+  column-gap: 24px;
 }
 
 .mosquee-masonry-item {
   break-inside: avoid;
-  margin-bottom: 18px;
+  margin-bottom: 24px;
   position: relative;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
 }
 
 .mosquee-masonry-inner {
   position: relative;
+  border-radius: 14px;
+  overflow: hidden;
 }
 
 .mosquee-masonry-inner img {
@@ -456,7 +521,8 @@ body.mosquee-page {
   width: 100%;
   height: auto;
   object-fit: cover;
-  transition: transform 0.35s ease;
+  transition: transform 0.4s ease;
+  vertical-align: middle;
 }
 
 .mosquee-masonry-overlay {
@@ -464,33 +530,33 @@ body.mosquee-page {
   inset: 0;
   background: linear-gradient(
     145deg,
-    rgba(12, 124, 89, 0.5),
-    rgba(12, 124, 89, 0.05)
+    rgba(12, 124, 89, 0.55),
+    rgba(5, 54, 40, 0.4)
   );
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
-  padding: 10px 14px;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
 }
 
-.mosquee-masonry-number {
-  font-size: 0.8rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(250, 247, 239, 0.92);
-  background: rgba(0, 0, 0, 0.35);
-  padding: 4px 9px;
-  border-radius: 999px;
+.mosquee-masonry-zoom-icon {
+  font-size: 2.2rem;
+  color: rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  transition: transform 0.25s ease;
 }
 
 .mosquee-masonry-item:hover .mosquee-masonry-inner img {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
 
 .mosquee-masonry-item:hover .mosquee-masonry-overlay {
   opacity: 1;
+}
+
+.mosquee-masonry-item:hover .mosquee-masonry-zoom-icon {
+  transform: scale(1.1);
 }
 
 .section-alt {
@@ -1144,19 +1210,19 @@ body.dark-theme .conversation-item.active {
 .gallery-lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.92);
 }
 
 .gallery-lightbox-inner {
   position: relative;
   max-width: 1000px;
   width: 92vw;
-  padding: 10px;
-  border-radius: 22px;
-  background: rgba(5, 19, 18, 0.95);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
-  border: 1px solid rgba(200, 161, 91, 0.9);
-  animation: lightboxZoom 0.25s ease-out;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(15, 15, 15, 0.98);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(200, 161, 91, 0.25);
+  border: 1px solid rgba(200, 161, 91, 0.35);
+  animation: lightboxZoom 0.3s ease-out;
 }
 
 .gallery-lightbox-inner img {
@@ -1164,62 +1230,67 @@ body.dark-theme .conversation-item.active {
   width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  border-radius: 16px;
-  background: #000;
+  border-radius: 8px;
+  background: #0a0a0a;
 }
 
 .gallery-lightbox-close {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  width: 32px;
-  height: 32px;
+  top: 12px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fdf6e4;
+  border: 1px solid rgba(200, 161, 91, 0.4);
+  background: rgba(20, 20, 20, 0.9);
+  color: #e8e0d0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.7);
+  font-size: 1.05rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .gallery-lightbox-close:hover {
-  background: linear-gradient(135deg, var(--color-gold), #f1dd9c);
-  color: #3a2a11;
+  background: linear-gradient(135deg, var(--color-gold), #e8d48a);
+  color: #2a2210;
+  border-color: rgba(200, 161, 91, 0.8);
 }
 
 .gallery-lightbox-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fdf6e4;
+  border: 2px solid rgba(200, 161, 91, 0.7);
+  background: rgba(20, 20, 20, 0.85);
+  color: var(--color-gold);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75);
+  font-size: 1.1rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .gallery-lightbox-prev {
-  left: 10px;
+  left: 16px;
 }
 
 .gallery-lightbox-next {
-  right: 10px;
+  right: 16px;
 }
 
 .gallery-lightbox-arrow:hover {
-  background: rgba(200, 161, 91, 0.9);
-  color: #3a2a11;
+  background: linear-gradient(135deg, var(--color-gold), #e8d48a);
+  color: #2a2210;
+  border-color: #c8a15b;
+  transform: translateY(-50%) scale(1.05);
 }
 
 @keyframes lightboxZoom {
@@ -1820,7 +1891,29 @@ body.dark-theme .conversation-item.active {
   }
 
   .mosquee-gallery-section {
-    padding-inline: 20px;
+    padding: 32px 20px 48px;
+  }
+
+  .mosquee-gallery-header {
+    margin-bottom: 32px;
+  }
+
+  .mosquee-gallery-title-line {
+    width: 80px;
+    margin-top: 14px;
+  }
+
+  .mosquee-masonry-grid {
+    column-gap: 16px;
+  }
+
+  .mosquee-masonry-item {
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+
+  .mosquee-masonry-inner {
+    border-radius: 12px;
   }
 }
 
@@ -1864,6 +1957,54 @@ body.dark-theme .conversation-item.active {
 
   .mosquee-masonry-grid {
     column-count: 1;
+    column-gap: 14px;
+  }
+
+  .mosquee-masonry-item {
+    margin-bottom: 14px;
+    border-radius: 12px;
+  }
+
+  .mosquee-masonry-inner {
+    border-radius: 12px;
+  }
+
+  .mosquee-gallery-section {
+    padding: 24px 16px 40px;
+  }
+
+  .mosquee-gallery-header {
+    margin-bottom: 28px;
+  }
+
+  .mosquee-gallery-title {
+    letter-spacing: 0.12em;
+  }
+
+  .mosquee-gallery-title-line {
+    width: 60px;
+    height: 2px;
+    margin-top: 12px;
+  }
+
+  .mosquee-gallery-subtitle {
+    margin-top: 18px;
+    font-size: 0.9rem;
+    padding-inline: 12px;
+  }
+
+  .gallery-lightbox-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .gallery-lightbox-prev {
+    left: 8px;
+  }
+
+  .gallery-lightbox-next {
+    right: 8px;
   }
 }
 
