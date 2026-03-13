@@ -4,7 +4,6 @@ const translations = {
     siteSubtitle: "Lumière, savoir et sérénité",
     navHome: "Accueil",
     navQuran: "Coran",
-    navAI: "Hadiths",
     navDonation: "Don",
     navLocation: "Localisation",
     navContact: "Contact",
@@ -12,7 +11,6 @@ const translations = {
     heroText:
       "Un lieu de prière, de connaissance et de fraternité, au service de la communauté musulmane et de tous nos voisins.",
     heroBtnQuran: "Lire le Coran",
-    heroBtnAI: "Consulter les hadiths",
     metaPrayer: "Prière",
     metaPrayerDesc: "Cinq prières quotidiennes & Jumu'a",
     metaEducation: "Éducation",
@@ -24,23 +22,6 @@ const translations = {
     quranText:
       "Lisez le Noble Coran et écoutez la récitation directement depuis une source fiable.",
     quranReaderTitle: "Lecteur de Coran (Quran.com)",
-    aiTitle: "Assistant islamique (IA)",
-    aiText:
-      "Posez vos questions sur l’islam. Les réponses sont basées sur le Coran, la Sunna authentique et les avis des savants reconnus.",
-    aiHowTitle: "Comment utiliser l’assistant ?",
-    aiHow1:
-      "Posez des questions claires sur l’‘aqida, le fiqh, la vie quotidienne ou l’éthique islamique.",
-    aiHow2:
-      "L’IA se limite aux sources islamiques fiables (Coran, hadiths authentiques, savants reconnus).",
-    aiHow3:
-      "Les réponses incluent des versets et des références de hadiths lorsque c’est possible.",
-    aiDisclaimer:
-      "Cet assistant ne remplace pas l’avis d’un savant. Pour des cas complexes, veuillez consulter un imam ou un spécialiste.",
-    aiChatTitle: "Assistant islamique en ligne",
-    aiInputPlaceholder: "Posez votre question ici...",
-    aiSend: "Envoyer",
-    aiFootnote:
-      "L’IA est basée sur un modèle open-source spécialisé dans les textes islamiques. Aucun compte n’est requis pour l’utiliser.",
     donationTitle: "Soutenir la mosquée",
     donationText:
       "Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.",
@@ -49,6 +30,11 @@ const translations = {
       "Vos dons sont une sadaqa jariya (aumône continue) qui profite à la communauté et à votre récompense auprès d’Allah.",
     donationButton: "Faire un don pour la mosquée",
     donationEmbedTitle: "Dons via HelloAsso",
+    donationPageTitle: "Soutenez la Mosquée Bilal",
+    donationPageText: "Mobilisez du monde ! Votre soutien passe aussi par le partage.",
+    donationPageButton: "Faire un don ❤️",
+    donationShareIntro:
+      "Partagez la cagnotte avec vos proches pour multiplier la récompense.",
     locationTitle: "Localisation de la Mosquée",
     locationText:
       "Retrouvez facilement la Mosquée Bilal et planifiez votre itinéraire.",
@@ -74,7 +60,6 @@ const translations = {
     siteSubtitle: "نور وعلم وسكينة",
     navHome: "الرئيسية",
     navQuran: "القرآن الكريم",
-    navAI: "الأحاديث",
     navDonation: "التبرع",
     navLocation: "الموقع",
     navContact: "اتصال",
@@ -82,7 +67,6 @@ const translations = {
     heroText:
       "بيت للصلاة والعلم والأخوّة، في خدمة الجالية المسلمة وجيراننا جميعًا.",
     heroBtnQuran: "قراءة القرآن",
-    heroBtnAI: "تصفح الأحاديث",
     metaPrayer: "الصلاة",
     metaPrayerDesc: "الصلوات الخمس وصلاة الجمعة",
     metaEducation: "التعليم",
@@ -94,23 +78,6 @@ const translations = {
     quranText:
       "اقرأ كتاب الله واستمع إلى التلاوات من مصدر موثوق.",
     quranReaderTitle: "قارئ القرآن (Quran.com)",
-    aiTitle: "مساعد إسلامي (ذكاء اصطناعي)",
-    aiText:
-      "اطرح أسئلتك حول الإسلام. الإجابات مبنية على القرآن والسنة الصحيحة وأقوال العلماء المعتبرين.",
-    aiHowTitle: "كيفية استخدام المساعد؟",
-    aiHow1:
-      "اكتب سؤالًا واضحًا عن العقيدة أو الفقه أو الحياة اليومية أو الأخلاق الإسلامية.",
-    aiHow2:
-      "المساعد يقتصر على المصادر الإسلامية الموثوقة (القرآن، الأحاديث الصحيحة، العلماء).",
-    aiHow3:
-      "تتضمن الإجابات الآيات والأحاديث إن أمكن.",
-    aiDisclaimer:
-      "هذا المساعد لا يغني عن سؤال العلماء، وفي المسائل المعقدة يُرجى الرجوع إلى إمام أو عالم مختص.",
-    aiChatTitle: "المساعد الإسلامي المباشر",
-    aiInputPlaceholder: "اكتب سؤالك هنا...",
-    aiSend: "إرسال",
-    aiFootnote:
-      "المساعد مبني على نموذج مفتوح المصدر متخصص في النصوص الإسلامية، ولا حاجة لإنشاء حساب لاستخدامه.",
     donationTitle: "دعم المسجد",
     donationText:
       "ساهم في مصاريف المسجد ومشاريعه التعليمية وأنشطته الاجتماعية.",
@@ -119,6 +86,11 @@ const translations = {
       "تصدّق بصدقة جارية يستمر نفعها للمسلمين ويعود أجرها عليك بإذن الله.",
     donationButton: "التبرع لمسجد بلال",
     donationEmbedTitle: "التبرع عبر HelloAsso",
+    donationPageTitle: "ادعموا مسجد بلال",
+    donationPageText: "حرّكوا القلوب! دعمكم يكون أيضًا بنشر رابط التبرع.",
+    donationPageButton: "التبرع ❤️",
+    donationShareIntro:
+      "انشروا رابط الحملة مع من تعرفون لتتضاعف الأجور إن شاء الله.",
     locationTitle: "موقع المسجد",
     locationText:
       "تعرّف على موقع مسجد بلال وسهّل الوصول إليه.",
