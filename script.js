@@ -305,7 +305,7 @@ function initHeroSliders() {
 
 function initScrollReveal() {
   const elements = document.querySelectorAll(
-    ".section, .home-gallery-card, .contact-card, .social-card, .donation-text-card"
+    ".section, .home-gallery-card, .contact-card, .social-card, .donation-text-card, .mosquee-masonry-item"
   );
   if (!elements.length) return;
 
