@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosquée Bilal</title>
+    <meta
+      name="description"
+      content="Site officiel de la Mosquée Bilal : lecture du Coran, questions islamiques avec IA, dons, informations et contact."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div class="pattern-bg"></div>
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="logo-mark">
+          <span class="crescent"></span>
+          <span class="minaret"></span>
+        </div>
+        <div class="logo-text">
+          <span class="logo-title" data-i18n="siteTitle">Mosquée Bilal</span>
+          <span class="logo-subtitle" data-i18n="siteSubtitle">Lumière, savoir et sérénité</span>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <button class="nav-toggle" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul>
+          <li><a href="index.html" data-i18n="navHome">Accueil</a></li>
+          <li><a href="quran.html" data-i18n="navQuran">Coran</a></li>
+          <li><a href="ai.html" data-i18n="navAI">Questions islamiques</a></li>
+          <li><a href="donation.html" data-i18n="navDonation">Don</a></li>
+          <li><a href="location.html" data-i18n="navLocation">Localisation</a></li>
+          <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="lang-switch">
+        <button data-lang="fr" class="active">FR</button>
+        <button data-lang="ar">العربية</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section id="home" class="section hero">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="hero-calligraphy">مسجد بلال</span>
+            <span data-i18n="heroTitle">Mosquée Bilal</span>
+          </h1>
+          <p class="hero-text" data-i18n="heroText">
+            Un lieu de prière, de connaissance et de fraternité, au service de la communauté musulmane et de tous nos voisins.
+          </p>
+          <div class="hero-actions">
+            <a href="quran.html" class="btn primary" data-i18n="heroBtnQuran">Lire le Coran</a>
+            <a href="ai.html" class="btn secondary" data-i18n="heroBtnAI">Poser une question islamique</a>
+          </div>
+          <div class="hero-meta">
+            <div>
+              <span class="meta-label" data-i18n="metaPrayer">Prière</span>
+              <span class="meta-value" data-i18n="metaPrayerDesc">Cinq prières quotidiennes & Jumu'a</span>
+            </div>
+            <div>
+              <span class="meta-label" data-i18n="metaEducation">Éducation</span>
+              <span class="meta-value" data-i18n="metaEducationDesc">Cours de Coran & sciences islamiques</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-gallery">
+            <div class="hero-gallery-top">
+              <p class="hero-gallery-title">
+                Ça devrait ressembler à ça
+              </p>
+              <a class="hero-gallery-open" href="mosquee.html" target="_blank" rel="noopener">
+                Voir en grand
+              </a>
+            </div>
+            <div class="hero-slider" id="mosque-slider">
+              <div class="hero-slide active">
+                <img src="assets/mosquee-1.png" alt="Vue extérieure moderne de la mosquée" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-2.png" alt="Façade avec motifs géométriques islamiques" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-3.png" alt="Intérieur de la mosquée avec coupole" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-4.png" alt="Intérieur lumineux de la salle de prière" />
+              </div>
+              <button class="hero-slider-btn prev" aria-label="Image précédente">
+                <i class="fa-solid fa-chevron-left"></i>
+              </button>
+              <button class="hero-slider-btn next" aria-label="Image suivante">
+                <i class="fa-solid fa-chevron-right"></i>
+              </button>
+              <div class="hero-dots"></div>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h3 data-i18n="heroCardTitle">Horaires de prière</h3>
+            <p data-i18n="heroCardText">
+              Les horaires sont automatiquement fournis par Mawakit pour rester toujours à jour.
+            </p>
+            <div class="mawakit-embed">
+              <!-- Remplacez l'URL ci-dessous par le widget Mawakit de votre mosquée -->
+              <iframe
+                src="https://mawaqit.net/fr/embed"
+                loading="lazy"
+                title="Horaires de prière - Mawakit"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QURAN -->
+      <section id="quran" class="section">
+        <div class="section-header">
+          <h2 data-i18n="quranTitle">Lecture du Coran</h2>
+          <p data-i18n="quranText">
+            Lisez le Noble Coran et écoutez la récitation directement depuis une source fiable.
+          </p>
+        </div>
+        <div class="section-body">
+          <div class="embed-card">
+            <h3 data-i18n="quranReaderTitle">Lecteur de Coran (Quran.com)</h3>
+            <iframe
+              src="https://quran.com"
+              loading="lazy"
+              title="Lecteur du Coran"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- ISLAMIC AI -->
+      <section id="ai" class="section section-alt">
+        <div class="section-header">
+          <h2 data-i18n="aiTitle">Assistant islamique (IA)</h2>
+          <p data-i18n="aiText">
+            Posez vos questions sur l’islam. Les réponses sont basées sur le Coran, la Sunna authentique et les avis des savants reconnus.
+          </p>
+        </div>
+        <div class="section-body ai-layout">
+          <div class="ai-info">
+            <h3 data-i18n="aiHowTitle">Comment utiliser l’assistant&nbsp;?</h3>
+            <ul class="ai-list">
+              <li data-i18n="aiHow1">Posez des questions claires sur l’‘aqida, le fiqh, la vie quotidienne ou l’éthique islamique.</li>
+              <li data-i18n="aiHow2">L’IA se limite aux sources islamiques fiables (Coran, hadiths authentiques, savants reconnus).</li>
+              <li data-i18n="aiHow3">Les réponses incluent des versets et des références de hadiths lorsque c’est possible.</li>
+            </ul>
+            <p class="ai-note" data-i18n="aiDisclaimer">
+              Cet assistant ne remplace pas l’avis d’un savant. Pour des cas complexes, veuillez consulter un imam ou un spécialiste.
+            </p>
+          </div>
+          <div class="ai-chat-card">
+            <div class="ai-chat-header">
+              <span class="ai-status-dot"></span>
+              <span data-i18n="aiChatTitle">Assistant islamique en ligne</span>
+            </div>
+            <div id="ai-messages" class="ai-messages" aria-live="polite"></div>
+            <form id="ai-form" class="ai-form">
+              <textarea
+                id="ai-input"
+                rows="2"
+                placeholder="Posez votre question ici..."
+                data-i18n-placeholder="aiInputPlaceholder"
+                required
+              ></textarea>
+              <button type="submit" class="btn primary">
+                <span data-i18n="aiSend">Envoyer</span>
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+            <p class="ai-footnote" data-i18n="aiFootnote">
+              L’IA est basée sur un modèle open-source spécialisé dans les textes islamiques. Aucun compte n’est requis pour l’utiliser.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DONATION -->
+      <section id="donation" class="section">
+        <div class="section-header">
+          <h2 data-i18n="donationTitle">Soutenir la mosquée</h2>
+          <p data-i18n="donationText">
+            Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.
+          </p>
+        </div>
+        <div class="section-body">
+          <div class="donation-layout">
+            <div class="donation-info">
+              <h3 data-i18n="donationHowTitle">Faire un don</h3>
+              <p data-i18n="donationHowText">
+                Vos dons sont une sadaqa jariya (aumône continue) qui profite à la communauté et à votre récompense auprès d’Allah.
+              </p>
+              <a href="#donation-embed" class="btn primary">
+                <span data-i18n="donationButton">Faire un don pour la mosquée</span>
+                <i class="fa-solid fa-heart"></i>
+              </a>
+            </div>
+            <div class="embed-card" id="donation-embed">
+              <h3 data-i18n="donationEmbedTitle">Dons via HelloAsso</h3>
+              <!-- Remplacez l’URL ci-dessous par le lien HelloAsso de la mosquée -->
+              <iframe
+                src="https://www.helloasso.com"
+                loading="lazy"
+                title="Dons Mosquée Bilal"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOCATION -->
+      <section id="location" class="section section-alt">
+        <div class="section-header">
+          <h2 data-i18n="locationTitle">Localisation de la Mosquée</h2>
+          <p data-i18n="locationText">
+            Retrouvez facilement la Mosquée Bilal et planifiez votre itinéraire.
+          </p>
+        </div>
+        <div class="section-body location-layout">
+          <div class="location-info">
+            <h3 data-i18n="locationAddressTitle">Adresse de la mosquée</h3>
+            <p class="location-address" data-i18n="locationAddress">
+              Mosquée Bilal<br />
+              Rue Exemple 123<br />
+              75000 Ville, France
+            </p>
+            <p data-i18n="locationNote">
+              Cliquez sur la carte pour ouvrir Google Maps, calculer votre itinéraire ou vérifier les transports en commun.
+            </p>
+          </div>
+          <div class="embed-card">
+            <h3 data-i18n="locationMapTitle">Carte Google Maps</h3>
+            <!-- Remplacez l’URL ci-dessous par l’URL Google Maps exacte de la mosquée -->
+            <iframe
+              src="https://maps.app.goo.gl/fjSV1wqAb6QzRkfu5"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mosquée Bilal - Localisation"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT & SOCIAL -->
+      <section id="contact" class="section">
+        <div class="section-header">
+          <h2 data-i18n="contactTitle">Contact & Réseaux sociaux</h2>
+          <p data-i18n="contactText">
+            Contactez la mosquée pour toute question ou suivez-nous sur les réseaux sociaux.
+          </p>
+        </div>
+        <div class="section-body contact-layout">
+          <div class="contact-card">
+            <h3 data-i18n="contactInfoTitle">Informations de contact</h3>
+            <ul class="contact-list">
+              <li>
+                <i class="fa-solid fa-envelope"></i>
+                <a href="mailto:contact@mosqueebilal.fr">contact@mosqueebilal.fr</a>
+              </li>
+              <li>
+                <i class="fa-solid fa-phone"></i>
+                <a href="tel:+33123456789">+33 1 23 45 67 89</a>
+              </li>
+              <li>
+                <i class="fa-solid fa-location-dot"></i>
+                <span data-i18n="contactAddress">
+                  Mosquée Bilal, Rue Exemple 123, 75000 Ville, France
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="social-card">
+            <h3 data-i18n="socialTitle">Restez connectés</h3>
+            <p data-i18n="socialText">
+              Suivez la Mosquée Bilal pour les annonces, rappels spirituels et événements.
+            </p>
+            <div class="social-icons">
+              <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+              </a>
+              <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="fa-brands fa-facebook"></i>
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+                <i class="fa-brands fa-tiktok"></i>
+              </a>
+              <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
+                <i class="fa-brands fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="main-footer">
+      <p>
+        <span data-i18n="footerText">
+          &copy; <span id="year"></span> Mosquée Bilal. Tous droits réservés.
+        </span>
+      </p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
