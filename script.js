@@ -320,9 +320,9 @@ function initGalleryLightbox() {
   }
 
   thumbs.forEach((img) => {
-    img.addEventListener("click", () => {
-      openLightbox(img.src, img.alt);
-    });
+    const open = () => openLightbox(img.src, img.alt);
+    img.addEventListener("click", open);
+    img.addEventListener("mouseenter", open);
   });
 
   if (closeBtn) {
