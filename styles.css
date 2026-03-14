@@ -2042,3 +2042,146 @@ body.dark-theme .conversation-item.active {
   border-radius: 16px 16px 2px 16px;
 }
 
+/* ---------- Horaires (prière) ---------- */
+.horaires-main {
+  padding: 24px 7vw 48px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.horaires-page {
+  text-align: center;
+}
+
+.horaires-date-block {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px 32px;
+  margin-bottom: 28px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(12, 124, 89, 0.08), rgba(200, 161, 91, 0.12));
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(12, 124, 89, 0.2);
+}
+
+.horaires-date-label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.horaires-date-hijri,
+.horaires-date-gregorian {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.horaires-mawaqit-btn {
+  display: inline-block;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-soft));
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 36px;
+}
+
+.horaires-mawaqit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 50px rgba(12, 124, 89, 0.28);
+}
+
+.horaires-cards-wrap {
+  position: relative;
+  min-height: 200px;
+}
+
+.horaires-loading {
+  margin: 24px 0;
+  color: var(--color-muted);
+}
+
+.horaires-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.prayer-card {
+  background: linear-gradient(145deg, rgba(12, 124, 89, 0.12), rgba(12, 124, 89, 0.06));
+  border: 1px solid rgba(12, 124, 89, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.prayer-card:hover {
+  box-shadow: var(--shadow-soft);
+}
+
+.prayer-card--current {
+  background: linear-gradient(145deg, rgba(200, 161, 91, 0.35), rgba(200, 161, 91, 0.2));
+  border-color: var(--color-gold);
+  box-shadow: 0 12px 32px rgba(200, 161, 91, 0.3);
+}
+
+.prayer-card-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.prayer-card-time {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.prayer-card--current .prayer-card-time {
+  color: #8b6914;
+}
+
+@media (max-width: 600px) {
+  .horaires-main {
+    padding: 20px 16px 40px;
+  }
+
+  .horaires-date-block {
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .horaires-mawaqit-btn {
+    padding: 14px 24px;
+    font-size: 1rem;
+  }
+
+  .horaires-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .prayer-card {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+}
+

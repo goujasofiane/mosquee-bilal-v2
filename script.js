@@ -83,6 +83,15 @@ const translations = {
     socialYoutubeStats: "3 210 abonnés",
     socialFollowLabel: "Suivre",
     footerText: "© {year} Mosquée Bilal. Tous droits réservés.",
+    viewPrayerTimes: "Voir les horaires de prière",
+    dateHijri: "Date islamique",
+    dateGregorian: "Date grégorienne",
+    loadingPrayers: "Chargement des horaires…",
+    prayerFajr: "Fajr",
+    prayerDhuhr: "Dhuhr",
+    prayerAsr: "Asr",
+    prayerMaghrib: "Maghrib",
+    prayerIsha: "Isha",
   },
   ar: {
     siteTitle: "مسجد بلال",
@@ -205,6 +214,10 @@ function applyTranslations(lang) {
   document
     .querySelectorAll(".lang-switch button")
     .forEach((btn) => btn.classList.toggle("active", btn.dataset.lang === lang));
+
+  try {
+    document.dispatchEvent(new CustomEvent("translationsApplied"));
+  } catch (e) {}
 }
 
 function initLanguageSwitch() {
