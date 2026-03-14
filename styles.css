@@ -867,15 +867,17 @@ body.dark-theme .conversation-item.active {
 }
 
 .hero-content {
-  flex: 0 0 50%;
+  flex: 1;
   order: 1;
   min-width: 0;
 }
 
 .hero-visual {
-  flex: 0 0 50%;
+  flex: 1;
   order: 2;
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .hero-title {
@@ -1033,6 +1035,7 @@ body.dark-theme .conversation-item.active {
 }
 
 .hero-mawaqit-wrap {
+  max-width: 100%;
   overflow: hidden;
   border-radius: 15px;
   border: none;
@@ -1041,6 +1044,7 @@ body.dark-theme .conversation-item.active {
 .hero-gallery {
   background: transparent;
   padding: 0;
+  max-width: 100%;
   overflow: hidden;
   border-radius: 15px;
   border: none;
