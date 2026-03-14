@@ -859,11 +859,23 @@ body.dark-theme .conversation-item.active {
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: row;
   gap: 40px;
   align-items: center;
   margin-top: 10px;
+}
+
+.hero-content {
+  flex: 0 0 50%;
+  order: 2;
+  min-width: 0;
+}
+
+.hero-visual {
+  flex: 0 0 50%;
+  order: 1;
+  min-width: 0;
 }
 
 .hero-title {
@@ -954,6 +966,24 @@ body.dark-theme .conversation-item.active {
   flex-direction: column;
   gap: 18px;
   position: relative;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-content {
+    flex: 1 1 auto;
+    order: 1;
+    width: 100%;
+  }
+
+  .hero-visual {
+    flex: 1 1 auto;
+    order: 2;
+    width: 100%;
+  }
 }
 
 .hero-mawaqit-wrap {
@@ -1854,13 +1884,6 @@ body.dark-theme .conversation-item.active {
 }
 
 @media (max-width: 960px) {
-  .hero {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .hero-visual {
-    order: -1;
-  }
 
   .ai-layout,
   .donation-layout,
