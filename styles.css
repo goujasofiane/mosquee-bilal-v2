@@ -956,6 +956,12 @@ body.dark-theme .conversation-item.active {
   }
 }
 
+@keyframes pulse {
+  0% { box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5); }
+  50% { box-shadow: 0 8px 40px rgba(201, 168, 76, 0.9); transform: scale(1.05); }
+  100% { box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5); }
+}
+
 .hero-social-icons {
   display: flex;
   flex-wrap: wrap;
