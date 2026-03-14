@@ -1,3 +1,8 @@
+@keyframes pulse {
+  0%,100% { transform:scale(1); box-shadow:0 8px 30px rgba(201,168,76,0.7); }
+  50% { transform:scale(1.08); box-shadow:0 12px 40px rgba(201,168,76,1); }
+}
+
 :root {
   --color-bg: #f4efe4;
   --color-bg-alt: #fdf8ee;
@@ -954,12 +959,6 @@ body.dark-theme .conversation-item.active {
     transform: scale(1);
     box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5);
   }
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5); }
-  50% { box-shadow: 0 8px 40px rgba(201, 168, 76, 0.9); transform: scale(1.05); }
-  100% { box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5); }
 }
 
 .hero-social-icons {
