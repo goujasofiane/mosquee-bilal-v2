@@ -956,10 +956,19 @@ body.dark-theme .conversation-item.active {
   position: relative;
 }
 
+.hero-mawaqit-wrap {
+  overflow: hidden;
+  border-radius: 15px;
+  border: none;
+}
+
 .hero-gallery {
   background: transparent;
   box-shadow: var(--shadow-card);
   padding: 0;
+  overflow: hidden;
+  border-radius: 15px;
+  border: none;
 }
 
 .hero-overlay-text {
