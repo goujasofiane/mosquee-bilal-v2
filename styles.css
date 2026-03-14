@@ -177,6 +177,17 @@ body {
   padding-bottom: 4px;
 }
 
+.main-nav a.nav-donate {
+  position: relative;
+  background: linear-gradient(270deg, #c9a84c, #2d6a4f, #c9a84c, #2d6a4f);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+  animation: gradientMove 3s ease infinite;
+}
+
 .main-nav a::after {
   content: "";
   position: absolute;
