@@ -868,13 +868,13 @@ body.dark-theme .conversation-item.active {
 
 .hero-content {
   flex: 0 0 50%;
-  order: 2;
+  order: 1;
   min-width: 0;
 }
 
 .hero-visual {
   flex: 0 0 50%;
-  order: 1;
+  order: 2;
   min-width: 0;
 }
 
@@ -994,11 +994,11 @@ body.dark-theme .conversation-item.active {
 
 .hero-gallery {
   background: transparent;
-  box-shadow: var(--shadow-card);
   padding: 0;
   overflow: hidden;
   border-radius: 15px;
   border: none;
+  box-shadow: none;
 }
 
 .hero-overlay-text {
