@@ -45,127 +45,18 @@
       </div>
     </header>
 
-    <main class="horaires-main">
-      <section class="horaires-page">
-        <div class="horaires-date-block">
-          <p class="horaires-date-hijri" aria-label="Date islamique">
-            <span class="horaires-date-label" data-i18n="dateHijri">Date islamique</span>
-            <span id="hijri-date">—</span>
-          </p>
-          <p class="horaires-date-gregorian" aria-label="Date grégorienne">
-            <span class="horaires-date-label" data-i18n="dateGregorian">Date grégorienne</span>
-            <span id="gregorian-date">—</span>
-          </p>
-        </div>
-
-        <a
-          href="https://mawaqit.net/fr/stamu-ii-clichy-sous-bois-93390-france"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="horaires-mawaqit-btn"
-          data-i18n="viewPrayerTimes">
-          Voir les horaires de prière
-        </a>
-
-        <div class="horaires-cards-wrap">
-          <p id="horaires-loading" class="horaires-loading" data-i18n="loadingPrayers">Chargement des horaires…</p>
-          <div id="horaires-cards" class="horaires-cards" aria-live="polite"></div>
-        </div>
-      </section>
+    <main>
+      <div id="mawaqit-widget"></div>
     </main>
 
     <script src="script.js"></script>
     <script>
-(function () {
-  const API_URL = "https://api.aladhan.com/v1/timingsByCity?city=Clichy-sous-Bois&country=France&method=12";
-  const PRAYERS = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-  const prayerKeys = {
-    Fajr: "prayerFajr",
-    Dhuhr: "prayerDhuhr",
-    Asr: "prayerAsr",
-    Maghrib: "prayerMaghrib",
-    Isha: "prayerIsha",
-  };
-
-  function getTranslation(key) {
-    const lang = document.documentElement.lang === "ar" ? "ar" : "fr";
-    return (window.translations && window.translations[lang] && window.translations[lang][key]) || key;
-  }
-
-  function parseHHMM(s) {
-    const [h, m] = (s || "").split(":").map(Number);
-    return { h: isNaN(h) ? 0 : h, m: isNaN(m) ? 0 : m };
-  }
-
-  function getCurrentPrayer(timings) {
-    const now = new Date();
-    const nowM = now.getHours() * 60 + now.getMinutes();
-    const toM = (key) => {
-      const t = parseHHMM(timings[key]);
-      return t.h * 60 + t.m;
-    };
-    const f = toM("Fajr"), d = toM("Dhuhr"), a = toM("Asr"), mg = toM("Maghrib"), i = toM("Isha");
-    if (nowM < f) return "Isha";
-    if (nowM < d) return "Fajr";
-    if (nowM < a) return "Dhuhr";
-    if (nowM < mg) return "Asr";
-    if (nowM < i) return "Maghrib";
-    return "Isha";
-  }
-
-  function renderCards(data) {
-    const timings = data.data.timings;
-    const date = data.data.date;
-    const hijri = date.hijri;
-    const gregorian = date.gregorian;
-    const container = document.getElementById("horaires-cards");
-    const loading = document.getElementById("horaires-loading");
-    if (!container) return;
-
-    document.getElementById("hijri-date").textContent =
-      hijri.day + " " + (hijri.month.ar || hijri.month.en) + " " + hijri.year + " هـ";
-    document.getElementById("gregorian-date").textContent =
-      gregorian.day + " " + gregorian.month.en + " " + gregorian.year;
-
-    if (loading) loading.hidden = true;
-    container.innerHTML = "";
-    const current = getCurrentPrayer(timings);
-
-    PRAYERS.forEach(function (key) {
-      const card = document.createElement("div");
-      card.className = "prayer-card" + (key === current ? " prayer-card--current" : "");
-      card.setAttribute("data-prayer", key);
-      const name = getTranslation(prayerKeys[key]);
-      const time = timings[key] || "—";
-      card.innerHTML =
-        '<span class="prayer-card-name">' + name + "</span>" +
-        '<span class="prayer-card-time">' + time + "</span>";
-      container.appendChild(card);
-    });
-  }
-
-  function applyHorairesTranslations() {
-    document.querySelectorAll(".prayer-card-name").forEach(function (el) {
-      const prayer = el.closest(".prayer-card")?.getAttribute("data-prayer");
-      if (prayer && prayerKeys[prayer]) el.textContent = getTranslation(prayerKeys[prayer]);
-    });
-  }
-
-
-  fetch(API_URL)
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      if (data && data.data && data.data.timings) renderCards(data);
-      else document.getElementById("horaires-loading").textContent = "Impossible de charger les horaires.";
-    })
-    .catch(function () {
-      var loading = document.getElementById("horaires-loading");
-      if (loading) loading.textContent = "Erreur de chargement des horaires.";
-    });
-
-  document.addEventListener("translationsApplied", applyHorairesTranslations);
-})();
+      var mawaqitConfig = {
+        mosque: "stamu-ii-clichy-sous-bois-93390-france",
+        lang: "fr"
+      };
     </script>
+    <script src="https://mawaqit.net/en/mawaqit-widget/js/widget.js"></script>
   </body>
 </html>
 
