@@ -907,6 +907,55 @@ body.dark-theme .conversation-item.active {
   margin-bottom: 18px;
 }
 
+.hero-donate-btn {
+  background: linear-gradient(135deg, #c9a84c, #f5d77e, #c9a84c);
+  color: #1a1a1a;
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 18px 45px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5);
+  animation: hero-donate-pulse 2s infinite;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hero-donate-btn:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 12px 35px rgba(201, 168, 76, 0.7);
+  transform: scale(1.03);
+  animation-play-state: paused;
+}
+
+@keyframes hero-donate-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5);
+  }
+  14% {
+    transform: scale(1.04);
+    box-shadow: 0 10px 30px rgba(201, 168, 76, 0.6);
+  }
+  28% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5);
+  }
+  42% {
+    transform: scale(1.04);
+    box-shadow: 0 10px 30px rgba(201, 168, 76, 0.6);
+  }
+  56%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 25px rgba(201, 168, 76, 0.5);
+  }
+}
+
 .hero-social-icons {
   display: flex;
   flex-wrap: wrap;
