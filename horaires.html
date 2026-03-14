@@ -46,17 +46,21 @@
     </header>
 
     <main>
-      <div id="mawaqit-widget"></div>
+      <div style="width:100%; height: calc(100vh - 70px); overflow:hidden;">
+        <div id="mawaqit-widget" style="width:100%; height:100%;"></div>
+        <script>
+          var mawaqitConfig = {
+            mosque: "stamu-ii-clichy-sous-bois-93390-france",
+            lang: "fr",
+            width: "100%",
+            height: "100%"
+          };
+        </script>
+        <script src="https://mawaqit.net/en/mawaqit-widget/js/widget.js"></script>
+      </div>
     </main>
 
     <script src="script.js"></script>
-    <script>
-      var mawaqitConfig = {
-        mosque: "stamu-ii-clichy-sous-bois-93390-france",
-        lang: "fr"
-      };
-    </script>
-    <script src="https://mawaqit.net/en/mawaqit-widget/js/widget.js"></script>
   </body>
 </html>
 
