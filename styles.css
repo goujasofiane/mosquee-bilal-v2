@@ -87,6 +87,17 @@ body {
   gap: 12px;
 }
 
+.main-header .logo-photo {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  border-radius: 50% !important;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 26px rgba(12, 124, 89, 0.35);
+  display: block;
+  flex-shrink: 0;
+}
+
 .logo-mark {
   width: 42px;
   height: 42px;
