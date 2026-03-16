@@ -312,8 +312,10 @@ function setupSlider(slider, auto = true) {
 function initHeroSliders() {
   const mainSlider = document.getElementById("mosque-slider");
   const fullSlider = document.getElementById("mosque-slider-full");
+  const heroSlider = document.getElementById("mosque-hero-slider");
   setupSlider(mainSlider, true);
   setupSlider(fullSlider, false);
+  setupSlider(heroSlider, true);
 }
 
 function initScrollReveal() {
