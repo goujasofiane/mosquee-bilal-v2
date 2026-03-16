@@ -6,7 +6,7 @@
     <title>Mosquée Bilal</title>
     <meta
       name="description"
-      content="Site officiel de la Mosquée Bilal : lecture du Coran, questions islamiques avec IA, dons, informations et contact."
+      content="Site officiel de la Mosquée Bilal à Clichy-sous-Bois : prière, horaires, dons, informations et contact."
     />
     <link rel="stylesheet" href="styles.css" />
     <link
@@ -47,12 +47,9 @@
         <ul>
           <li><a href="index.html" data-i18n="navHome">Accueil</a></li>
           <li><a href="mosquee.html" data-i18n="navGallery">Galerie</a></li>
-          <li><a href="quran.html" data-i18n="navQuran">Coran</a></li>
-          <li><a href="ai.html" data-i18n="navHadiths">Hadiths</a></li>
-          <li><a href="horaires.html" data-i18n="navSchedule">Horaires</a></li>
           <li><a href="donation.html" data-i18n="navDonation" class="nav-donate">Don</a></li>
           <li><a href="location.html" data-i18n="navLocation">Localisation</a></li>
-          <li><a href="social.html" data-i18n="navSocial">Réseaux sociaux</a></li>
+          <li><a href="social.html" data-i18n="navSocial">Réseaux</a></li>
           <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
         </ul>
       </nav>
@@ -96,39 +93,6 @@
             </a>
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="hero-mawaqit-wrap">
-            <iframe
-              src="https://mawaqit.net/fr/w/stamu-ii-clichy-sous-bois-93390-france?showOnly5PrayerTimes=0"
-              width="100%"
-              style="height: 250px; border: none; display: block; border-radius: 15px;"
-              scrolling="no">
-            </iframe>
-          </div>
-          <div class="hero-gallery" style="border-radius: 15px; overflow: hidden;">
-            <div class="hero-slider" id="mosque-slider">
-              <div class="hero-slide active">
-                <img src="assets/mosquee-1.png" alt="Vue extérieure moderne de la mosquée" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-2.png" alt="Façade avec motifs géométriques islamiques" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-3.png" alt="Intérieur de la mosquée avec coupole" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-4.png" alt="Intérieur lumineux de la salle de prière" />
-              </div>
-              <button class="hero-slider-btn prev" aria-label="Image précédente">
-                <i class="fa-solid fa-chevron-left"></i>
-              </button>
-              <button class="hero-slider-btn next" aria-label="Image suivante">
-                <i class="fa-solid fa-chevron-right"></i>
-              </button>
-              <div class="hero-dots"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
       <!-- GALLERY SECTION -->
@@ -168,7 +132,27 @@
         </div>
       </section>
 
-      <!-- (section IA supprimée) -->
+      <!-- PRAYER TIMES SECTION -->
+      <section id="prayer-times" class="section section-alt">
+        <div class="section-header">
+          <h2>Horaires de prière</h2>
+          <p>
+            Consultez en temps réel les horaires de prière de la Mosquée Bilal via Mawaqit.
+          </p>
+        </div>
+        <div class="section-body">
+          <div class="embed-card">
+            <iframe
+              src="https://mawaqit.net/fr/embed"
+              width="100%"
+              style="height: 500px; border: none; display: block;"
+              loading="lazy"
+              scrolling="no"
+              title="Horaires de prière - Mawaqit"
+            ></iframe>
+          </div>
+        </div>
+      </section>
 
       <!-- DONATION -->
       <section id="donation" class="section">
