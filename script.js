@@ -425,6 +425,27 @@ function initDonationPopup() {
   });
 }
 
+function initDonationBanner() {
+  const banner = document.getElementById("donation-banner");
+  if (!banner) return;
+
+  const closed = localStorage.getItem("donationBannerClosed") === "true";
+  if (closed) {
+    banner.classList.add("hidden");
+    return;
+  }
+
+  const closeBtn = banner.querySelector(".donation-banner-close");
+  if (!closeBtn) return;
+
+  closeBtn.addEventListener("click", () => {
+    banner.classList.add("hidden");
+    try {
+      localStorage.setItem("donationBannerClosed", "true");
+    } catch (e) {}
+  });
+}
+
 function initYear() {
   const yearSpan = document.getElementById("year");
   if (yearSpan) {
@@ -439,6 +460,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollReveal();
   initGalleryLightbox();
   initDonationPopup();
+   initDonationBanner();
   initYear();
   applyTranslations("fr");
 });
