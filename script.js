@@ -295,7 +295,7 @@ function setupSlider(slider, auto = true) {
 
   function startAuto() {
     if (!auto) return;
-    timer = setInterval(next, 5000);
+    timer = setInterval(next, 3000);
   }
 
   function restartAuto() {

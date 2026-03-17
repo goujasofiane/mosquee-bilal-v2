@@ -45,12 +45,15 @@
           <span></span><span></span><span></span>
         </button>
         <ul>
-          <li><a href="index.html" data-i18n="navHome">Accueil</a></li>
-          <li><a href="mosquee.html" data-i18n="navGallery">Galerie</a></li>
-          <li><a href="donation.html" data-i18n="navDonation" class="nav-donate">Don</a></li>
-          <li><a href="location.html" data-i18n="navLocation">Localisation</a></li>
-          <li><a href="social.html" data-i18n="navSocial">Réseaux</a></li>
-          <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
+          <li><a href="index.html">ACCUEIL</a></li>
+          <li><a href="mosquee.html">GALERIE</a></li>
+          <li><a href="quran.html">CORAN</a></li>
+          <li><a href="ai.html">HADITHS</a></li>
+          <li><a href="horaires.html">HORAIRES</a></li>
+          <li><a href="donation.html" class="nav-donate">DON</a></li>
+          <li><a href="location.html">LOCALISATION</a></li>
+          <li><a href="social.html">RÉSEAUX SOCIAUX</a></li>
+          <li><a href="contact.html">CONTACT</a></li>
         </ul>
       </nav>
       <div class="lang-switch">
@@ -59,83 +62,69 @@
       </div>
     </header>
 
-    <div class="mawaqit-sticky-bar">
-      <iframe
-        src="https://mawaqit.net/fr/stamu-ii-clichy-sous-bois-93390-france?widget=1"
-        width="100%"
-        height="200px"
-        frameborder="0"
-        style="border:none;"
-      ></iframe>
-    </div>
-
-    <div style="background:linear-gradient(90deg,#c9a84c,#2d6a4f,#c9a84c);background-size:200%;animation:gradientMove 3s infinite;text-align:center;padding:12px;color:white;font-weight:700;font-size:1rem;letter-spacing:1px;">
-      🕌 Aidez-nous à achever la Mosquée Bilal ! 
-      <a href="donation.html" style="background:white;color:#2d6a4f;padding:5px 15px;border-radius:20px;margin-left:10px;font-weight:800;text-decoration:none;">FAIRE UN DON ❤️</a>
-    </div>
-
     <main>
-      <!-- HOME -->
+      <!-- HOME HERO -->
       <section id="home" class="section hero">
         <div class="hero-content">
           <h1 class="hero-title">
             <span class="hero-calligraphy">مسجد بلال</span>
-            <span data-i18n="heroTitle">Mosquée Bilal</span>
+            <span>Mosquée Bilal</span>
           </h1>
-          <p class="hero-text" data-i18n="heroText">
-            Un lieu de prière, de connaissance et de fraternité, au service de la communauté musulmane et de tous nos voisins.
+          <p class="hero-text">
+            Un lieu de prière, d’apprentissage et de fraternité, au service de la communauté musulmane de
+            Clichy-sous-Bois et de tous nos voisins.
           </p>
           <div class="hero-actions">
-            <a href="https://www.cotizup.com/achever-mosquee-bilal" target="_blank" style="display:inline-block;background:linear-gradient(270deg,#c9a84c,#2d6a4f,#c9a84c,#2d6a4f);background-size:400% 400%;animation:gradientMove 3s ease infinite,pulse 2s ease infinite;color:white;font-size:1.2rem;font-weight:800;padding:18px 45px;border-radius:50px;box-shadow:0 8px 30px rgba(201,168,76,0.6);text-decoration:none;letter-spacing:2px;border:none;cursor:pointer;">✨ FAIRE UN DON ❤️ ✨</a>
+            <a href="quran.html" class="btn primary">
+              LIRE LE CORAN
+            </a>
           </div>
-          <div class="hero-social-icons">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hero-social-icon instagram" aria-label="Instagram">
-              <i class="fa-brands fa-instagram"></i>
-            </a>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hero-social-icon facebook" aria-label="Facebook">
-              <i class="fa-brands fa-facebook-f"></i>
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="hero-social-icon tiktok" aria-label="TikTok">
-              <i class="fa-brands fa-tiktok"></i>
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="hero-social-icon youtube" aria-label="YouTube">
-              <i class="fa-brands fa-youtube"></i>
-            </a>
+          <div class="hero-meta">
+            <div>
+              <span class="meta-label">PRIÈRE</span>
+              <span class="meta-value">Cinq prières quotidiennes &amp; Jumu'a</span>
+            </div>
+            <div>
+              <span class="meta-label">ÉDUCATION</span>
+              <span class="meta-value">Cours de Coran &amp; sciences islamiques</span>
+            </div>
           </div>
         </div>
         <div class="hero-visual">
-          <div class="hero-slider" id="mosque-hero-slider" style="border-radius:20px;overflow:hidden;box-shadow:0 20px 50px rgba(12,124,89,0.35);">
-            <div class="hero-slide active">
-              <img src="assets/mosquee-1.png" alt="Mosquée Bilal - Vue extérieure" />
+          <div class="hero-mawaqit-wrap">
+            <iframe
+              src="https://mawaqit.net/fr/w/stamu-ii-clichy-sous-bois-93390-france"
+              width="100%"
+              height="230px"
+              frameborder="0"
+              style="border:none; border-radius:12px;"
+            ></iframe>
+          </div>
+          <div class="hero-gallery">
+            <div class="hero-slider" id="mosque-hero-slider">
+              <div class="hero-slide active">
+                <img src="assets/mosquee-1.png" alt="Mosquée Bilal - Vue extérieure" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-2.png" alt="Mosquée Bilal - Façade" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-3.png" alt="Mosquée Bilal - Intérieur 1" />
+              </div>
+              <div class="hero-slide">
+                <img src="assets/mosquee-4.png" alt="Mosquée Bilal - Intérieur 2" />
+              </div>
+              <div class="hero-dots"></div>
             </div>
-            <div class="hero-slide">
-              <img src="assets/mosquee-2.png" alt="Mosquée Bilal - Façade" />
-            </div>
-            <div class="hero-slide">
-              <img src="assets/mosquee-3.png" alt="Mosquée Bilal - Intérieur 1" />
-            </div>
-            <div class="hero-slide">
-              <img src="assets/mosquee-4.png" alt="Mosquée Bilal - Intérieur 2" />
-            </div>
-            <div class="hero-dots"></div>
           </div>
         </div>
       </section>
 
-      <!-- PRAYER TIMES SECTION -->
-      <section id="prayer-times" class="section section-alt">
-        <div class="section-header">
-          <h2>Horaires de prière</h2>
-          <p>
-            Consultez en temps réel les horaires de prière de la Mosquée Bilal via Mawaqit.
-          </p>
-        </div>
-        <div class="section-body">
-          <div class="embed-card">
-            <iframe src="https://mawaqit.net/fr/stamu-ii-clichy-sous-bois-93390-france" width="100%" height="500px" frameborder="0" style="border:none;"></iframe>
-          </div>
-        </div>
-      </section>
+      <!-- BANDEAU DON -->
+      <div style="background:linear-gradient(90deg,#c9a84c,#2d6a4f,#c9a84c);background-size:200%;animation:gradientMove 3s infinite;text-align:center;padding:12px;color:white;font-weight:700;font-size:1rem;letter-spacing:1px;">
+        🕌 Aidez-nous à achever la Mosquée Bilal ! 
+        <a href="donation.html" style="background:white;color:#2d6a4f;padding:5px 15px;border-radius:20px;margin-left:10px;font-weight:800;text-decoration:none;">FAIRE UN DON ❤️</a>
+      </div>
 
       <!-- GALLERY SECTION -->
       <section id="gallery" class="section section-alt">
@@ -187,48 +176,6 @@
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- QURAN SECTION -->
-      <section id="quran" class="section">
-        <div class="section-header">
-          <h2>Lire le Coran</h2>
-          <p>
-            Accédez au Coran en ligne avec traduction et récitation.
-          </p>
-        </div>
-        <div class="section-body">
-          <a
-            href="https://quran.com"
-            target="_blank"
-            rel="noopener"
-            style="display:inline-block;background:linear-gradient(135deg,#0c7c59,#139b6b);color:#ffffff;font-weight:700;padding:14px 32px;border-radius:999px;text-decoration:none;box-shadow:0 10px 24px rgba(12,124,89,0.5);letter-spacing:0.08em;text-transform:uppercase;"
-          >
-            Lire le Coran en ligne
-          </a>
-        </div>
-      </section>
-
-      <!-- HADITHS SECTION -->
-      <section id="hadiths" class="section section-alt">
-        <div class="section-header">
-          <h2>Hadiths</h2>
-          <p>
-            Consultez une grande collection de hadiths authentiques en ligne.
-          </p>
-        </div>
-        <div class="section-body">
-          <a
-            href="https://hadithcollection.com"
-            target="_blank"
-            rel="noopener"
-            style="display:inline-block;background:linear-gradient(135deg,#0c7c59,#c8a15b);color:#ffffff;font-weight:700;padding:14px 32px;border-radius:999px;text-decoration:none;box-shadow:0 10px 24px rgba(200,161,91,0.5);letter-spacing:0.08em;text-transform:uppercase;"
-          >
-            Consulter les hadiths
-          </a>
-        </div>
-      </section>
-
       <!-- DONATION -->
       <section id="donation" class="section">
         <div class="section-header">

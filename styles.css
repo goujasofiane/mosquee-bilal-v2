@@ -91,11 +91,6 @@ body {
   box-shadow: 0 10px 30px rgba(26, 34, 50, 0.12);
 }
 
-.mawaqit-sticky-bar {
-  position: sticky;
-  top: 70px;
-  z-index: 19;
-}
 
 .logo-area {
   display: flex;
@@ -1195,8 +1190,8 @@ body.dark-theme .conversation-item.active {
 
 .hero-slide img {
   width: 100%;
-  max-height: 400px;
-  height: 400px;
+  max-height: 250px;
+  height: 250px;
   object-fit: cover;
   display: block;
 }
