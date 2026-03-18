@@ -2615,7 +2615,7 @@ body.dark-theme .conversation-item.active {
 .social-icons a {
   width: 52px;
   height: 52px;
-  border-radius: 14px;
+  border-radius: 999px;
   background: rgba(0, 0, 0, 0.28);
   display: inline-flex;
   align-items: center;
