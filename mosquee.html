@@ -13,41 +13,65 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body class="page-single mosquee-page">
-    <div class="mosquee-page-bg" aria-hidden="true"></div>
-    <header class="main-header">
-      <div class="logo-area">
-        <img src="assets/logo.png" alt="Mosquée Bilal" class="logo-photo" />
-        <div class="logo-text">
-          <span class="logo-title" data-i18n="siteTitle">Mosquée Bilal</span>
-          <span class="logo-subtitle" data-i18n="siteSubtitle">Lumière, savoir et sérénité</span>
+  <body class="nh-site">
+    <div class="nh-bg" aria-hidden="true"></div>
+
+    <div class="nh-topbar">
+      <div class="nh-container">
+        <div class="nh-topbar-left">
+          <a href="mailto:contact@mosqueebilal.fr"><i class="fa-solid fa-envelope"></i> contact@mosqueebilal.fr</a>
+          <span class="nh-topbar-sep">|</span>
+          <a href="tel:+33123456789"><i class="fa-solid fa-phone"></i> +33 1 23 45 67 89</a>
+        </div>
+        <div class="nh-topbar-right">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         </div>
       </div>
-      <nav class="main-nav">
-        <button class="nav-toggle" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-        <ul>
-          <li><a href="index.html" data-i18n="navHome">Accueil</a></li>
-          <li><a href="mosquee.html" data-i18n="navGallery">Galerie</a></li>
-          <li><a href="donation.html" data-i18n="navDonation" class="nav-donate">Don</a></li>
-          <li><a href="location.html" data-i18n="navLocation">Localisation</a></li>
-          <li><a href="social.html" data-i18n="navSocial">Réseaux</a></li>
-          <li><a href="contact.html" data-i18n="navContact">Contact</a></li>
-        </ul>
-      </nav>
-      <div class="lang-switch">
-        <button data-lang="fr" class="active">FR</button>
-        <button data-lang="ar">العربية</button>
+    </div>
+
+    <header class="nh-header">
+      <div class="nh-header-inner">
+        <a class="nh-brand" href="index.html" aria-label="Mosquée Bilal">
+          <span class="nh-brand-mark" aria-hidden="true"></span>
+          <span class="nh-brand-text">Mosquée Bilal</span>
+        </a>
+
+        <nav class="nh-nav" aria-label="Navigation principale">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nh-nav-list">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="mosquee.html">GALERIE</a></li>
+            <li><a href="quran.html">CORAN</a></li>
+            <li><a href="ai.html">HADITHS</a></li>
+            <li><a href="horaires.html">HORAIRES</a></li>
+            <li><a href="donation.html" class="nh-nav-donate">DON</a></li>
+            <li><a href="location.html">LOCALISATION</a></li>
+            <li><a href="social.html">RÉSEAUX</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+          </ul>
+        </nav>
+
+        <div class="lang-switch nh-lang-switch">
+          <button data-lang="fr" class="active">FR</button>
+          <button data-lang="ar">AR</button>
+        </div>
       </div>
     </header>
 
-    <div style="background:linear-gradient(90deg,#c9a84c,#2d6a4f,#c9a84c);background-size:200%;animation:gradientMove 3s infinite;text-align:center;padding:12px;color:white;font-weight:700;font-size:1rem;letter-spacing:1px;">
-      🕌 Aidez-nous à achever la Mosquée Bilal ! 
-      <a href="donation.html" style="background:white;color:#2d6a4f;padding:5px 15px;border-radius:20px;margin-left:10px;font-weight:800;text-decoration:none;">FAIRE UN DON ❤️</a>
+    <div id="donation-banner" class="donation-banner">
+      <span class="donation-banner-text">
+        🕌 Aidez-nous à achever la Mosquée Bilal !
+        <a href="donation.html" class="donation-banner-button">FAIRE UN DON ❤️</a>
+      </span>
+      <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">✕</button>
     </div>
 
-    <main>
+    <main class="nh-main">
       <section class="mosquee-gallery-section">
         <header class="mosquee-gallery-header">
           <h1 class="mosquee-gallery-title">Mosquée Bilal — Vue en grand</h1>

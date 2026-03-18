@@ -27,12 +27,12 @@
    Scoped to .home-nh only
    ========================= */
 
-body.home-nh {
+body.nh-site {
   background: #0a0a0a;
   color: #ffffff;
 }
 
-body.home-nh .pattern-bg {
+body.nh-site .pattern-bg {
   display: none;
 }
 
@@ -214,16 +214,16 @@ body.home-nh .pattern-bg {
   animation: gradientMove 3s ease infinite;
 }
 
-body.home-nh .nh-lang-switch {
+body.nh-site .nh-lang-switch {
   background: rgba(255, 255, 255, 0.06);
   box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.18);
 }
 
-body.home-nh .nh-lang-switch button {
+body.nh-site .nh-lang-switch button {
   color: rgba(255, 255, 255, 0.82);
 }
 
-body.home-nh .nh-lang-switch button.active {
+body.nh-site .nh-lang-switch button.active {
   background: linear-gradient(120deg, #2d6a4f, #c9a84c);
   box-shadow: 0 10px 24px rgba(201, 168, 76, 0.16);
 }
@@ -885,7 +885,7 @@ body {
   gap: 10px;
 }
 
-body.home-nh .donation-banner {
+body.nh-site .donation-banner {
   position: sticky;
   top: 0;
   z-index: 31;
