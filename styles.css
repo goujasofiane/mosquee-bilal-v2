@@ -450,6 +450,7 @@ main {
 .section {
   margin-bottom: 72px;
   padding: 44px 32px;
+  padding-bottom: 0;
   background: rgba(253, 250, 245, 0.98);
   border-radius: 26px;
   box-shadow: var(--shadow-card);
