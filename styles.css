@@ -1132,26 +1132,19 @@ main {
   align-items: center;
   justify-content: center;
   padding: 40px 16px;
-  background: radial-gradient(
-      circle at 0 0,
-      rgba(19, 155, 107, 0.25),
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 100% 100%,
-      rgba(200, 161, 91, 0.45),
-      transparent 55%
-    ),
-    linear-gradient(145deg, #053628, #0c7c59);
+  background: #0a0a0a;
 }
 
 .donation-text-card {
   width: 100%;
   max-width: 800px;
-  background: rgba(253, 250, 245, 0.98);
+  background: #1a1a1a;
   border-radius: 30px;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(200, 161, 91, 0.4);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(201, 168, 76, 0.22),
+    0 18px 55px rgba(201, 168, 76, 0.18);
+  border: 1px solid rgba(201, 168, 76, 0.22);
   padding: 28px 24px 26px 24px;
 }
 
@@ -1162,33 +1155,32 @@ main {
   text-transform: uppercase;
   font-family: "Playfair Display", serif;
   text-align: center;
+  color: #c9a84c;
 }
 
 .donation-text-main {
   margin: 0 0 12px 0;
   font-size: 0.97rem;
   line-height: 1.7;
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .donation-hadith-box {
   margin: 12px 0 16px 0;
   padding: 12px 14px;
   border-radius: 16px;
-  background: linear-gradient(
-    135deg,
-    rgba(200, 161, 91, 0.12),
-    rgba(252, 245, 231, 0.98)
-  );
-  border: 1px solid rgba(200, 161, 91, 0.6);
+  background: rgba(201, 168, 76, 0.06);
+  border: 1px solid rgba(201, 168, 76, 0.55);
+  color: rgba(255, 255, 255, 0.94);
+  font-style: italic;
 }
 
 .donation-tax-box {
   margin: 14px 0 16px 0;
   padding: 12px 14px;
   border-radius: 16px;
-  background: rgba(12, 124, 89, 0.06);
-  border: 1px solid rgba(12, 124, 89, 0.4);
+  background: #2a2a2a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .donation-tax-box h2 {
@@ -1199,11 +1191,11 @@ main {
 .donation-tax-box p {
   margin: 0 0 6px 0;
   font-size: 0.94rem;
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .donation-tax-box a {
-  color: var(--color-primary);
+  color: #c9a84c;
   text-decoration: underline;
 }
 
@@ -1216,15 +1208,23 @@ main {
 }
 
 .donation-btn-gold {
-  background: linear-gradient(120deg, #c8a15b, #f1dd9c);
-  color: #3a2a11;
-  border-color: rgba(133, 93, 35, 0.35);
-  box-shadow: 0 18px 40px rgba(200, 161, 91, 0.6);
+  background: linear-gradient(120deg, #c9a84c, #f2dc96);
+  color: #1a1205;
+  border: 1px solid rgba(201, 168, 76, 0.55);
+  box-shadow: 0 18px 40px rgba(201, 168, 76, 0.32);
 }
 
 .donation-share-buttons {
   display: flex;
   gap: 10px;
+}
+
+.donation-sep {
+  height: 1px;
+  width: 100%;
+  border: none;
+  margin: 18px 0 18px 0;
+  background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.9), transparent);
 }
 
 .donation-share-btn {
