@@ -279,19 +279,19 @@ function applyTranslations(lang) {
     .querySelectorAll("[data-i18n]")
     .forEach((el) => {
       const key = el.getAttribute("data-i18n");
-      if (dict[key]) {
-        const translated = dict[key].replace(
-          "{year}",
-          new Date().getFullYear().toString()
-        );
+      if (!dict[key]) return;
 
-        // Certains contenus (ex: texte donation avec <br />) nécessitent un rendu HTML.
-        // On se base sur la présence de balises côté traduction.
-        if (translated.includes("<")) {
-          el.innerHTML = translated;
-        } else {
-          el.textContent = translated;
-        }
+      const translated = dict[key].replace(
+        "{year}",
+        new Date().getFullYear().toString()
+      );
+
+      // Si la traduction contient du markup HTML (ex: <br />), on doit le conserver via innerHTML.
+      // Sinon, on utilise textContent pour éviter d'interpréter du HTML.
+      if (/<[^>]+>/.test(translated)) {
+        el.innerHTML = translated;
+      } else {
+        el.textContent = translated;
       }
     });
 
@@ -322,9 +322,17 @@ function initLanguageSwitch() {
     .forEach((btn) => {
       btn.addEventListener("click", () => {
         const lang = btn.dataset.lang;
+        const isAr = lang === "ar";
+
+        // Exigence: mise à jour explicite lang/dir côté document.
+        document.documentElement.lang = isAr ? "ar" : "fr";
+        document.documentElement.dir = isAr ? "rtl" : "ltr";
+
+        // Exigence: persistance sous la clé 'lang'.
         try {
-          localStorage.setItem("mosqueeLang", lang);
+          localStorage.setItem("lang", isAr ? "ar" : "fr");
         } catch (e) {}
+
         applyTranslations(lang);
       });
     });
@@ -593,7 +601,7 @@ function initYear() {
 document.addEventListener("DOMContentLoaded", () => {
   let savedLang = "fr";
   try {
-    const v = localStorage.getItem("mosqueeLang");
+    const v = localStorage.getItem("lang") || localStorage.getItem("mosqueeLang");
     if (v === "ar" || v === "fr") savedLang = v;
   } catch (e) {}
 
