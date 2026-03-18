@@ -307,6 +307,13 @@ function applyTranslations(lang) {
   document.documentElement.lang = lang === "ar" ? "ar" : "fr";
   document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 
+  // Exigences RTL: forcer placement switch FR/AR à droite et logo à gauche.
+  const langSwitch = document.querySelector(".lang-switch");
+  if (langSwitch) langSwitch.classList.add("lang-switcher");
+
+  const logoBrand = document.querySelector(".nh-brand");
+  if (logoBrand) logoBrand.classList.add("logo-brand");
+
   document
     .querySelectorAll(".lang-switch button")
     .forEach((btn) => btn.classList.toggle("active", btn.dataset.lang === lang));

@@ -1137,6 +1137,30 @@ body.nh-site .donation-banner {
   box-shadow: 0 6px 16px rgba(12, 124, 89, 0.35);
 }
 
+/* RTL i18n fixes */
+.lang-switcher {
+  position: fixed !important;
+  right: 20px !important;
+  left: auto !important;
+}
+
+.logo-brand {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+[dir="rtl"] .main-header {
+  flex-direction: row !important;
+}
+
+[dir="rtl"] .nh-header-inner {
+  flex-direction: row !important;
+}
+
+[dir="rtl"] .logo-brand {
+  order: -1 !important;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
