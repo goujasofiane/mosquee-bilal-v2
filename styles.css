@@ -1137,28 +1137,38 @@ body.nh-site .donation-banner {
   box-shadow: 0 6px 16px rgba(12, 124, 89, 0.35);
 }
 
-/* RTL i18n fixes */
-.lang-switcher {
-  position: fixed !important;
-  right: 20px !important;
-  left: auto !important;
+/* Header i18n: nav centrée (FR/AR) + logo gauche + switch droite */
+.nh-nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
 }
 
+/* Base: logo à gauche, switch à droite (ordres/flex natifs) */
 .logo-brand {
   margin-right: auto !important;
   margin-left: 0 !important;
 }
 
+/* En RTL, on force la logique demandée sans casser le centrage */
 [dir="rtl"] .main-header {
   flex-direction: row !important;
 }
 
-[dir="rtl"] .nh-header-inner {
-  flex-direction: row !important;
+[dir="rtl"] .logo-brand {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+  order: 0 !important;
 }
 
-[dir="rtl"] .logo-brand {
-  order: -1 !important;
+[dir="rtl"] nav {
+  order: 1 !important;
+}
+
+[dir="rtl"] .lang-switcher {
+  order: 2 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
 .nav-toggle {
