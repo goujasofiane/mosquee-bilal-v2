@@ -148,9 +148,13 @@ body.nh-site .pattern-bg {
   border-radius: 12px;
   object-fit: contain;
   display: block;
-  background: none;
-  mix-blend-mode: lighten;
-  filter: brightness(1) invert(0);
+  background: transparent;
+  mix-blend-mode: multiply;
+}
+
+.main-header .logo img {
+  mix-blend-mode: multiply;
+  background: transparent;
 }
 
 .nh-brand-text {
@@ -719,6 +723,7 @@ body.nh-site .nh-lang-switch button.active {
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px 16px;
+  text-align: center;
 }
 
 .nh-footer-links a {
