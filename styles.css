@@ -2558,11 +2558,14 @@ body.dark-theme .conversation-item.active {
 
 .contact-card,
 .social-card {
-  background: rgba(255, 255, 255, 0.96);
+  background: #1a1a1a;
   border-radius: 18px;
   padding: 16px 18px;
-  border: 1px solid rgba(200, 161, 91, 0.28);
-  box-shadow: 0 11px 26px rgba(26, 34, 50, 0.12);
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  box-shadow:
+    0 18px 55px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(201, 168, 76, 0.12);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .page-single .contact-card,
@@ -2590,15 +2593,15 @@ body.dark-theme .conversation-item.active {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(12, 124, 89, 0.08);
+  background: rgba(201, 168, 76, 0.12);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
+  color: #c9a84c;
 }
 
 .contact-list a {
-  color: var(--color-text);
+  color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
 }
 
@@ -2606,29 +2609,34 @@ body.dark-theme .conversation-item.active {
   display: flex;
   gap: 12px;
   margin-top: 14px;
+  flex-wrap: wrap;
 }
 
 .social-icons a {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #fff;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(0, 0, 0, 0.28);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-primary);
-  box-shadow: 0 10px 20px rgba(26, 34, 50, 0.18);
-  border: 1px solid rgba(200, 161, 91, 0.24);
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  font-size: 1.35rem;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .social-icons a:hover {
-  background: linear-gradient(
-    135deg,
-    var(--color-primary),
-    var(--color-primary-soft)
-  );
-  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.75);
+  border-color: rgba(241, 221, 156, 0.9);
 }
+
+.social-icons a.ig { background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285aeb); }
+.social-icons a.fb { background: #1877f2; }
+.social-icons a.tk { background: #000000; color: #25f4ee; }
+.social-icons a.yt { background: #ff0000; }
 
 .home-social-section {
   background: radial-gradient(circle at 0 0, #0c7c59, #053628);
@@ -2759,8 +2767,8 @@ body.dark-theme .conversation-item.active {
 }
 
 .social-page-section .social-card-lg {
-  background: rgba(8, 22, 19, 0.9);
-  border-color: rgba(200, 161, 91, 0.45);
+  background: #1a1a1a;
+  border-color: rgba(201, 168, 76, 0.22);
   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65);
 }
 
@@ -2820,35 +2828,12 @@ body.dark-theme .conversation-item.active {
 }
 
 .social-follow-btn {
-  background: linear-gradient(
-    120deg,
-    var(--color-gold),
-    #f1dd9c
-  );
-  color: #3a2a11;
-  border-color: rgba(133, 93, 35, 0.35);
-  box-shadow: 0 14px 30px rgba(200, 161, 91, 0.6);
+  background: linear-gradient(120deg, #c9a84c, #f1dd9c);
+  color: #1a1205;
+  border: 1px solid rgba(201, 168, 76, 0.55);
+  box-shadow: 0 14px 30px rgba(201, 168, 76, 0.28);
 }
 
-.social-follow-instagram {
-  background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285aeb);
-  color: #ffffff;
-}
-
-.social-follow-facebook {
-  background: #1877f2;
-  color: #ffffff;
-}
-
-.social-follow-tiktok {
-  background: #000000;
-  color: #ffffff;
-}
-
-.social-follow-youtube {
-  background: #ff0000;
-  color: #ffffff;
-}
 
 @keyframes socialPattern {
   0% {
