@@ -148,6 +148,9 @@ body.nh-site .pattern-bg {
   border-radius: 12px;
   object-fit: contain;
   display: block;
+  background: none;
+  mix-blend-mode: lighten;
+  filter: brightness(1) invert(0);
 }
 
 .nh-brand-text {
