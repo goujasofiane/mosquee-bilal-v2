@@ -1150,25 +1150,45 @@ body.nh-site .donation-banner {
   margin-left: 0 !important;
 }
 
-/* En RTL, on force la logique demandée sans casser le centrage */
-[dir="rtl"] .main-header {
+/* RTL: forcer la position des éléments header/topbar (ne jamais "glisser") */
+[dir="rtl"] .nh-topbar .nh-container {
+  flex-direction: row !important;
+}
+
+[dir="rtl"] .nh-topbar-left {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+}
+
+[dir="rtl"] .nh-topbar-right {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+[dir="rtl"] .nh-header-inner {
   flex-direction: row !important;
 }
 
 [dir="rtl"] .logo-brand {
-  margin-right: 0 !important;
-  margin-left: auto !important;
-  order: 0 !important;
+  order: 1 !important;
+  margin-right: auto !important;
+  margin-left: 0 !important;
 }
 
-[dir="rtl"] nav {
-  order: 1 !important;
+[dir="rtl"] .nh-nav {
+  order: 2 !important;
 }
 
 [dir="rtl"] .lang-switcher {
-  order: 2 !important;
+  order: 3 !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+}
+
+/* Icônes réseaux topbar: toujours à droite */
+[dir="rtl"] .nh-topbar-right {
+  margin-left: 0 !important;
+  margin-right: auto !important;
 }
 
 .nav-toggle {
