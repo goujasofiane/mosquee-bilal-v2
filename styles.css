@@ -151,6 +151,11 @@ body.nh-site .pattern-bg {
   background: transparent;
 }
 
+.logo img {
+  mix-blend-mode: screen;
+  border-radius: 8px;
+}
+
 .nh-brand-text {
   font-family: "Playfair Display", serif;
   letter-spacing: 0.08em;
