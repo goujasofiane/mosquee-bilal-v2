@@ -305,7 +305,6 @@ function applyTranslations(lang) {
     });
 
   document.documentElement.lang = lang === "ar" ? "ar" : "fr";
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
 
   // Exigences RTL: forcer placement switch FR/AR à droite et logo à gauche.
   const langSwitch = document.querySelector(".lang-switch");
@@ -333,7 +332,6 @@ function initLanguageSwitch() {
 
         // Exigence: mise à jour explicite lang/dir côté document.
         document.documentElement.lang = isAr ? "ar" : "fr";
-        document.documentElement.dir = isAr ? "rtl" : "ltr";
 
         // Exigence: persistance sous la clé 'lang'.
         try {
