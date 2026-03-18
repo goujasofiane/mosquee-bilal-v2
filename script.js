@@ -54,6 +54,11 @@ const translations = {
     donationHeroShareText:
       "Mobilisez du monde ! Votre soutien passe aussi par le partage.",
     donationHeroButton: "Faire un don ❤️",
+    donationBannerMessage: "🕌 Aidez-nous à achever la Mosquée Bilal !",
+    prayerTimesHeading: "HORAIRES DE PRIÈRE",
+    aboutBadge: "Mosquée Bilal",
+    mosqueePhotoTitle: "Mosquée Bilal",
+    mosqueePhotoSubtitle: "Clichy-sous-Bois",
     donationPageTitle: "Ensemble pour achever la Mosquée Bilal",
     donationParagraph1:
       "As-salâmu 'alaykum wa rahmatullâhi wa barakâtuh,<br />La construction de la Mosquée Bilal à Clichy-sous-Bois touche bientôt à son aboutissement. Ce projet est essentiel pour notre communauté : il offrira un lieu de prière, d'apprentissage, d'éducation pour nos enfants et un espace de rassemblement bénéfique pour les générations présentes et futures, in shâ Allah.",
@@ -187,6 +192,11 @@ const translations = {
     donationHeroShareText:
       "حرّكوا القلوب! دعمكم يكون أيضًا بنشر رابط التبرع.",
     donationHeroButton: "التبرع ❤️",
+    donationBannerMessage: "🕌 ساعدونا على إتمام مسجد بلال !",
+    prayerTimesHeading: "مواقيت الصلاة",
+    aboutBadge: "مسجد بلال",
+    mosqueePhotoTitle: "مسجد بلال",
+    mosqueePhotoSubtitle: "كليشي-سوس-بوا",
     donationPageTitle: "معًا لإتمام مسجد بلال",
     donationParagraph1:
       "السلام عليكم ورحمة الله وبركاته,<br />إن بناء مسجد بلال في كليشي-سوس-بوا يوشك على الاكتمال. هذا المشروع بالغ الأهمية لمجتمعنا: فسيقدّم مكانًا للصلاة والتعلّم والتربية لأبنائنا، ومكانًا يجمع العائلات والأجيال الحالية والقادمة، إن شاء الله.",

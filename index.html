@@ -85,8 +85,16 @@
     <!-- DONATION BANNER (dismissible) -->
     <div id="donation-banner" class="donation-banner">
       <span class="donation-banner-text">
-        🕌 Aidez-nous à achever la Mosquée Bilal !
-        <a href="donation.html" class="donation-banner-button">FAIRE UN DON ❤️</a>
+        <span data-i18n="donationBannerMessage">
+          🕌 Aidez-nous à achever la Mosquée Bilal !
+        </span>
+        <a
+          href="donation.html"
+          class="donation-banner-button"
+          data-i18n="donationHeroButton"
+        >
+          FAIRE UN DON ❤️
+        </a>
       </span>
       <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">✕</button>
     </div>
@@ -100,10 +108,16 @@
           <h1 class="nh-hero-title" data-i18n="heroTitle">Mosquée Bilal</h1>
           <p class="nh-hero-subtitle" data-i18n="heroSubtitle">Un lieu de prière, de connaissance et de fraternité</p>
           <div class="nh-hero-actions">
-            <a href="https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" class="nh-btn nh-btn-gold">
+            <a
+              href="https://www.cotizup.com/achever-mosquee-bilal"
+              target="_blank"
+              rel="noopener"
+              class="nh-btn nh-btn-gold"
+              data-i18n="donationHeroButton"
+            >
               FAIRE UN DON ❤️
             </a>
-            <a href="horaires.html" class="nh-btn nh-btn-outline">
+            <a href="horaires.html" class="nh-btn nh-btn-outline" data-i18n="prayerTimesHeading">
               HORAIRES DE PRIÈRE
             </a>
           </div>
@@ -114,7 +128,7 @@
       <section class="nh-about nh-section">
         <div class="nh-container nh-about-grid">
           <div class="nh-about-left">
-            <div class="nh-badge">مسجد بلال</div>
+            <div class="nh-badge" data-i18n="aboutBadge">مسجد بلال</div>
             <h2 class="nh-title" data-i18n="aboutTitle">Un lieu de paix et de spiritualité</h2>
             <p class="nh-text" data-i18n="aboutText">
               La Mosquée Bilal est un espace de prière, d’apprentissage et de fraternité au cœur de Clichy-sous-Bois.
@@ -147,8 +161,8 @@
             <div class="nh-photo-card">
               <img src="assets/mosquee-2.png" alt="Mosquée Bilal" />
               <div class="nh-photo-float">
-                <div class="nh-photo-float-title">Mosquée Bilal</div>
-                <div class="nh-photo-float-subtitle">Clichy-sous-Bois</div>
+                <div class="nh-photo-float-title" data-i18n="mosqueePhotoTitle">Mosquée Bilal</div>
+                <div class="nh-photo-float-subtitle" data-i18n="mosqueePhotoSubtitle">Clichy-sous-Bois</div>
               </div>
             </div>
           </div>
@@ -203,7 +217,7 @@
       <!-- MAWAQIT -->
       <section id="mawaqit" class="nh-mawaqit nh-section">
         <div class="nh-container">
-          <h2 class="nh-title nh-title-center">HORAIRES DE PRIÈRE</h2>
+          <h2 class="nh-title nh-title-center" data-i18n="prayerTimesHeading">HORAIRES DE PRIÈRE</h2>
           <div class="nh-embed">
             <iframe
               src="https://mawaqit.net/fr/w/stamu-ii-clichy-sous-bois-93390-france"
