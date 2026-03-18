@@ -246,6 +246,22 @@ function initNavToggle() {
   });
 }
 
+function initNhNavToggle() {
+  const toggle = document.querySelector(".nh-nav-toggle");
+  const navList = document.querySelector(".nh-nav-list");
+  if (!toggle || !navList) return;
+
+  toggle.addEventListener("click", () => {
+    navList.classList.toggle("open");
+  });
+
+  navList.addEventListener("click", (e) => {
+    if (e.target && e.target.tagName === "A") {
+      navList.classList.remove("open");
+    }
+  });
+}
+
 function setupSlider(slider, auto = true) {
   if (!slider) return;
 
@@ -320,7 +336,7 @@ function initHeroSliders() {
 
 function initScrollReveal() {
   const elements = document.querySelectorAll(
-    ".section, .home-gallery-card, .contact-card, .social-card, .donation-text-card, .mosquee-masonry-item"
+    ".section, .home-gallery-card, .contact-card, .social-card, .donation-text-card, .mosquee-masonry-item, .nh-section, .nh-photo-card, .nh-gallery-main, .nh-gallery-tile, .nh-embed"
   );
   if (!elements.length) return;
 
@@ -343,7 +359,7 @@ function initScrollReveal() {
 
 function initGalleryLightbox() {
   const thumbs = document.querySelectorAll(
-    ".home-gallery-grid img, .mosquee-masonry-grid img"
+    ".home-gallery-grid img, .mosquee-masonry-grid img, .nh-gallery img, .nh-gallery-thumbs img"
   );
   const lightbox = document.getElementById("gallery-lightbox");
   if (!thumbs.length || !lightbox) return;
@@ -412,6 +428,27 @@ function initGalleryLightbox() {
   });
 }
 
+function initNhGalleryStrip() {
+  const strip = document.querySelector(".nh-gallery-thumbs");
+  if (!strip) return;
+  const prev = document.querySelector(".nh-strip-arrow.prev");
+  const next = document.querySelector(".nh-strip-arrow.next");
+
+  const scrollBy = () => Math.max(240, Math.round(strip.clientWidth * 0.6));
+
+  if (prev) {
+    prev.addEventListener("click", () => {
+      strip.scrollBy({ left: -scrollBy(), behavior: "smooth" });
+    });
+  }
+
+  if (next) {
+    next.addEventListener("click", () => {
+      strip.scrollBy({ left: scrollBy(), behavior: "smooth" });
+    });
+  }
+}
+
 function initDonationPopup() {
   const btn = document.getElementById("donation-popup-btn");
   if (!btn) return;
@@ -456,9 +493,11 @@ function initYear() {
 document.addEventListener("DOMContentLoaded", () => {
   initLanguageSwitch();
   initNavToggle();
+  initNhNavToggle();
   initHeroSliders();
   initScrollReveal();
   initGalleryLightbox();
+  initNhGalleryStrip();
   initDonationPopup();
    initDonationBanner();
   initYear();

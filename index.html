@@ -30,38 +30,59 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body>
-    <div class="pattern-bg"></div>
-    <header class="main-header">
-      <div class="logo-area">
-        <img src="assets/logo.png" alt="Mosquée Bilal" class="logo-photo" />
-        <div class="logo-text">
-          <span class="logo-title" data-i18n="siteTitle">Mosquée Bilal</span>
-          <span class="logo-subtitle" data-i18n="siteSubtitle">Lumière, savoir et sérénité</span>
+  <body class="home-nh">
+    <div class="nh-bg" aria-hidden="true"></div>
+
+    <!-- TOP BAR -->
+    <div class="nh-topbar">
+      <div class="nh-container">
+        <div class="nh-topbar-left">
+        <a href="mailto:contact@mosqueebilal.fr"><i class="fa-solid fa-envelope"></i> contact@mosqueebilal.fr</a>
+        <span class="nh-topbar-sep">|</span>
+        <a href="tel:+33123456789"><i class="fa-solid fa-phone"></i> +33 1 23 45 67 89</a>
+        </div>
+        <div class="nh-topbar-right">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
         </div>
       </div>
-      <nav class="main-nav">
-        <button class="nav-toggle" aria-label="Menu">
-          <span></span><span></span><span></span>
-        </button>
-        <ul>
-          <li><a href="index.html">ACCUEIL</a></li>
-          <li><a href="mosquee.html">GALERIE</a></li>
-          <li><a href="quran.html">CORAN</a></li>
-          <li><a href="ai.html">HADITHS</a></li>
-          <li><a href="horaires.html">HORAIRES</a></li>
-          <li><a href="donation.html" class="nav-donate">DON</a></li>
-          <li><a href="location.html">LOCALISATION</a></li>
-          <li><a href="social.html">RÉSEAUX SOCIAUX</a></li>
-          <li><a href="contact.html">CONTACT</a></li>
-        </ul>
-      </nav>
-      <div class="lang-switch">
-        <button data-lang="fr" class="active">FR</button>
-        <button data-lang="ar">العربية</button>
+    </div>
+
+    <!-- HEADER -->
+    <header class="nh-header">
+      <div class="nh-header-inner">
+        <a class="nh-brand" href="index.html" aria-label="Mosquée Bilal">
+          <span class="nh-brand-mark" aria-hidden="true"></span>
+          <span class="nh-brand-text">Mosquée Bilal</span>
+        </a>
+
+        <nav class="nh-nav" aria-label="Navigation principale">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nh-nav-list">
+            <li><a href="index.html">ACCUEIL</a></li>
+            <li><a href="mosquee.html">GALERIE</a></li>
+            <li><a href="quran.html">CORAN</a></li>
+            <li><a href="ai.html">HADITHS</a></li>
+            <li><a href="horaires.html">HORAIRES</a></li>
+            <li><a href="donation.html" class="nh-nav-donate">DON</a></li>
+            <li><a href="location.html">LOCALISATION</a></li>
+            <li><a href="social.html">RÉSEAUX</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+          </ul>
+        </nav>
+
+        <div class="lang-switch nh-lang-switch">
+          <button data-lang="fr" class="active">FR</button>
+          <button data-lang="ar">AR</button>
+        </div>
       </div>
     </header>
 
+    <!-- DONATION BANNER (dismissible) -->
     <div id="donation-banner" class="donation-banner">
       <span class="donation-banner-text">
         🕌 Aidez-nous à achever la Mosquée Bilal !
@@ -70,312 +91,194 @@
       <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">✕</button>
     </div>
 
-    <main>
-      <!-- HOME HERO -->
-      <section id="home" class="section hero">
-        <div class="hero-content">
-          <h1 class="hero-title">
-            <span class="hero-calligraphy">مسجد بلال</span>
-            <span>Mosquée Bilal</span>
-          </h1>
-          <p class="hero-text">
-            Un lieu de prière, d’apprentissage et de fraternité, au service de la communauté musulmane de
-            Clichy-sous-Bois et de tous nos voisins.
-          </p>
-          <div class="hero-actions">
-            <a href="quran.html" class="btn primary">
-              LIRE LE CORAN
+    <main class="nh-main">
+      <!-- HERO -->
+      <section class="nh-hero nh-section">
+        <div class="nh-hero-bg" aria-hidden="true"></div>
+        <div class="nh-hero-overlay" aria-hidden="true"></div>
+        <div class="nh-hero-inner">
+          <h1 class="nh-hero-title" data-i18n="nhHeroTitle">Mosquée Bilal</h1>
+          <p class="nh-hero-subtitle" data-i18n="nhHeroSubtitle">Un lieu de prière, de connaissance et de fraternité</p>
+          <div class="nh-hero-actions">
+            <a href="https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" class="nh-btn nh-btn-gold">
+              FAIRE UN DON ❤️
+            </a>
+            <a href="#gallery" class="nh-btn nh-btn-outline">
+              VOIR LA GALERIE
             </a>
           </div>
-          <div class="hero-meta">
-            <div>
-              <span class="meta-label">PRIÈRE</span>
-              <span class="meta-value">Cinq prières quotidiennes &amp; Jumu'a</span>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="nh-about nh-section">
+        <div class="nh-container nh-about-grid">
+          <div class="nh-about-left">
+            <div class="nh-badge">مسجد بلال</div>
+            <h2 class="nh-title" data-i18n="nhAboutTitle">Un lieu de paix et de spiritualité</h2>
+            <p class="nh-text" data-i18n="nhAboutText">
+              La Mosquée Bilal est un espace de prière, d’apprentissage et de fraternité au cœur de Clichy-sous-Bois.
+              Nous œuvrons pour rassembler, transmettre et servir la communauté avec bienveillance.
+            </p>
+
+            <div class="nh-stats">
+              <div class="nh-stat">
+                <div class="nh-stat-value">5</div>
+                <div class="nh-stat-label" data-i18n="nhStat1">Prières/Jour</div>
+              </div>
+              <div class="nh-stat">
+                <div class="nh-stat-value">1</div>
+                <div class="nh-stat-label" data-i18n="nhStat2">Communauté</div>
+              </div>
+              <div class="nh-stat">
+                <div class="nh-stat-value">1</div>
+                <div class="nh-stat-label" data-i18n="nhStat3">Mosquée</div>
+              </div>
             </div>
-            <div>
-              <span class="meta-label">ÉDUCATION</span>
-              <span class="meta-value">Cours de Coran &amp; sciences islamiques</span>
+
+            <div class="nh-tags">
+              <span class="nh-tag" data-i18n="nhTagPrayer">Prière</span>
+              <span class="nh-tag" data-i18n="nhTagEducation">Éducation</span>
+              <span class="nh-tag" data-i18n="nhTagBrotherhood">Fraternité</span>
+            </div>
+          </div>
+
+          <div class="nh-about-right">
+            <div class="nh-photo-card">
+              <img src="assets/mosquee-2.png" alt="Mosquée Bilal" />
+              <div class="nh-photo-float">
+                <div class="nh-photo-float-title">Mosquée Bilal</div>
+                <div class="nh-photo-float-subtitle">Clichy-sous-Bois</div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="hero-mawaqit-wrap">
+      </section>
+
+      <!-- GALLERY -->
+      <section id="gallery" class="nh-gallery nh-section">
+        <div class="nh-container">
+          <div class="nh-section-head">
+            <h2 class="nh-kicker">GALERIE</h2>
+            <p class="nh-section-desc" data-i18n="nhGalleryDesc">Découvrez quelques vues de la Mosquée Bilal et suivez l’avancement du projet.</p>
+          </div>
+
+          <div class="nh-gallery-grid">
+            <div class="nh-gallery-main nh-zoomable">
+              <img src="assets/mosquee-3.png" alt="Galerie - photo principale" />
+              <div class="nh-zoom-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></div>
+            </div>
+
+            <div class="nh-gallery-quad">
+              <div class="nh-gallery-tile nh-zoomable"><img src="assets/mosquee-4.png" alt="Galerie - photo" /></div>
+              <div class="nh-gallery-tile nh-zoomable"><img src="assets/mosquee-1.png" alt="Galerie - photo" /></div>
+              <div class="nh-gallery-tile nh-zoomable"><img src="assets/0f6a9d6c634af4105d3f326479678f5af75ab3ba.jpeg" alt="Galerie - photo" /></div>
+              <div class="nh-gallery-tile nh-zoomable"><img src="assets/1.jpeg" alt="Galerie - photo" /></div>
+            </div>
+          </div>
+
+          <div class="nh-gallery-strip">
+            <button class="nh-strip-arrow prev" type="button" aria-label="Précédent">‹</button>
+            <div class="nh-gallery-thumbs">
+              <img src="assets/mosquee-1.png" alt="Vignette" />
+              <img src="assets/mosquee-2.png" alt="Vignette" />
+              <img src="assets/mosquee-3.png" alt="Vignette" />
+              <img src="assets/mosquee-4.png" alt="Vignette" />
+              <img src="assets/0f6a9d6c634af4105d3f326479678f5af75ab3ba.jpeg" alt="Vignette" />
+              <img src="assets/1.jpeg" alt="Vignette" />
+              <img src="assets/3fb9465c945bc8e2378d10fbaa941745d03276a2.jpeg" alt="Vignette" />
+              <img src="assets/4be675200f3e16cbaa1b15220c185955a12f19b5.jpeg" alt="Vignette" />
+              <img src="assets/76b2829bbaaa6baab6ec2756088350ce11fc8b43.jpg" alt="Vignette" />
+            </div>
+            <button class="nh-strip-arrow next" type="button" aria-label="Suivant">›</button>
+          </div>
+
+          <div class="nh-gallery-actions">
+            <a href="mosquee.html" class="nh-btn nh-btn-outline">VOIR LA GALERIE COMPLÈTE</a>
+            <a href="#mawaqit" class="nh-btn nh-btn-gold">HORAIRES DE PRIÈRE</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAWAQIT -->
+      <section id="mawaqit" class="nh-mawaqit nh-section">
+        <div class="nh-container">
+          <h2 class="nh-title nh-title-center">HORAIRES DE PRIÈRE</h2>
+          <div class="nh-embed">
             <iframe
               src="https://mawaqit.net/fr/w/stamu-ii-clichy-sous-bois-93390-france"
               width="100%"
-              height="230px"
+              height="500px"
               frameborder="0"
-              style="border:none; border-radius:12px;"
-            ></iframe>
-          </div>
-          <div class="hero-gallery">
-            <div class="hero-slider" id="mosque-hero-slider">
-              <div class="hero-slide active">
-                <img src="assets/mosquee-1.png" alt="Mosquée Bilal - Vue extérieure" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-2.png" alt="Mosquée Bilal - Façade" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-3.png" alt="Mosquée Bilal - Intérieur 1" />
-              </div>
-              <div class="hero-slide">
-                <img src="assets/mosquee-4.png" alt="Mosquée Bilal - Intérieur 2" />
-              </div>
-              <div class="hero-dots"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- GALLERY SECTION -->
-      <section id="gallery" class="section section-alt" style="margin-bottom: 0; padding-bottom: 0;">
-        <div class="section-header">
-          <h2 data-i18n="gallerySectionTitle">Galerie de la mosquée</h2>
-          <p data-i18n="gallerySectionText">
-            Découvrez quelques vues de la Mosquée Bilal en attendant l’achèvement complet du projet.
-          </p>
-        </div>
-        <div class="section-body">
-          <div class="home-gallery-card">
-            <div class="home-gallery-grid">
-              <figure>
-                <img src="assets/mosquee-1.png" alt="Façade de la Mosquée Bilal" />
-              </figure>
-              <figure>
-                <img src="assets/mosquee-2.png" alt="Entrée de la Mosquée Bilal" />
-              </figure>
-              <figure>
-                <img src="assets/mosquee-3.png" alt="Salle de prière en cours d’aménagement" />
-              </figure>
-              <figure>
-                <img src="assets/mosquee-4.png" alt="Intérieur décoré de la Mosquée Bilal" />
-              </figure>
-              <figure>
-                <img src="assets/0f6a9d6c634af4105d3f326479678f5af75ab3ba.jpeg" alt="Mosquée Bilal - Vue supplémentaire 1" />
-              </figure>
-              <figure>
-                <img src="assets/1.jpeg" alt="Mosquée Bilal - Vue supplémentaire 2" />
-              </figure>
-              <figure>
-                <img src="assets/3fb9465c945bc8e2378d10fbaa941745d03276a2.jpeg" alt="Mosquée Bilal - Vue supplémentaire 3" />
-              </figure>
-              <figure>
-                <img src="assets/4be675200f3e16cbaa1b15220c185955a12f19b5.jpeg" alt="Mosquée Bilal - Vue supplémentaire 4" />
-              </figure>
-              <figure>
-                <img src="assets/76b2829bbaaa6baab6ec2756088350ce11fc8b43.jpg" alt="Mosquée Bilal - Vue supplémentaire 5" />
-              </figure>
-            </div>
-            <div class="home-gallery-footer">
-              <a
-                href="mosquee.html"
-                class="btn secondary"
-                data-i18n="gallerySectionButton"
-              >
-                Voir la galerie complète
-              </a>
-            </div>
-          </div>
-        </div>
-      <!-- DONATION -->
-      <section id="donation" class="section" style="margin-bottom: 0;">
-        <div class="section-header">
-          <h2 data-i18n="donationTitle">Soutenir la mosquée</h2>
-          <p data-i18n="donationText">
-            Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.
-          </p>
-        </div>
-        <div class="section-body">
-          <div class="donation-layout">
-            <div class="donation-info">
-              <h3 data-i18n="donationHowTitle">Faire un don</h3>
-              <p data-i18n="donationHowText">
-                Vos dons sont une sadaqa jariya (aumône continue) qui profite à la communauté et à votre récompense auprès d’Allah.
-              </p>
-              <a
-                href="https://www.cotizup.com/achever-mosquee-bilal"
-                target="_blank"
-                rel="noopener"
-                style="display:inline-block;background:linear-gradient(270deg,#c9a84c,#2d6a4f,#c9a84c,#2d6a4f);background-size:400% 400%;animation:gradientMove 3s ease infinite,pulse 2s ease infinite;color:white;font-size:1.2rem;font-weight:800;padding:18px 45px;border-radius:50px;box-shadow:0 8px 30px rgba(201,168,76,0.6);text-decoration:none;letter-spacing:2px;border:none;cursor:pointer;"
-              >
-                <span data-i18n="donationButton">Faire un don pour la mosquée</span>
-                <i class="fa-solid fa-heart"></i>
-              </a>
-              <div class="social-icons" style="margin-top: 16px;">
-                <a
-                  href="https://wa.me/?text=Soutenez%20la%20Mosqu%C3%A9e%20Bilal%20https://www.cotizup.com/achever-mosquee-bilal"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label="WhatsApp"
-                  title="WhatsApp"
-                >
-                  <i class="fa-brands fa-whatsapp"></i>
-                </a>
-                <a
-                  href="https://www.facebook.com/sharer/sharer.php?u=https://www.cotizup.com/achever-mosquee-bilal"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label="Facebook"
-                  title="Facebook"
-                >
-                  <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a
-                  href="https://twitter.com/intent/tweet?text=Soutenez%20la%20Mosqu%C3%A9e%20Bilal&url=https://www.cotizup.com/achever-mosquee-bilal"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label="Twitter"
-                  title="Twitter"
-                >
-                  <i class="fa-brands fa-x-twitter"></i>
-                </a>
-              </div>
-            </div>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
-              <img src="assets/logo.png" alt="Mosquée Bilal" style="max-width:250px;width:100%;height:auto;display:block;margin:0 auto;" />
-              <div style="width:100%;max-width:380px;background:linear-gradient(145deg,#fdf8ee,#f5e6c8);border-radius:20px;padding:24px 22px;box-shadow:0 12px 32px rgba(12,124,89,0.15);border:2px solid #c9a84c;text-align:center;">
-                <p style="margin:0 0 14px 0;font-size:1.05rem;font-style:italic;line-height:1.5;color:#2d3a2e;font-weight:500;">
-                  « Celui qui construit une mosquée pour Allah, Allah lui construit une maison au Paradis. »
-                </p>
-                <p style="margin:0 0 16px 0;font-size:0.88rem;color:#5a6b5c;font-style:italic;">
-                  — Sahih Bukhari n°450 & Sahih Muslim n°533
-                </p>
-                <a href="https://sunnah.com/bukhari:450" target="_blank" rel="noopener noreferrer" style="color:#a67c32;font-weight:600;font-size:0.95rem;text-decoration:none;border-bottom:1px solid #c9a84c;transition:color 0.2s;">
-                  📖 Vérifier sur Sunnah.com →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- LOCATION -->
-      <section id="location" class="section section-alt" style="margin-top: 0;">
-        <div class="section-header">
-          <h2 data-i18n="locationTitle">Localisation de la Mosquée</h2>
-          <p data-i18n="locationText">
-            Retrouvez facilement la Mosquée Bilal et planifiez votre itinéraire.
-          </p>
-        </div>
-        <div class="section-body location-layout">
-          <div class="location-info">
-            <h3 data-i18n="locationAddressTitle">Adresse de la mosquée</h3>
-            <p class="location-address" data-i18n="locationAddress">
-              Mosquée de Clichy-sous-Bois Bilal<br />
-              Clichy-sous-Bois<br />
-              93390, Seine-Saint-Denis, France
-            </p>
-            <p data-i18n="locationNote">
-              Cliquez sur la carte pour ouvrir Google Maps, calculer votre itinéraire ou vérifier les transports en commun.
-            </p>
-          </div>
-          <div class="embed-card">
-            <h3 data-i18n="locationMapTitle">Carte Google Maps</h3>
-            <!-- Remplacez l’URL ci-dessous par l’URL Google Maps exacte de la mosquée -->
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2622.4213102711706!2d2.5519368270379954!3d48.907364821338824!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e61163aa75cdb7%3A0xe8042f13c493a8a3!2sMosqu%C3%A9e%20de%20Clichy-sous-Bois%20Bilal!5e0!3m2!1sfr!2sfr!4v1773427869266!5m2!1sfr!2sfr"
+              style="border:none;"
               loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Mosquée Bilal - Localisation"
+              title="Horaires de prière - Mawaqit"
             ></iframe>
           </div>
         </div>
       </section>
 
-      <!-- CONTACT & SOCIAL -->
-      <section id="contact" class="section">
-        <div class="section-header">
-          <h2 data-i18n="contactTitle">Contact & Réseaux sociaux</h2>
-          <p data-i18n="contactText">
-            Contactez la mosquée pour toute question ou suivez-nous sur les réseaux sociaux.
-          </p>
-        </div>
-        <div class="section-body contact-layout">
-          <div class="contact-card">
-            <h3 data-i18n="contactInfoTitle">Informations de contact</h3>
-            <ul class="contact-list">
-              <li>
-                <i class="fa-solid fa-envelope"></i>
-                <a href="mailto:contact@mosqueebilal.fr">contact@mosqueebilal.fr</a>
-              </li>
-              <li>
-                <i class="fa-solid fa-phone"></i>
-                <a href="tel:+33123456789">+33 1 23 45 67 89</a>
-              </li>
-              <li>
-                <i class="fa-solid fa-location-dot"></i>
-                <span data-i18n="contactAddress">
-                  Mosquée de Clichy-sous-Bois Bilal, 93390 Clichy-sous-Bois
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div class="social-card">
-            <h3 data-i18n="socialTitle">Restez connectés</h3>
-            <p data-i18n="socialText">
-              Suivez la Mosquée Bilal pour les annonces, rappels spirituels et événements.
-            </p>
-            <div class="social-icons">
-              <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-                <i class="fa-brands fa-instagram"></i>
-              </a>
-              <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
-                <i class="fa-brands fa-facebook"></i>
-              </a>
-              <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-                <i class="fa-brands fa-tiktok"></i>
-              </a>
-              <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
-                <i class="fa-brands fa-youtube"></i>
-              </a>
+      <!-- DONATE -->
+      <section class="nh-donate nh-section">
+        <div class="nh-container nh-donate-inner">
+          <h2 class="nh-title nh-title-center">Soutenez la Mosquée Bilal</h2>
+          <div class="nh-donate-actions">
+            <a href="https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" class="nh-btn nh-btn-gold">
+              FAIRE UN DON ❤️
+            </a>
+            <div class="nh-share">
+              <a class="nh-share-btn wa" href="https://wa.me/?text=Soutenez%20la%20Mosqu%C3%A9e%20Bilal%20https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+              <a class="nh-share-btn fb" href="https://www.facebook.com/sharer/sharer.php?u=https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+              <a class="nh-share-btn tw" href="https://twitter.com/intent/tweet?text=Soutenez%20la%20Mosqu%C3%A9e%20Bilal&url=https://www.cotizup.com/achever-mosquee-bilal" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- HOME SOCIAL STRIP -->
-      <section class="section home-social-section" style="margin-bottom: 0;">
-        <div class="section-header">
-          <h2 data-i18n="homeSocialTitle">Rejoignez-nous sur les réseaux</h2>
-        </div>
-        <div class="home-social-icons">
-          <a href="#" class="home-social-icon instagram" aria-label="Instagram">
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a href="#" class="home-social-icon facebook" aria-label="Facebook">
-            <i class="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="#" class="home-social-icon tiktok" aria-label="TikTok">
-            <i class="fa-brands fa-tiktok"></i>
-          </a>
-          <a href="#" class="home-social-icon youtube" aria-label="YouTube">
-            <i class="fa-brands fa-youtube"></i>
-          </a>
+      <!-- SOCIALS -->
+      <section class="nh-social nh-section" id="socials">
+        <div class="nh-container">
+          <h2 class="nh-title nh-title-center">REJOIGNEZ-NOUS SUR LES RÉSEAUX</h2>
+          <div class="nh-social-icons">
+            <a class="nh-social-icon ig" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a class="nh-social-icon fb" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a class="nh-social-icon tk" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a class="nh-social-icon yt" href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          </div>
         </div>
       </section>
 
+      <!-- LIGHTBOX -->
       <div class="gallery-lightbox" id="gallery-lightbox" aria-hidden="true">
         <div class="gallery-lightbox-backdrop"></div>
         <div class="gallery-lightbox-inner">
-          <button
-            class="gallery-lightbox-close"
-            type="button"
-            aria-label="Fermer l’image"
-          >
-            ✕
-          </button>
+          <button class="gallery-lightbox-close" type="button" aria-label="Fermer l’image">✕</button>
+          <button class="gallery-lightbox-arrow gallery-lightbox-prev" type="button" aria-label="Image précédente">←</button>
+          <button class="gallery-lightbox-arrow gallery-lightbox-next" type="button" aria-label="Image suivante">→</button>
           <img src="" alt="" />
         </div>
       </div>
     </main>
 
-    <footer class="main-footer">
-      <p>
-        <span data-i18n="footerText">
-          &copy; <span id="year"></span> Mosquée Bilal. Tous droits réservés.
-        </span>
-      </p>
+    <footer class="nh-footer">
+      <div class="nh-container nh-footer-grid">
+        <div class="nh-footer-brand">
+          <div class="nh-footer-logo">Mosquée Bilal</div>
+          <div class="nh-footer-muted">Clichy-sous-Bois</div>
+        </div>
+        <div class="nh-footer-links">
+          <a href="index.html">Accueil</a>
+          <a href="mosquee.html">Galerie</a>
+          <a href="horaires.html">Horaires</a>
+          <a href="donation.html">Don</a>
+          <a href="location.html">Localisation</a>
+          <a href="social.html">Réseaux</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="nh-footer-copy">
+          © <span id="year"></span> Mosquée Bilal
+        </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
