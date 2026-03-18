@@ -14,11 +14,19 @@ const translations = {
     heroTitle: "Mosquée Bilal",
     heroText:
       "Un lieu de prière, de connaissance et de fraternité, au service de la communauté musulmane et de tous nos voisins.",
+    heroSubtitle: "Un lieu de prière, de connaissance et de fraternité",
     heroBtnQuran: "Lire le Coran",
     metaPrayer: "Prière",
     metaPrayerDesc: "Cinq prières quotidiennes & Jumu'a",
     metaEducation: "Éducation",
     metaEducationDesc: "Cours de Coran & sciences islamiques",
+    aboutTitle: "Un lieu de paix et de spiritualité",
+    aboutText:
+      "La Mosquée Bilal est un espace de prière, d’apprentissage et de fraternité au cœur de Clichy-sous-Bois. Nous œuvrons pour rassembler, transmettre et servir la communauté avec bienveillance.",
+    statPrayerLabel: "Prières/Jour",
+    statCommunityLabel: "Communauté",
+    statMosqueLabel: "Mosquée",
+    tagBrotherhood: "Fraternité",
     heroCardTitle: "Horaires de prière",
     heroCardText:
       "Les horaires sont automatiquement fournis par Mawakit pour rester toujours à jour.",
@@ -26,7 +34,11 @@ const translations = {
     gallerySectionText:
       "Découvrez quelques vues de la Mosquée Bilal en attendant l’achèvement complet du projet.",
     gallerySectionButton: "Voir la galerie complète",
+    mosqueePageTitle: "Mosquée Bilal — Vue en grand",
+    mosqueePageSubtitle:
+      "Parcourez les photos de la Mosquée Bilal en plein écran.",
     homeSocialTitle: "Rejoignez-nous sur les réseaux",
+    socialPageHeader: "RÉSEAUX SOCIAUX",
     donationTitle: "Soutenir la mosquée",
     donationText:
       "Participez aux frais de fonctionnement, aux projets éducatifs et aux actions sociales de la Mosquée Bilal.",
@@ -42,6 +54,31 @@ const translations = {
     donationHeroShareText:
       "Mobilisez du monde ! Votre soutien passe aussi par le partage.",
     donationHeroButton: "Faire un don ❤️",
+    donationPageTitle: "Ensemble pour achever la Mosquée Bilal",
+    donationParagraph1:
+      "As-salâmu 'alaykum wa rahmatullâhi wa barakâtuh,<br />La construction de la Mosquée Bilal à Clichy-sous-Bois touche bientôt à son aboutissement. Ce projet est essentiel pour notre communauté : il offrira un lieu de prière, d'apprentissage, d'éducation pour nos enfants et un espace de rassemblement bénéfique pour les générations présentes et futures, in shâ Allah.",
+    donationParagraph2:
+      "Aujourd'hui, il reste les dernières étapes du chantier à finaliser : aménagements intérieurs, équipements et finitions nécessaires pour pouvoir accueillir les fidèles dans les meilleures conditions.",
+    donationParagraph3:
+      "Nous faisons donc appel à votre générosité afin de participer à l'achèvement de cette maison d'Allah. Chaque contribution, petite ou grande, est précieuse et permettra de faire avancer ce projet.",
+    donationHadith:
+      "Le Prophète ﷺ a dit :<br />« Celui qui construit une mosquée pour Allah, Allah lui construit une maison au Paradis. »",
+    donationParagraph4:
+      "Votre don est une sadaqa jariya (aumône continue) dont la récompense se poursuivra tant que cette mosquée servira à la prière, à l'apprentissage et au bien.",
+    donationParagraph5:
+      "🤲 Participez selon vos moyens et partagez cette cagnotte autour de vous.",
+    donationTaxTitle: "Réduction d'impôt",
+    donationTaxParagraph1:
+      "Vous bénéficiez d'une réduction d'impôt égale à 66 % du total des versements, dans la limite de 20 % du revenu imposable de votre foyer.",
+    donationTaxParagraph2:
+      "Lors de votre déclaration de revenus, indiquez le montant des dons en case 7UF pour les versements faits à des organismes situés en France.",
+    donationTaxSourceLabel: "Source :",
+    donationParagraph6:
+      "📩 Pour recevoir votre reçu fiscal, écrivez simplement \"reçu\" ou \"impôt\" en commentaire lors de votre don. Nous vous recontacterons ensuite par mail.",
+    donationParagraph7:
+      "Vous pouvez également vous rapprocher directement de la direction de l'association pour toute information complémentaire.",
+    donationParagraph8:
+      "Qu'Allah récompense votre générosité, accepte vos dons et facilite l'achèvement de la Mosquée Bilal.<br />BarakAllahu fikoum. 🤲",
     donationVerse:
       "« L’exemple de ceux qui dépensent leurs biens dans le sentier d’Allah est semblable à un grain qui produit sept épis, dans chaque épi cent grains. » (Coran 2:261)",
     locationTitle: "Localisation de la Mosquée",
@@ -58,7 +95,7 @@ const translations = {
       "Contactez la mosquée pour toute question ou suivez-nous sur les réseaux sociaux.",
     contactInfoTitle: "Informations de contact",
     contactAddress:
-      "Mosquée de Clichy-sous-Bois Bilal, 93390 Clichy-sous-Bois",
+      "Mosquée de Clichy-sous-Bois Bilal, Allée Romain Rolland, 93390 Clichy-sous-Bois",
     socialTitle: "Restez connectés",
     socialText:
       "Suivez la Mosquée Bilal pour les annonces, rappels spirituels et événements.",
@@ -82,7 +119,9 @@ const translations = {
       "Khutbas, cours et conférences en vidéo, à revoir librement.",
     socialYoutubeStats: "3 210 abonnés",
     socialFollowLabel: "Suivre",
-    footerText: "© {year} Mosquée Bilal. Tous droits réservés.",
+    footerBrand: "MOSQUÉE BILAL",
+    footerLocation: "Clichy-sous-Bois",
+    footerText: "© {year} Mosquée Bilal",
     viewPrayerTimes: "Voir les horaires de prière",
     dateHijri: "Date islamique",
     dateGregorian: "Date grégorienne",
@@ -108,11 +147,19 @@ const translations = {
     heroTitle: "مسجد بلال",
     heroText:
       "بيت للصلاة والعلم والأخوّة، في خدمة الجالية المسلمة وجيراننا جميعًا.",
+    heroSubtitle: "مكانٌ للصلاة والمعرفة والأخوّة",
     heroBtnQuran: "قراءة القرآن",
     metaPrayer: "الصلاة",
     metaPrayerDesc: "الصلوات الخمس وصلاة الجمعة",
     metaEducation: "التعليم",
     metaEducationDesc: "دروس القرآن والعلوم الشرعية",
+    aboutTitle: "مكانٌ للسلام والروحانيّة",
+    aboutText:
+      "مسجد بلال هو مكانٌ للصلاة والتعلّم والأخوّة في قلب كليشي-سوس-بوا. نعمل على جمع الناس ونقل العلم وخدمة مجتمعنا برحمةٍ ومحبة.",
+    statPrayerLabel: "الصلوات/اليوم",
+    statCommunityLabel: "الجالية",
+    statMosqueLabel: "المسجد",
+    tagBrotherhood: "الأخوّة",
     heroCardTitle: "مواقيت الصلاة",
     heroCardText:
       "يتم جلب المواقيت تلقائيًا من موقع مواقيت لضمان حداثة المعلومات.",
@@ -120,7 +167,11 @@ const translations = {
     gallerySectionText:
       "تعرّف على بعض الصور لمسجد بلال في انتظار اكتمال المشروع بإذن الله.",
     gallerySectionButton: "مشاهدة المعرض الكامل",
+    mosqueePageTitle: "مسجد بلال — عرض كبير",
+    mosqueePageSubtitle:
+      "استعرضوا صور مسجد بلال في وضع ملء الشاشة.",
     homeSocialTitle: "انضموا إلينا على الشبكات",
+    socialPageHeader: "وسائل التواصل الاجتماعي",
     donationTitle: "دعم المسجد",
     donationText:
       "ساهم في مصاريف المسجد ومشاريعه التعليمية وأنشطته الاجتماعية.",
@@ -136,6 +187,31 @@ const translations = {
     donationHeroShareText:
       "حرّكوا القلوب! دعمكم يكون أيضًا بنشر رابط التبرع.",
     donationHeroButton: "التبرع ❤️",
+    donationPageTitle: "معًا لإتمام مسجد بلال",
+    donationParagraph1:
+      "السلام عليكم ورحمة الله وبركاته,<br />إن بناء مسجد بلال في كليشي-سوس-بوا يوشك على الاكتمال. هذا المشروع بالغ الأهمية لمجتمعنا: فسيقدّم مكانًا للصلاة والتعلّم والتربية لأبنائنا، ومكانًا يجمع العائلات والأجيال الحالية والقادمة، إن شاء الله.",
+    donationParagraph2:
+      "واليوم، لا تزال آخر مراحل الورشة لإتمامها: تجهيزات داخلية، ومعدات وتشطيبات لازمة حتى نتمكّن من استقبال المصلّين في أفضل الظروف.",
+    donationParagraph3:
+      "لذا نناشدكم المساهمة في إتمام هذا البيت لله تعالى. فكل مساهمة، مهما كانت صغيرة أو كبيرة، ثمينة وستسهم في دفع هذا المشروع إلى الأمام.",
+    donationHadith:
+      "قال النبي ﷺ: <br />« من بنى مسجداً لله، بنى الله له بيتاً في الجنة. »",
+    donationParagraph4:
+      "إن تبرّعكم هو صدقة جارية (عملٌ دائم) تستمر ثمرتها ما دامت هذه المساجد تُقام فيها الصلاة، ويُعلّم فيها الخير، ويُؤدّى فيها البرّ.",
+    donationParagraph5:
+      "🤲 شاركوا بما تستطيعون ووزّعوا هذه الحملة من حولكم.",
+    donationTaxTitle: "تخفيض ضريبي",
+    donationTaxParagraph1:
+      "تحصلون على تخفيض ضريبي يعادل 66% من إجمالي التبرعات، ضمن حد 20% من الدخل الخاضع للضريبة لعائلتكم.",
+    donationTaxParagraph2:
+      "عند تقديم إقرار الدخل، حدّدوا مبلغ التبرعات في خانة 7UF للتبرعات الممنوحة للهيئات الموجودة في فرنسا.",
+    donationTaxSourceLabel: "المصدر :",
+    donationParagraph6:
+      "📩 للحصول على إيصالكم الضريبي، اكتبوا ببساطة \"reçu\" أو \"impôt\" في خانة التعليق عند التبرّع. وسنعاود التواصل معكم عبر البريد الإلكتروني لاحقاً.",
+    donationParagraph7:
+      "يمكنكم أيضًا التواصل مباشرة مع إدارة الجمعية لأي معلومات إضافية.",
+    donationParagraph8:
+      "ليجزِكم الله خيرًا على سخاءكم، ويقبل تبرعاتكم، ويسهّل إتمام مسجد بلال.<br />بارك الله فيكم. 🤲",
     donationVerse:
       "﴿مَثَلُ الَّذِينَ يُنفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنبَتَتْ سَبْعَ سَنَابِلَ فِي كُلِّ سُنبُلَةٍ مِّائَةُ حَبَّةٍ﴾ (البقرة: ٢٦١)",
     locationTitle: "موقع المسجد",
@@ -152,7 +228,7 @@ const translations = {
       "تواصل مع إدارة المسجد أو تابعنا على الشبكات الاجتماعية.",
     contactInfoTitle: "بيانات الاتصال",
     contactAddress:
-      "مسجد بلال، شارع مثال ١٢٣، ٧٥٠٠٠ المدينة، فرنسا",
+      "مسجد بلال، شارع رومان رولان، ٩٣٣٩٠ كليشي-سوس-بوا، فرنسا",
     socialTitle: "تابعونا",
     socialText:
       "تابعوا مسجد بلال لمتابعة الإعلانات والتذكير بالإيمانيات والأنشطة.",
@@ -176,7 +252,9 @@ const translations = {
       "خطب الجمعة، دروس ومحاضرات مصورة يمكنكم مشاهدتها في أي وقت.",
     socialYoutubeStats: "٣٬٢١٠ مشتركين",
     socialFollowLabel: "متابعة",
-    footerText: "© {year} مسجد بلال. جميع الحقوق محفوظة.",
+    footerBrand: "مسجد بلال",
+    footerLocation: "كليشي-سوس-بوا",
+    footerText: "© {year} مسجد بلال",
   },
 };
 
@@ -192,10 +270,18 @@ function applyTranslations(lang) {
     .forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (dict[key]) {
-        el.textContent = dict[key].replace(
+        const translated = dict[key].replace(
           "{year}",
           new Date().getFullYear().toString()
         );
+
+        // Certains contenus (ex: texte donation avec <br />) nécessitent un rendu HTML.
+        // On se base sur la présence de balises côté traduction.
+        if (translated.includes("<")) {
+          el.innerHTML = translated;
+        } else {
+          el.textContent = translated;
+        }
       }
     });
 
@@ -225,7 +311,11 @@ function initLanguageSwitch() {
     .querySelectorAll(".lang-switch button")
     .forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyTranslations(btn.dataset.lang);
+        const lang = btn.dataset.lang;
+        try {
+          localStorage.setItem("mosqueeLang", lang);
+        } catch (e) {}
+        applyTranslations(lang);
       });
     });
 }
@@ -491,6 +581,13 @@ function initYear() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  let savedLang = "fr";
+  try {
+    const v = localStorage.getItem("mosqueeLang");
+    if (v === "ar" || v === "fr") savedLang = v;
+  } catch (e) {}
+
+  applyTranslations(savedLang);
   initLanguageSwitch();
   initNavToggle();
   initNhNavToggle();
@@ -501,6 +598,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initDonationPopup();
    initDonationBanner();
   initYear();
-  applyTranslations("fr");
 });
 

@@ -188,6 +188,15 @@ body.nh-site .pattern-bg {
   margin: 0;
 }
 
+[dir="rtl"] .nh-nav-list {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nh-nav-list a::after {
+  left: auto;
+  right: 0;
+}
+
 .nh-nav-list a {
   color: rgba(255, 255, 255, 0.82);
   text-decoration: none;
@@ -829,6 +838,11 @@ body.nh-site .nh-lang-switch button.active {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
+  }
+
+  [dir="rtl"] .nh-nav-list {
+    flex-direction: column-reverse;
+    align-items: flex-end;
   }
 
   .nh-section {
