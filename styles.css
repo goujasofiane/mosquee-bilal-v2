@@ -629,6 +629,12 @@ body.nh-site .nh-lang-switch button.active {
   background: rgba(255, 255, 255, 0.02);
 }
 
+/* Widget Mawaqit sur la page Accueil */
+#mawaqit iframe {
+  width: 100%;
+  min-height: 500px;
+}
+
 .nh-donate {
   background: linear-gradient(180deg, rgba(10, 10, 10, 1), rgba(7, 7, 7, 1));
   border-top: 1px solid rgba(201, 168, 76, 0.12);
