@@ -149,12 +149,6 @@ body.nh-site .pattern-bg {
   object-fit: contain;
   display: block;
   background: transparent;
-  mix-blend-mode: multiply;
-}
-
-.main-header .logo img {
-  mix-blend-mode: multiply;
-  background: transparent;
 }
 
 .nh-brand-text {
