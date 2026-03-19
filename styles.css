@@ -2752,6 +2752,37 @@ body.dark-theme .conversation-item.active {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
 }
 
+/* Contact page: custom icon badges */
+.contact-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #c9a84c;
+  color: #0a0a0a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+}
+
+.contact-icon-badge svg {
+  width: 22px;
+  height: 22px;
+}
+
+.contact-icon-badge.contact-icon-whatsapp {
+  background: #25d366;
+}
+
+.contact-icon-badge.contact-icon-whatsapp img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
 .contact-list a {
   color: rgba(255, 255, 255, 0.92);
   text-decoration: none;
