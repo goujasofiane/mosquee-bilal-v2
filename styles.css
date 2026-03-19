@@ -3466,44 +3466,48 @@ body.nh-site.social-page-v2 .social-follow-btn {
   }
 }
 
-/* Simple social icons */
+/* Simple social icons with real logos */
 .social-icon-circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 18px;
   text-decoration: none;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
 }
 .social-icon-circle:hover {
   transform: scale(1.15);
-  box-shadow: 0 4px 15px rgba(201, 168, 76, 0.4);
+  filter: brightness(1.2);
 }
-.social-icon-circle.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.social-icon-circle.fb { background: #1877f2; }
-.social-icon-circle.tk { background: #000; }
-.social-icon-circle.yt { background: #ff0000; }
+.social-icon-circle img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
 
-.nh-topbar-right .social-icon-circle {
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
+.nh-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nh-topbar-right .social-icon-circle img {
+  width: 22px;
+  height: 22px;
 }
 
 .nh-social-icons {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
+.nh-social-icons .social-icon-circle img {
+  width: 40px;
+  height: 40px;
+}
 
-.social-icon-large .social-icon-circle {
+.social-icon-large img {
   width: 60px;
   height: 60px;
-  font-size: 28px;
+  object-fit: contain;
 }
 
