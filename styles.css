@@ -3055,6 +3055,14 @@ body.nh-site.social-page-v2 .social-icon-large {
   background: #ff0000;
 }
 
+.social-card-lg.whatsapp .social-icon-large {
+  background: #25d366;
+}
+
+.social-card-lg.twitch .social-icon-large {
+  background: #9146ff;
+}
+
 .social-card-lg h3 {
   margin: 0;
   font-size: 1.05rem;
