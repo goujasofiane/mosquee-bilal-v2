@@ -13,8 +13,12 @@
       referrerpolicy="no-referrer"
     />
   </head>
-  <body class="nh-site">
+  <body class="nh-site nh-toggle-header-page">
     <div class="nh-bg" aria-hidden="true"></div>
+
+    <button class="toggle-header-btn" type="button" aria-label="Afficher / masquer le header">
+      ▲
+    </button>
 
     <div class="nh-topbar">
       <div class="nh-container">
@@ -86,6 +90,60 @@
         </div>
       </div>
     </footer>
+
+    <script>
+      const toggleBtn = document.querySelector('.toggle-header-btn');
+      const topBar =
+        document.querySelector('.top-bar') || document.querySelector('.nh-topbar');
+      const mainHeader =
+        document.querySelector('.main-header') || document.querySelector('.nh-header');
+      const iframe =
+        document.querySelector('main iframe') ||
+        document.querySelector('iframe');
+      const footer = document.querySelector('footer');
+
+      let headerVisible = true;
+
+      function computeAndSetIframeHeight() {
+        if (!iframe) return;
+
+        const vh = window.innerHeight;
+        const footerH = footer ? footer.getBoundingClientRect().height : 0;
+        const topH = headerVisible && topBar ? topBar.getBoundingClientRect().height : 0;
+        const headerH =
+          headerVisible && mainHeader ? mainHeader.getBoundingClientRect().height : 0;
+
+        // Hauteur disponible pour l'iframe (évite que l'iframe dépasse sous le footer)
+        const h = Math.max(0, vh - footerH - topH - headerH);
+        iframe.style.height = h + 'px';
+      }
+
+      function sync() {
+        if (!toggleBtn) return;
+        toggleBtn.innerHTML = headerVisible ? '▲' : '▼';
+
+        // Clone la logique "disparaît/ réapparaît" via une classe CSS animée.
+        document.body.classList.toggle('nh-header-hidden', !headerVisible);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(computeAndSetIframeHeight);
+        });
+      }
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          headerVisible = !headerVisible;
+          sync();
+        });
+      }
+
+      window.addEventListener('resize', computeAndSetIframeHeight);
+      document.addEventListener('DOMContentLoaded', () => {
+        headerVisible = true;
+        document.body.classList.remove('nh-header-hidden');
+        sync();
+      });
+    </script>
 
     <script src="script.js"></script>
   </body>

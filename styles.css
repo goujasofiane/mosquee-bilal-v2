@@ -3535,3 +3535,41 @@ body.nh-site.social-page-v2 .social-follow-btn {
   object-fit: cover;
 }
 
+/* Toggle header (pages AI / Quran) */
+.toggle-header-btn {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: rgba(201, 168, 76, 0.8);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.toggle-header-btn:hover {
+  background: #c9a84c;
+}
+
+.nh-toggle-header-page .nh-topbar,
+.nh-toggle-header-page .nh-header {
+  transition: opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.nh-toggle-header-page.nh-header-hidden .nh-topbar,
+.nh-toggle-header-page.nh-header-hidden .nh-header {
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-10px);
+}
+
