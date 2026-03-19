@@ -3063,6 +3063,10 @@ body.nh-site.social-page-v2 .social-icon-large {
   background: #9146ff;
 }
 
+.social-card-lg.x .social-icon-large {
+  background: #ffffff;
+}
+
 .social-card-lg h3 {
   margin: 0;
   font-size: 1.05rem;
@@ -3506,6 +3510,15 @@ body.nh-site.social-page-v2 .social-follow-btn {
   object-fit: contain;
 }
 
+/* X: logo noir => fond blanc rond */
+.social-icon-circle[aria-label="X"] {
+  background: #ffffff;
+  padding: 6px;
+}
+.social-icon-circle[aria-label="X"] img {
+  object-fit: contain;
+}
+
 .nh-topbar-right {
   display: flex;
   align-items: center;
@@ -3554,6 +3567,12 @@ body.nh-site.social-page-v2 .social-follow-btn {
 
 .social-icon-large img[alt="Twitch"] {
   background: #9146ff;
+  padding: 12px;
+  object-fit: contain;
+}
+
+.social-icon-large img[alt="X"] {
+  background: #ffffff;
   padding: 12px;
   object-fit: contain;
 }
