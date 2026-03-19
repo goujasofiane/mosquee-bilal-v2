@@ -3473,16 +3473,20 @@ body.nh-site.social-page-v2 .social-follow-btn {
   justify-content: center;
   text-decoration: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden; /* clip pour rendre le logo vraiment rond */
 }
 .social-icon-circle:hover {
   transform: scale(1.18);
   box-shadow: 0 4px 18px rgba(201, 168, 76, 0.35);
 }
 .social-icon-circle img {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 0; /* le clipping est géré par le conteneur */
+  object-fit: cover; /* évite que ça reste carré */
 }
 
 .nh-topbar-right {
@@ -3490,9 +3494,13 @@ body.nh-site.social-page-v2 .social-follow-btn {
   align-items: center;
   gap: 10px;
 }
+.nh-topbar-right .social-icon-circle {
+  width: 28px;
+  height: 28px;
+}
 .nh-topbar-right .social-icon-circle img {
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
 }
 
 .nh-social-icons {
@@ -3501,15 +3509,29 @@ body.nh-site.social-page-v2 .social-follow-btn {
   justify-content: center;
   flex-wrap: wrap;
 }
-.nh-social-icons .social-icon-circle img {
+.nh-social-icons .social-icon-circle {
   width: 44px;
   height: 44px;
 }
+.nh-social-icons .social-icon-circle img {
+  width: 100%;
+  height: 100%;
+}
 
-.social-icon-large img {
+/* Cartes réseaux sociaux */
+.social-icon-large {
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.social-icon-large img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
   object-fit: cover;
 }
 
