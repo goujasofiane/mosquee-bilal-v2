@@ -2727,17 +2727,28 @@ body.dark-theme .conversation-item.active {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: rgba(201, 168, 76, 0.12);
+  background: #c9a84c;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #c9a84c;
+  color: #0a0a0a;
+  font-weight: 900;
+  flex-shrink: 0;
 }
 
 .contact-page .contact-list i {
   width: 44px;
   height: 44px;
   font-size: 1.15rem;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
+}
+
+.contact-list li img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
 }
 
