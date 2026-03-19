@@ -3497,6 +3497,15 @@ body.nh-site.social-page-v2 .social-follow-btn {
   object-fit: cover; /* évite que ça reste carré */
 }
 
+/* Twitch: logo blanc => fond violet rond pour bonne visibilité */
+.social-icon-circle[aria-label="Twitch"] {
+  background: #9146ff;
+  padding: 6px;
+}
+.social-icon-circle[aria-label="Twitch"] img {
+  object-fit: contain;
+}
+
 .nh-topbar-right {
   display: flex;
   align-items: center;
@@ -3541,6 +3550,12 @@ body.nh-site.social-page-v2 .social-follow-btn {
   height: 100%;
   border-radius: 0;
   object-fit: cover;
+}
+
+.social-icon-large img[alt="Twitch"] {
+  background: #9146ff;
+  padding: 12px;
+  object-fit: contain;
 }
 
 /* Toggle header (pages AI / Quran) */
