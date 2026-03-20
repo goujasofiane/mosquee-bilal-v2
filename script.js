@@ -95,7 +95,7 @@ const translations = {
     locationNote:
       "Cliquez sur la carte pour ouvrir Google Maps, calculer votre itinéraire ou vérifier les transports en commun.",
     locationMapTitle: "Carte Google Maps",
-    contactTitle: "Contact & Réseaux sociaux",
+    contactTitle: "CONTACT",
     contactText:
       "Contactez la mosquée pour toute question ou suivez-nous sur les réseaux sociaux.",
     contactInfoTitle: "Informations de contact",
@@ -233,7 +233,7 @@ const translations = {
     locationNote:
       "اضغط على الخريطة لفتح Google Maps، وحساب مسارك أو الاطلاع على المواصلات.",
     locationMapTitle: "خريطة Google Maps",
-    contactTitle: "الاتصال ووسائل التواصل",
+    contactTitle: "الاتصال",
     contactText:
       "تواصل مع إدارة المسجد أو تابعنا على الشبكات الاجتماعية.",
     contactInfoTitle: "بيانات الاتصال",

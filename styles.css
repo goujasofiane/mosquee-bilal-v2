@@ -2875,6 +2875,31 @@ body.dark-theme .conversation-item.active {
     padding: 26px;
   }
 
+  .contact-page .contact-list {
+    gap: 8px;
+  }
+
+  .contact-page .contact-list li {
+    margin: 14px 0;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .contact-icon-badge {
+    width: 38px;
+    height: 38px;
+  }
+
+  .contact-icon-badge svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .contact-list li img {
+    width: 38px;
+    height: 38px;
+  }
+
   .contact-form {
     padding: 22px;
   }
