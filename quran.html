@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr" dir="ltr">
   <head>
     <meta charset="UTF-8" />
@@ -17,7 +17,7 @@
     <div class="nh-bg" aria-hidden="true"></div>
 
     <button class="toggle-header-btn" type="button" aria-label="Afficher / masquer le header">
-      â–²
+      &#9650;
     </button>
 
     <div class="nh-topbar">
@@ -120,7 +120,7 @@
 
       function sync() {
         if (!toggleBtn) return;
-        toggleBtn.innerHTML = headerVisible ? 'â–²' : 'â–¼';
+        toggleBtn.innerHTML = headerVisible ? '&#9650;' : '&#9660;';
 
         // Clone la logique "disparaÃ®t/ rÃ©apparaÃ®t" via une classe CSS animÃ©e.
         document.body.classList.toggle('nh-header-hidden', !headerVisible);
