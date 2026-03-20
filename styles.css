@@ -2875,6 +2875,23 @@ body.dark-theme .conversation-item.active {
     padding: 26px;
   }
 
+  /* Mobile: éviter le centrage vertical (style inline actuel) */
+  .contact-page-section,
+  .contact-page-section * {
+    box-sizing: border-box;
+  }
+
+  .contact-page-section {
+    display: block !important;
+    min-height: auto !important;
+    padding: 22px 0 40px 0 !important;
+  }
+
+  .contact-page-wrap {
+    width: 100%;
+    align-items: center;
+  }
+
   .contact-page .contact-list {
     gap: 8px;
   }
