@@ -677,7 +677,11 @@ body.nh-site .nh-lang-switch button.active {
 
 .nh-share-btn.wa { background: #25d366; }
 .nh-share-btn.fb { background: #1877f2; }
-.nh-share-btn.tw { background: #111111; }
+.nh-share-btn.tw { background: #000000; }
+
+.nh-share-btn.tw img {
+  filter: brightness(0) invert(1);
+}
 
 .nh-social {
   background: #0a0a0a;
@@ -1352,7 +1356,11 @@ main {
 }
 
 .donation-share-twitter {
-  background: #111;
+  background: #000000;
+}
+
+.donation-share-twitter img {
+  filter: brightness(0) invert(1);
 }
 
 .donation-verse {
