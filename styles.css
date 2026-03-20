@@ -1542,6 +1542,7 @@ body.mosquee-page {
   justify-content: center;
   opacity: 0;
   transition: opacity 0.3s ease;
+  pointer-events: none; /* laisse le clic passer vers l'image (lightbox) */
 }
 
 .mosquee-masonry-zoom-icon {
@@ -2339,20 +2340,26 @@ body.dark-theme .conversation-item.active {
 .gallery-lightbox {
   position: fixed;
   inset: 0;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .gallery-lightbox.open {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .gallery-lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.92);
+  background: rgba(0, 0, 0, 0.95);
 }
 
 .gallery-lightbox-inner {
@@ -2364,6 +2371,9 @@ body.dark-theme .conversation-item.active {
   background: rgba(15, 15, 15, 0.98);
   box-shadow: 0 32px 90px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(200, 161, 91, 0.25);
   border: 1px solid rgba(200, 161, 91, 0.35);
+}
+
+.gallery-lightbox.open .gallery-lightbox-inner {
   animation: lightboxZoom 0.3s ease-out;
 }
 
