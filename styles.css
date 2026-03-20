@@ -3717,3 +3717,36 @@ body.nh-site.social-page-v2 .social-follow-btn {
   transform: translateY(-10px);
 }
 
+/* Mobile fixes (footer overlap + toggle button position) */
+@media (max-width: 768px) {
+  footer > div {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 10px !important;
+  }
+
+  footer div[style*="position:absolute"] {
+    position: static !important;
+    transform: none !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 0 auto !important;
+  }
+
+  footer .logo-brand,
+  footer div {
+    position: static !important;
+    transform: none !important;
+    margin: 0 auto !important;
+  }
+
+  .nh-toggle-header-page .toggle-header-btn {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+  }
+}
+
