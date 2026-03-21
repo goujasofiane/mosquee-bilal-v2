@@ -943,6 +943,7 @@ body.nh-site .donation-banner {
   font-size: 1.1rem;
   cursor: pointer;
   padding: 0 4px;
+  flex-shrink: 0;
 }
 
 
@@ -3693,6 +3694,47 @@ body.nh-site.social-page-v2 .social-follow-btn {
 @media (max-width: 768px) {
   .nh-topbar {
     display: none !important;
+  }
+
+  .donation-banner {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 40px 12px 12px;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    gap: 10px;
+    line-height: 1.35;
+  }
+
+  .donation-banner-text {
+    flex: 1 1 auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .donation-banner-button {
+    margin-left: 0;
+    align-self: center;
+    width: 100%;
+    max-width: min(100%, 320px);
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.25;
+    box-sizing: border-box;
+  }
+
+  .donation-banner-close {
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    padding: 6px;
+    line-height: 1;
   }
 
   /* Coran / Hadiths : header principal + menu burger (top bar masquée sur mobile) */
