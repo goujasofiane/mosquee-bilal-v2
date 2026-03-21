@@ -3637,14 +3637,12 @@ body.nh-site.social-page-v2 .social-follow-btn {
   background: #c9a84c;
 }
 
-.nh-toggle-header-page .nh-topbar,
 .nh-toggle-header-page .nh-header {
   transition: opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease;
   max-height: 200px;
   overflow: hidden;
 }
 
-.nh-toggle-header-page.nh-header-hidden .nh-topbar,
 .nh-toggle-header-page.nh-header-hidden .nh-header {
   opacity: 0;
   max-height: 0;
@@ -3657,12 +3655,7 @@ body.nh-site.social-page-v2 .social-follow-btn {
     display: none !important;
   }
 
-  /* Coran / Hadiths : header complet (topbar + barre logo/nav) + menu burger utilisable */
-  body.nh-toggle-header-page .nh-topbar {
-    display: block !important;
-  }
-
-  body.nh-toggle-header-page:not(.nh-header-hidden) .nh-topbar,
+  /* Coran / Hadiths : header principal seul (pas de top bar) + menu burger utilisable */
   body.nh-toggle-header-page:not(.nh-header-hidden) .nh-header {
     max-height: none !important;
     overflow: visible !important;
