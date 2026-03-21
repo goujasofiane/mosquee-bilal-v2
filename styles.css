@@ -3976,17 +3976,26 @@ body.nh-site.social-page-v2 .social-follow-btn {
     transform: none !important;
   }
 
+  /* Bulle à gauche du bouton : texte aligné vers la flèche (droite), centré verticalement avec le bouton */
   .toggle-tooltip {
-    top: auto;
-    bottom: 118px;
+    top: calc(100vh - 95px);
+    bottom: auto;
     left: auto;
     right: 58px;
-    transform: none;
+    transform: translateY(-50%);
+    max-width: min(260px, calc(100vw - 56px));
+    white-space: normal;
+    text-align: right;
+    line-height: 1.35;
+    padding: 8px 10px 8px 12px;
   }
 
   .toggle-tooltip::before {
     left: auto;
     right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 4px solid transparent;
     border-right-color: transparent;
     border-left-color: #c9a84c;
   }
