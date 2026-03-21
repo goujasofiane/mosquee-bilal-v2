@@ -3623,15 +3623,28 @@ body.nh-site.social-page-v2 .social-follow-btn {
   background: rgba(201, 168, 76, 0.8);
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  border-radius: 999px;
+  min-width: 30px;
+  min-height: 30px;
+  height: auto;
+  padding: 6px 10px;
   cursor: pointer;
-  font-size: 14px;
-  display: flex;
+  font-size: 13px;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.3s;
+  justify-content: flex-end;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 30px;
+  box-sizing: border-box;
+  transition: max-width 0.3s ease, background 0.3s ease, transform 0.3s ease;
+}
+.toggle-header-btn.show-text {
+  max-width: 200px;
+}
+.toggle-header-btn-label {
+  display: block;
+  line-height: 1.2;
 }
 .toggle-header-btn:hover {
   background: #c9a84c;

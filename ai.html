@@ -35,8 +35,8 @@
       </div>
     </div>
 
-    <button class="toggle-header-btn" type="button" aria-label="Afficher / masquer le header">
-      &#9650;
+    <button class="toggle-header-btn" type="button" aria-label="Masquer le menu du site">
+      <span class="toggle-header-btn-label">Cacher le menu ▲</span>
     </button>
 
     <header class="nh-header">
@@ -81,6 +81,9 @@
 
     <script>
       const toggleBtn = document.querySelector('.toggle-header-btn');
+      const toggleLabel = toggleBtn
+        ? toggleBtn.querySelector('.toggle-header-btn-label')
+        : null;
       const topBar =
         document.querySelector('.top-bar') || document.querySelector('.nh-topbar');
       const mainHeader =
@@ -91,6 +94,16 @@
       const footer = document.querySelector('footer');
 
       let headerVisible = true;
+      let hideTextTimer = null;
+
+      function showToggleText() {
+        if (!toggleBtn) return;
+        toggleBtn.classList.add('show-text');
+        clearTimeout(hideTextTimer);
+        hideTextTimer = setTimeout(() => {
+          toggleBtn.classList.remove('show-text');
+        }, 4000);
+      }
 
       function computeAndSetIframeHeight() {
         if (!iframe) return;
@@ -114,9 +127,16 @@
 
       function sync() {
         if (!toggleBtn) return;
-        toggleBtn.innerHTML = headerVisible ? '&#9650;' : '&#9660;';
+        if (toggleLabel) {
+          toggleLabel.textContent = headerVisible
+            ? 'Cacher le menu ▲'
+            : 'Afficher le menu ▼';
+        }
+        toggleBtn.setAttribute(
+          'aria-label',
+          headerVisible ? 'Masquer le menu du site' : 'Afficher le menu du site'
+        );
 
-        // Clone la logique "disparaÃ®t/ rÃ©apparaÃ®t" via une classe CSS animÃ©e.
         document.body.classList.toggle('nh-header-hidden', !headerVisible);
 
         requestAnimationFrame(() => {
@@ -128,6 +148,16 @@
         toggleBtn.addEventListener('click', () => {
           headerVisible = !headerVisible;
           sync();
+          showToggleText();
+        });
+
+        toggleBtn.addEventListener('mouseenter', () => {
+          toggleBtn.classList.add('show-text');
+          clearTimeout(hideTextTimer);
+        });
+
+        toggleBtn.addEventListener('mouseleave', () => {
+          toggleBtn.classList.remove('show-text');
         });
       }
 
@@ -136,6 +166,7 @@
         headerVisible = true;
         document.body.classList.remove('nh-header-hidden');
         sync();
+        showToggleText();
       });
     </script>
 
