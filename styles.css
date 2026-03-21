@@ -3646,6 +3646,35 @@ body.nh-site.social-page-v2 .social-follow-btn {
   background: #c9a84c;
 }
 
+.toggle-tooltip {
+  position: fixed;
+  top: 5px;
+  left: calc(50% + 40px);
+  background: #c9a84c;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+.toggle-tooltip::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-right-color: #c9a84c;
+}
+.toggle-tooltip.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .nh-toggle-header-page .nh-topbar,
 .nh-toggle-header-page .nh-header {
   transition: opacity 0.3s ease, max-height 0.3s ease, transform 0.3s ease;
@@ -3940,6 +3969,21 @@ body.nh-site.social-page-v2 .social-follow-btn {
     top: auto !important;
     left: auto !important;
     transform: none !important;
+  }
+
+  .toggle-tooltip {
+    top: auto;
+    bottom: 118px;
+    left: auto;
+    right: 58px;
+    transform: none;
+  }
+
+  .toggle-tooltip::before {
+    left: auto;
+    right: -8px;
+    border-right-color: transparent;
+    border-left-color: #c9a84c;
   }
 }
 

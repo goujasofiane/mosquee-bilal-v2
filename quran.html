@@ -143,11 +143,24 @@
         });
       }
 
+      function initToggleTooltip() {
+        if (!toggleBtn) return;
+        const tip = document.createElement('div');
+        tip.className = 'toggle-tooltip';
+        tip.textContent = 'Appuyez pour cacher le menu';
+        tip.setAttribute('role', 'tooltip');
+        document.body.appendChild(tip);
+        setTimeout(() => {
+          tip.classList.add('hidden');
+        }, 5000);
+      }
+
       window.addEventListener('resize', computeAndSetIframeHeight);
       document.addEventListener('DOMContentLoaded', () => {
         headerVisible = true;
         document.body.classList.remove('nh-header-hidden');
         sync();
+        initToggleTooltip();
       });
     </script>
 
