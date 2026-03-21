@@ -3872,10 +3872,13 @@ body.nh-site.social-page-v2 .social-follow-btn {
     max-height: none;
   }
 
+  .mawaqit-iframe,
+  #mawaqit-frame,
+  .prayer-times-iframe,
   body.home-nh #mawaqit iframe,
   #mawaqit iframe {
-    height: 400px !important;
-    min-height: 400px !important;
+    height: 350px !important;
+    min-height: 350px !important;
   }
 
   .mosquee-masonry-grid {
