@@ -94,7 +94,7 @@
       const footer = document.querySelector('footer');
 
       let headerVisible = true;
-      let hideTextTimer = null;
+      let hideTextTimer;
 
       function showToggleText() {
         if (!toggleBtn) return;
@@ -102,7 +102,7 @@
         clearTimeout(hideTextTimer);
         hideTextTimer = setTimeout(() => {
           toggleBtn.classList.remove('show-text');
-        }, 4000);
+        }, 5000);
       }
 
       function computeAndSetIframeHeight() {
@@ -166,6 +166,12 @@
         headerVisible = true;
         document.body.classList.remove('nh-header-hidden');
         sync();
+        if (toggleBtn) {
+          toggleBtn.classList.add('show-text');
+        }
+      });
+
+      window.addEventListener('load', () => {
         showToggleText();
       });
     </script>
