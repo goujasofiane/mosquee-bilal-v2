@@ -3921,6 +3921,11 @@ body.nh-site.social-page-v2 .social-follow-btn {
     min-height: 350px !important;
   }
 
+  iframe.home-video-iframe {
+    height: 250px !important;
+    min-height: 250px !important;
+  }
+
   .mosquee-masonry-grid {
     column-count: 1;
   }

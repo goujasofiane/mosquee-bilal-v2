@@ -30,6 +30,7 @@ const translations = {
     heroCardTitle: "Horaires de prière",
     heroCardText:
       "Les horaires sont automatiquement fournis par Mawakit pour rester toujours à jour.",
+    videoTitle: "DÉCOUVREZ LA MOSQUÉE BILAL",
     gallerySectionTitle: "Galerie de la mosquée",
     gallerySectionText:
       "Découvrez quelques vues de la Mosquée Bilal en attendant l’achèvement complet du projet.",
@@ -168,6 +169,7 @@ const translations = {
     heroCardTitle: "مواقيت الصلاة",
     heroCardText:
       "يتم جلب المواقيت تلقائيًا من موقع مواقيت لضمان حداثة المعلومات.",
+    videoTitle: "اكتشفوا مسجد بلال",
     gallerySectionTitle: "معرض صور المسجد",
     gallerySectionText:
       "تعرّف على بعض الصور لمسجد بلال في انتظار اكتمال المشروع بإذن الله.",
