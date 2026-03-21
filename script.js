@@ -577,11 +577,13 @@ function initDonationPopup() {
   });
 }
 
+const DONATION_BANNER_LS_KEY = "donationBannerClosed_v2";
+
 function initDonationBanner() {
   const banner = document.getElementById("donation-banner");
   if (!banner) return;
 
-  const closed = localStorage.getItem("donationBannerClosed") === "true";
+  const closed = localStorage.getItem(DONATION_BANNER_LS_KEY) === "true";
   if (closed) {
     banner.classList.add("hidden");
     return;
@@ -593,7 +595,7 @@ function initDonationBanner() {
   closeBtn.addEventListener("click", () => {
     banner.classList.add("hidden");
     try {
-      localStorage.setItem("donationBannerClosed", "true");
+      localStorage.setItem(DONATION_BANNER_LS_KEY, "true");
     } catch (e) {}
   });
 }
