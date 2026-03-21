@@ -577,13 +577,14 @@ function initDonationPopup() {
   });
 }
 
-const DONATION_BANNER_LS_KEY = "donationBannerClosed_v2";
+/** Masquage uniquement pour la session navigateur (onglet), pas définitif. */
+const DONATION_BANNER_SESSION_KEY = "donationBannerDismissedSession";
 
 function initDonationBanner() {
   const banner = document.getElementById("donation-banner");
   if (!banner) return;
 
-  const closed = localStorage.getItem(DONATION_BANNER_LS_KEY) === "true";
+  const closed = sessionStorage.getItem(DONATION_BANNER_SESSION_KEY) === "true";
   if (closed) {
     banner.classList.add("hidden");
     return;
@@ -595,7 +596,7 @@ function initDonationBanner() {
   closeBtn.addEventListener("click", () => {
     banner.classList.add("hidden");
     try {
-      localStorage.setItem(DONATION_BANNER_LS_KEY, "true");
+      sessionStorage.setItem(DONATION_BANNER_SESSION_KEY, "true");
     } catch (e) {}
   });
 }
