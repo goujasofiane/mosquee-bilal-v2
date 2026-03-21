@@ -74,7 +74,7 @@
       <iframe 
         src="https://quranwbw.com" 
         width="100%" 
-        style="height: calc(100vh - 130px); border: none; display: block;"
+        style="border: none; display: block; margin: 0; padding: 0;"
         allowfullscreen>
       </iframe>
     </main>
@@ -95,15 +95,21 @@
       function computeAndSetIframeHeight() {
         if (!iframe) return;
 
+        if (window.matchMedia("(max-width: 768px)").matches) {
+          iframe.style.setProperty("height", "calc(100vh - 120px)", "important");
+          return;
+        }
+
+        iframe.style.removeProperty("height");
+
         const vh = window.innerHeight;
         const footerH = footer ? footer.getBoundingClientRect().height : 0;
         const topH = headerVisible && topBar ? topBar.getBoundingClientRect().height : 0;
         const headerH =
           headerVisible && mainHeader ? mainHeader.getBoundingClientRect().height : 0;
 
-        // Hauteur disponible pour l'iframe (Ã©vite que l'iframe dÃ©passe sous le footer)
         const h = Math.max(0, vh - footerH - topH - headerH);
-        iframe.style.height = h + 'px';
+        iframe.style.height = h + "px";
       }
 
       function sync() {

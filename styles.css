@@ -3657,6 +3657,30 @@ body.nh-site.social-page-v2 .social-follow-btn {
     display: none !important;
   }
 
+  /* Coran / Hadiths : header complet (topbar + barre logo/nav) + menu burger utilisable */
+  body.nh-toggle-header-page .nh-topbar {
+    display: block !important;
+  }
+
+  body.nh-toggle-header-page:not(.nh-header-hidden) .nh-topbar,
+  body.nh-toggle-header-page:not(.nh-header-hidden) .nh-header {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .nh-toggle-header-page .nh-header {
+    z-index: 10040 !important;
+  }
+
+  .nh-toggle-header-page .nh-nav-toggle {
+    display: flex !important;
+    z-index: 10050 !important;
+  }
+
+  .nh-toggle-header-page .nh-nav-list {
+    z-index: 10045 !important;
+  }
+
   .nh-header-inner {
     width: min(1180px, calc(100% - 24px));
     padding: 10px 0;
@@ -3849,6 +3873,12 @@ body.nh-site.social-page-v2 .social-follow-btn {
     min-height: calc(100vh - 120px);
   }
 
+  body.nh-toggle-header-page main iframe {
+    height: calc(100vh - 120px) !important;
+    min-height: 0 !important;
+    max-height: none;
+  }
+
   body.home-nh #mawaqit iframe,
   #mawaqit iframe {
     height: 400px !important;
@@ -3898,8 +3928,8 @@ body.nh-site.social-page-v2 .social-follow-btn {
 
   .nh-toggle-header-page .toggle-header-btn {
     position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
+    bottom: 80px !important;
+    right: 15px !important;
     top: auto !important;
     left: auto !important;
     transform: none !important;
