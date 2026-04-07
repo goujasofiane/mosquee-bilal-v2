@@ -1687,7 +1687,7 @@ body.mosquee-page {
   position: absolute;
   right: 8px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -2119,7 +2119,7 @@ body.dark-theme .conversation-item.active {
 .hero-slider-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -2357,7 +2357,7 @@ body.dark-theme .conversation-item.active {
 .gallery-lightbox-arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -3620,7 +3620,8 @@ body.nh-site.social-page-v2 .social-follow-btn {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 9999;
+  /* Au-dessus du header mobile (10040) pour rester cliquable + visible */
+  z-index: 10060;
   background: rgba(201, 168, 76, 0.8);
   color: white;
   border: none;
@@ -3657,7 +3658,7 @@ body.nh-site.social-page-v2 .social-follow-btn {
   border-radius: 8px;
   font-size: 12px;
   white-space: nowrap;
-  z-index: 9999;
+  z-index: 10060;
   opacity: 1;
   transition: opacity 0.5s ease;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
@@ -3667,7 +3668,7 @@ body.nh-site.social-page-v2 .social-follow-btn {
   position: absolute;
   left: -8px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: none;
   border: 4px solid transparent;
   border-right-color: #c9a84c;
 }
@@ -4020,11 +4021,12 @@ body.nh-site.social-page-v2 .social-follow-btn {
 
   /* Bulle à gauche du bouton : texte aligné vers la flèche (droite), centré verticalement avec le bouton */
   .toggle-tooltip {
-    top: calc(100vh - 95px);
+    top: auto;
+    bottom: 82px;
     bottom: auto;
     left: auto;
     right: 58px;
-    transform: translateY(-50%);
+    transform: none;
     max-width: min(260px, calc(100vw - 56px));
     white-space: normal;
     text-align: right;
@@ -4036,10 +4038,13 @@ body.nh-site.social-page-v2 .social-follow-btn {
     left: auto;
     right: -8px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: none;
     border: 4px solid transparent;
     border-right-color: transparent;
     border-left-color: #c9a84c;
   }
 }
+
+
+
 
