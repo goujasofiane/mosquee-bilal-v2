@@ -141,6 +141,25 @@
       let tip = null;
       let tipTimeout = null;
 
+      function getTooltipText(showOpenHint) {
+        const currentLang = (
+          localStorage.getItem('lang') ||
+          localStorage.getItem('mosqueeLang') ||
+          document.documentElement.lang ||
+          'fr'
+        ).toLowerCase();
+
+        if (currentLang === 'ar') {
+          return showOpenHint
+            ? 'اضغط لفتح القائمة'
+            : 'اضغط لإخفاء القائمة';
+        }
+
+        return showOpenHint
+          ? 'Appuyez pour ouvrir le menu'
+          : 'Appuyez pour fermer le menu';
+      }
+
       function showToggleTooltip(text) {
         if (!toggleBtn) return;
         if (!tip) {
@@ -161,11 +180,7 @@
         toggleBtn.addEventListener('click', () => {
           headerVisible = !headerVisible;
           sync();
-          showToggleTooltip(
-            headerVisible
-              ? 'Appuyez pour fermer le menu'
-              : 'Appuyez pour ouvrir le menu'
-          );
+          showToggleTooltip(getTooltipText(!headerVisible));
         });
       }
 
@@ -173,7 +188,7 @@
         headerVisible = true;
         document.body.classList.remove('nh-header-hidden');
         sync();
-        showToggleTooltip('Appuyez pour fermer le menu');
+        showToggleTooltip(getTooltipText(false));
       }
 
       window.addEventListener('resize', computeAndSetIframeHeight);
@@ -187,6 +202,7 @@
     <script src="script.js"></script>
   </body>
 </html>
+
 
 
 
