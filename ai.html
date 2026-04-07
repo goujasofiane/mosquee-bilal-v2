@@ -147,28 +147,38 @@
 
       function initToggleTooltip() {
         if (!toggleBtn) return;
+        if (document.querySelector('.toggle-tooltip')) return;
+
         const tip = document.createElement('div');
         tip.className = 'toggle-tooltip';
         tip.textContent = 'Appuyez pour fermer le menu';
         tip.setAttribute('role', 'tooltip');
         document.body.appendChild(tip);
+
         setTimeout(() => {
           tip.classList.add('hidden');
-        }, 7000);
+        }, 12000);
       }
 
-      window.addEventListener('resize', computeAndSetIframeHeight);
-      document.addEventListener('DOMContentLoaded', () => {
+      function bootToggleUI() {
         headerVisible = true;
         document.body.classList.remove('nh-header-hidden');
         sync();
         initToggleTooltip();
-      });
+      }
+
+      window.addEventListener('resize', computeAndSetIframeHeight);
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootToggleUI);
+      } else {
+        bootToggleUI();
+      }
     </script>
 
     <script src="script.js"></script>
   </body>
 </html>
+
 
 
 
