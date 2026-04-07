@@ -4015,11 +4015,10 @@ body.nh-site.social-page-v2 .social-follow-btn {
     transform: none !important;
   }
 
-  /* Bulle à gauche du bouton : texte aligné vers la flèche (droite), centré verticalement avec le bouton */
+  /* Bulle à gauche du bouton : ancrée en bas pour rester visible sur mobile */
   .toggle-tooltip {
     top: auto;
     bottom: 82px;
-    bottom: auto;
     left: auto;
     right: 58px;
     transform: none;
@@ -4039,6 +4038,7 @@ body.nh-site.social-page-v2 .social-follow-btn {
     border-right-color: transparent;
     border-left-color: #c9a84c;
   }
+
 }
 
 
