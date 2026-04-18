@@ -333,16 +333,14 @@
       <section id="loginView" class="admin-login-wrap">
         <div class="admin-login-card">
           <h1>Connexion</h1>
-          <p>Accédez à la gestion des images de la galerie.</p>
+          <p>
+            Mot de passe défini sur Vercel (variable <code style="color: #c9a84c">MOSQUEE_GALLERY_SECRET</code>). Même mot de passe pour toute l’équipe.
+          </p>
 
           <form id="loginForm">
             <div class="admin-field">
-              <label for="email">Email</label>
-              <input id="email" type="email" autocomplete="username" required />
-            </div>
-            <div class="admin-field">
-              <label for="password">Mot de passe</label>
-              <input id="password" type="password" autocomplete="current-password" required />
+              <label for="adminSecret">Mot de passe galerie</label>
+              <input id="adminSecret" type="password" autocomplete="current-password" required />
             </div>
             <button class="nh-btn nh-btn-gold" type="submit" style="width: 100%; margin-top: 8px">Se connecter</button>
           </form>
@@ -357,7 +355,7 @@
             <h1 class="mosquee-gallery-title">Mosquée Bilal — Galerie</h1>
             <div class="mosquee-gallery-title-line"></div>
             <p class="mosquee-gallery-subtitle">
-              Gestion des photos (Supabase, bucket « images »). La galerie publique :
+              Photos hébergées sur Vercel Blob (plus besoin de Supabase). Galerie publique :
               <a href="mosquee.html" style="color: #c9a84c; text-decoration: underline">mosquee.html</a>
               — survolez une image pour la supprimer.
             </p>
@@ -392,36 +390,11 @@
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="script.js"></script>
     <script>
       (function () {
-        const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
-        const SUPABASE_ANON_KEY =
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4';
-        const BUCKET = "images";
+        const SESSION_KEY = "mosquee-gallery-admin-secret";
 
-        function makeDb() {
-          const lib = window.supabase;
-          const createClient =
-            lib && typeof lib.createClient === "function"
-              ? lib.createClient
-              : lib && lib.default && typeof lib.default.createClient === "function"
-                ? lib.default.createClient
-                : null;
-          if (!createClient) return null;
-          return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-            auth: {
-              persistSession: true,
-              storageKey: "mosquee-admin-auth",
-              storage: window.localStorage,
-              autoRefreshToken: true,
-              detectSessionInUrl: false,
-            },
-          });
-        }
-
-        const db = makeDb();
         const loginView = document.getElementById("loginView");
         const adminView = document.getElementById("adminView");
         const loginForm = document.getElementById("loginForm");
@@ -430,6 +403,21 @@
         const imagesGrid = document.getElementById("imagesGrid");
         const logoutBtn = document.getElementById("logoutBtn");
         const fileInput = document.getElementById("fileInput");
+
+        function getAdminSecret() {
+          try {
+            return sessionStorage.getItem(SESSION_KEY) || "";
+          } catch (e) {
+            return "";
+          }
+        }
+
+        function setAdminSecret(value) {
+          try {
+            if (value) sessionStorage.setItem(SESSION_KEY, value);
+            else sessionStorage.removeItem(SESSION_KEY);
+          } catch (e) {}
+        }
 
         function setLoginMessage(text, type) {
           loginMessage.textContent = text || "";
@@ -452,7 +440,7 @@
         }
 
         function escapeHtml(value) {
-          return value
+          return String(value || "")
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
@@ -460,41 +448,16 @@
             .replace(/'/g, "&#039;");
         }
 
-        /** Clé Storage + nom du fichier multipart : ASCII strict (évite « File name is invalid » côté API). */
-        function safeExtension(originalName) {
-          if (!originalName || !originalName.includes(".")) return "jpg";
-          const ext = originalName.split(".").pop().toLowerCase();
-          const map = {
-            jpg: "jpg",
-            jpeg: "jpg",
-            png: "png",
-            gif: "gif",
-            webp: "webp",
-            avif: "avif",
-            bmp: "bmp",
-            svg: "svg",
-          };
-          return map[ext] || "jpg";
-        }
-
-        function safeStorageBaseName(originalName) {
-          const name = originalName || "image";
-          const lastDot = name.lastIndexOf(".");
-          const base = lastDot > 0 ? name.slice(0, lastDot) : name;
-          let ascii = base;
-          try {
-            ascii = base.normalize("NFD").replace(/\p{M}/gu, "");
-          } catch (e) {
-            ascii = base;
-          }
-          let s = ascii
-            .toLowerCase()
-            .replace(/[^a-z0-9_-]/g, "-")
-            .replace(/-+/g, "-")
-            .replace(/^-+|-+$/g, "");
-          if (!s) s = "image";
-          if (s.length > 120) s = s.slice(0, 120).replace(/-+$/g, "") || "image";
-          return s;
+        async function probeSecret(secret) {
+          const r = await fetch("/api/gallery", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-mosquee-admin": secret,
+            },
+            body: JSON.stringify({ probe: true }),
+          });
+          return r.status === 204;
         }
 
         function addImageSlotHtml() {
@@ -523,26 +486,38 @@
         }
 
         async function uploadSelectedFile() {
-          if (!db) return;
+          const secret = getAdminSecret();
+          if (!secret) {
+            setAdminStatus("Session expirée — reconnectez-vous.", true);
+            showLogin();
+            return;
+          }
+
           const file = fileInput.files && fileInput.files[0];
           if (!file) return;
 
           setAdminStatus("Envoi en cours…");
-          const extension = safeExtension(file.name || "");
-          const uniqueName = Date.now() + "-" + safeStorageBaseName(file.name || "image") + "." + extension;
+          const fd = new FormData();
+          fd.append("file", file);
 
-          const payload =
-            typeof File !== "undefined"
-              ? new File([file], uniqueName, { type: file.type || "application/octet-stream" })
-              : file;
+          let r;
+          try {
+            r = await fetch("/api/gallery", {
+              method: "POST",
+              headers: { "x-mosquee-admin": secret },
+              body: fd,
+            });
+          } catch (e) {
+            setAdminStatus("Réseau : impossible de joindre le serveur (déployez sur Vercel ou lancez vercel dev).", true);
+            return;
+          }
 
-          const { error } = await db.storage.from(BUCKET).upload(uniqueName, payload, {
-            cacheControl: "3600",
-            upsert: false,
+          const data = await r.json().catch(function () {
+            return {};
           });
 
-          if (error) {
-            setAdminStatus("Erreur d’envoi : " + error.message, true);
+          if (!r.ok) {
+            setAdminStatus(data.error || "Erreur d’envoi (" + r.status + ").", true);
             return;
           }
 
@@ -552,71 +527,62 @@
         }
 
         async function renderImages() {
-          if (!db) return;
           setAdminStatus("Chargement des images…");
           imagesGrid.innerHTML = addImageSlotHtml();
           bindAddTile();
 
-          const { data, error } = await db.storage.from(BUCKET).list("", {
-            limit: 200,
-            sortBy: { column: "name", order: "desc" },
-          });
-
-          if (error) {
-            setAdminStatus("Impossible de charger les images : " + error.message, true);
+          let r;
+          try {
+            r = await fetch("/api/gallery");
+          } catch (e) {
+            setAdminStatus("Impossible de charger la liste (réseau ou site non déployé).", true);
             return;
           }
 
-          const files = (data || []).filter(function (item) {
-            return item.name && !(item.id && item.id.endsWith("/"));
+          const data = await r.json().catch(function () {
+            return { items: [] };
           });
-          if (!files.length) {
+          const items = data.items || [];
+
+          if (data.warning) {
+            console.warn(data.warning);
+          }
+
+          if (!items.length) {
             imagesGrid.insertAdjacentHTML(
               "beforeend",
-              '<p class="admin-empty">Aucune image dans le stockage. Utilisez la carte « Ajouter une image ».</p>'
+              '<p class="admin-empty">Aucune image pour le moment. Utilisez la carte « Ajouter une image » (vérifiez que Vercel Blob est activé sur le projet).</p>'
             );
             setAdminStatus("Aucune image pour le moment.");
             return;
           }
 
-          const cards = await Promise.all(
-            files.map(async function (file) {
-              const { data: signed, error: signedError } = await db.storage
-                .from(BUCKET)
-                .createSignedUrl(file.name, 60 * 60);
-              const imageUrl = signedError ? "" : signed.signedUrl;
-              const safeName = escapeHtml(file.name);
-              const dataFile = encodeURIComponent(file.name);
+          const cards = items.map(function (item) {
+            const url = item.url || "";
+            const safeUrlAttr = escapeHtml(url).replace(/"/g, "&quot;");
+            const shortLabel = escapeHtml((item.pathname || url).split("/").pop() || "photo");
+            const encUrl = encodeURIComponent(url);
 
-              return (
-                '<figure class="mosquee-masonry-item admin-gallery-tile">' +
-                '<div class="mosquee-masonry-inner">' +
-                (imageUrl
-                  ? '<img src="' + imageUrl + '" alt="' + safeName + '" loading="lazy" />'
-                  : '<div style="min-height:200px;display:flex;align-items:center;justify-content:center;background:#111;color:rgba(255,255,255,0.45);border-radius:28px;">Aperçu indisponible</div>') +
-                '<div class="mosquee-masonry-overlay admin-masonry-overlay">' +
-                '<div class="admin-overlay-inner">' +
-                '<p class="admin-file-name">' +
-                safeName +
-                "</p>" +
-                '<button type="button" class="admin-btn-delete" data-file="' +
-                dataFile +
-                '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
-                "</div></div></div></figure>"
-              );
-            })
-          );
+            return (
+              '<figure class="mosquee-masonry-item admin-gallery-tile">' +
+              '<div class="mosquee-masonry-inner">' +
+              (url
+                ? '<img src="' + safeUrlAttr + '" alt="' + shortLabel + '" loading="lazy" />'
+                : '<div style="min-height:200px;display:flex;align-items:center;justify-content:center;background:#111;color:rgba(255,255,255,0.45);border-radius:28px;">Aperçu indisponible</div>') +
+              '<div class="mosquee-masonry-overlay admin-masonry-overlay">' +
+              '<div class="admin-overlay-inner">' +
+              '<p class="admin-file-name">' +
+              shortLabel +
+              "</p>" +
+              '<button type="button" class="admin-btn-delete" data-blob-url="' +
+              encUrl +
+              '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
+              "</div></div></div></figure>"
+            );
+          });
 
           imagesGrid.insertAdjacentHTML("beforeend", cards.join(""));
-          setAdminStatus(files.length + " image(s) dans la galerie.");
-        }
-
-        if (!db) {
-          setLoginMessage(
-            "Impossible de charger la librairie Supabase (réessayez ou désactivez un bloqueur). Actualisez la page.",
-            "error"
-          );
-          return;
+          setAdminStatus(items.length + " image(s) dans la galerie.");
         }
 
         fileInput.addEventListener("change", function () {
@@ -625,17 +591,30 @@
 
         loginForm.addEventListener("submit", async function (event) {
           event.preventDefault();
-          setLoginMessage("Connexion en cours…", "success");
+          setLoginMessage("Vérification…", "success");
 
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("password").value;
-
-          const { error } = await db.auth.signInWithPassword({ email, password });
-          if (error) {
-            setLoginMessage("Erreur de connexion : " + error.message, "error");
+          const secret = document.getElementById("adminSecret").value;
+          if (!secret) {
+            setLoginMessage("Saisissez le mot de passe.", "error");
             return;
           }
 
+          let ok;
+          try {
+            ok = await probeSecret(secret);
+          } catch (e) {
+            ok = false;
+          }
+
+          if (!ok) {
+            setLoginMessage(
+              "Mot de passe refusé ou API indisponible. Sur Vercel : variable MOSQUEE_GALLERY_SECRET + Blob activé.",
+              "error"
+            );
+            return;
+          }
+
+          setAdminSecret(secret);
           setLoginMessage("Connexion réussie.", "success");
           showAdmin();
           await renderImages();
@@ -643,22 +622,48 @@
 
         imagesGrid.addEventListener("click", async function (event) {
           const button = event.target.closest(".admin-btn-delete");
-          if (!button || !db) return;
+          if (!button) return;
 
-          let fileName = button.getAttribute("data-file");
-          if (!fileName) return;
+          const secret = getAdminSecret();
+          if (!secret) {
+            showLogin();
+            return;
+          }
+
+          let blobUrl = button.getAttribute("data-blob-url");
+          if (!blobUrl) return;
           try {
-            fileName = decodeURIComponent(fileName);
+            blobUrl = decodeURIComponent(blobUrl);
           } catch (e) {
             return;
           }
 
+          if (!blobUrl.startsWith("http")) return;
+
           if (!window.confirm("Supprimer cette image ?")) return;
 
           setAdminStatus("Suppression en cours…");
-          const { error } = await db.storage.from(BUCKET).remove([fileName]);
-          if (error) {
-            setAdminStatus("Erreur lors de la suppression : " + error.message, true);
+
+          let r;
+          try {
+            r = await fetch("/api/gallery", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-mosquee-admin": secret,
+              },
+              body: JSON.stringify({ deleteUrl: blobUrl }),
+            });
+          } catch (e) {
+            setAdminStatus("Erreur réseau pendant la suppression.", true);
+            return;
+          }
+
+          const data = await r.json().catch(function () {
+            return {};
+          });
+          if (!r.ok) {
+            setAdminStatus(data.error || "Suppression refusée.", true);
             return;
           }
 
@@ -666,36 +671,30 @@
           await renderImages();
         });
 
-        logoutBtn.addEventListener("click", async function () {
-          await db.auth.signOut();
+        logoutBtn.addEventListener("click", function () {
+          setAdminSecret("");
           showLogin();
+          imagesGrid.innerHTML = "";
           setAdminStatus("");
           setLoginMessage("Vous avez été déconnecté.", "success");
         });
 
         async function init() {
-          const {
-            data: { session },
-          } = await db.auth.getSession();
-          if (session) {
+          const saved = getAdminSecret();
+          if (!saved) {
+            showLogin();
+            return;
+          }
+          const ok = await probeSecret(saved);
+          if (ok) {
             showAdmin();
             await renderImages();
           } else {
+            setAdminSecret("");
             showLogin();
+            setLoginMessage("Session expirée ou mot de passe changé — reconnectez-vous.", "error");
           }
         }
-
-        db.auth.onAuthStateChange(async function (event, session) {
-          if (event === "SIGNED_OUT" || !session) {
-            showLogin();
-            imagesGrid.innerHTML = "";
-            return;
-          }
-          if (event === "SIGNED_IN") {
-            showAdmin();
-            await renderImages();
-          }
-        });
 
         init();
       })();
