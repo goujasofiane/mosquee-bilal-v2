@@ -1,1 +1,5 @@
 .vercel
+
+# Installateurs locaux (limite GitHub 100 Mo)
+*.exe
+assets/*.exe
