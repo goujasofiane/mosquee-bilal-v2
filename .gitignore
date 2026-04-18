@@ -1,4 +1,5 @@
 .vercel
+node_modules/
 
 # Installateurs locaux (limite GitHub 100 Mo)
 *.exe
