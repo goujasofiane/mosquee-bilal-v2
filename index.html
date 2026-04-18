@@ -331,6 +331,47 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qaGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NjI1NzUsImV4cCI6MjA2MDUzODU3NX0.Ta0C_FA6vYGDCFlBdHpONSwm5gyXIOuFVVBaOJ1ETZY";
+
+      async function loadSupabaseGalleryImages() {
+        const thumbsContainer = document.querySelector("#gallery .nh-gallery-thumbs");
+        if (!thumbsContainer || !window.supabase) {
+          return;
+        }
+
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const { data, error } = await supabase
+          .from("images")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error || !Array.isArray(data)) {
+          console.error("Erreur chargement Supabase images:", error?.message || "données invalides");
+          return;
+        }
+
+        data.forEach((imageRow) => {
+          const imageUrl = imageRow.url || imageRow.image_url || imageRow.src || imageRow.path;
+          if (!imageUrl) {
+            return;
+          }
+
+          const img = document.createElement("img");
+          img.src = imageUrl;
+          img.alt = "Vignette Supabase";
+          img.loading = "lazy";
+          thumbsContainer.appendChild(img);
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        loadSupabaseGalleryImages();
+      });
+    </script>
   </body>
 </html>
 
