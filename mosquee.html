@@ -86,7 +86,7 @@
           </p>
         </header>
 
-        <div class="mosquee-masonry-grid">
+        <div class="mosquee-masonry-grid" id="mosqueeMasonryGrid">
           <figure class="mosquee-masonry-item">
             <div class="mosquee-masonry-inner">
               <img src="assets/mosquee-1.png" alt="Mosquée Bilal - Vue 1" />
@@ -277,7 +277,97 @@
       </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script src="script.js"></script>
+    <script>
+      (function () {
+        const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
+        const SUPABASE_ANON_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4";
+        const BUCKET = "images";
+
+        function makeReadClient() {
+          const lib = window.supabase;
+          const create =
+            lib && typeof lib.createClient === "function"
+              ? lib.createClient
+              : lib && lib.default && typeof lib.default.createClient === "function"
+                ? lib.default.createClient
+                : null;
+          if (!create) return null;
+          return create(SUPABASE_URL, SUPABASE_ANON_KEY);
+        }
+
+        function isProbablyImageFile(name) {
+          return /\.(jpe?g|png|gif|webp|avif|bmp|svg)$/i.test(name || "");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          const grid = document.getElementById("mosqueeMasonryGrid");
+          if (!grid) return;
+
+          (async function () {
+            const client = makeReadClient();
+            if (!client) return;
+
+            const { data: files, error: listError } = await client.storage.from(BUCKET).list("", {
+              limit: 200,
+              sortBy: { column: "name", order: "desc" },
+            });
+
+            if (listError) {
+              console.warn("Galerie Supabase :", listError.message);
+              return;
+            }
+
+            const items = (files || []).filter(function (f) {
+              return f.name && !(f.id && f.id.endsWith("/")) && isProbablyImageFile(f.name);
+            });
+
+            if (!items.length) return;
+
+            const fragment = document.createDocumentFragment();
+            let shown = 0;
+
+            for (const file of items) {
+              const { data: signed, error: signError } = await client.storage
+                .from(BUCKET)
+                .createSignedUrl(file.name, 3600);
+              if (signError || !signed || !signed.signedUrl) continue;
+
+              shown += 1;
+              const fig = document.createElement("figure");
+              fig.className = "mosquee-masonry-item reveal is-visible";
+
+              const inner = document.createElement("div");
+              inner.className = "mosquee-masonry-inner";
+
+              const img = document.createElement("img");
+              img.src = signed.signedUrl;
+              img.alt = "Mosquée Bilal — photo " + shown;
+              img.loading = "lazy";
+
+              const overlay = document.createElement("div");
+              overlay.className = "mosquee-masonry-overlay";
+              const icon = document.createElement("i");
+              icon.className = "fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon";
+              icon.setAttribute("aria-hidden", "true");
+              overlay.appendChild(icon);
+
+              inner.appendChild(img);
+              inner.appendChild(overlay);
+              fig.appendChild(inner);
+              fragment.appendChild(fig);
+            }
+
+            if (shown > 0) {
+              grid.innerHTML = "";
+              grid.appendChild(fragment);
+            }
+          })();
+        });
+      })();
+    </script>
   </body>
 </html>
 
