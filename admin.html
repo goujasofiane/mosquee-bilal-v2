@@ -254,7 +254,15 @@
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4'
       const BUCKET = "images";
 
-      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: {
+          persistSession: true,
+          storageKey: 'mosquee-admin-auth',
+          storage: window.localStorage,
+          autoRefreshToken: true,
+          detectSessionInUrl: false
+        }
+      })
 
       const loginView = document.getElementById("loginView");
       const adminView = document.getElementById("adminView");
@@ -304,7 +312,7 @@
         setAdminStatus("Chargement des images...");
         imagesGrid.innerHTML = "";
 
-        const { data, error } = await client.storage.from(BUCKET).list("", {
+        const { data, error } = await db.storage.from(BUCKET).list("", {
           limit: 200,
           sortBy: { column: "name", order: "desc" },
         });
@@ -323,7 +331,7 @@
 
         const cards = await Promise.all(
           files.map(async (file) => {
-            const { data: signed, error: signedError } = await client.storage
+            const { data: signed, error: signedError } = await db.storage
               .from(BUCKET)
               .createSignedUrl(file.name, 60 * 60);
 
@@ -355,7 +363,7 @@
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
 
-        const { error } = await client.auth.signInWithPassword({ email, password });
+        const { error } = await db.auth.signInWithPassword({ email, password });
         if (error) {
           setLoginMessage("Erreur de connexion : " + error.message, "error");
           return;
@@ -377,7 +385,7 @@
         const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
         const uniqueName = `${Date.now()}-${safeFileName(file.name || "image")}.${extension}`;
 
-        const { error } = await client.storage.from(BUCKET).upload(uniqueName, file, {
+        const { error } = await db.storage.from(BUCKET).upload(uniqueName, file, {
           cacheControl: "3600",
           upsert: false,
         });
@@ -409,7 +417,7 @@
         }
 
         setAdminStatus("Suppression en cours...");
-        const { error } = await client.storage.from(BUCKET).remove([fileName]);
+        const { error } = await db.storage.from(BUCKET).remove([fileName]);
         if (error) {
           setAdminStatus("Erreur suppression : " + error.message, true);
           return;
@@ -420,7 +428,7 @@
       });
 
       logoutBtn.addEventListener("click", async () => {
-        await client.auth.signOut();
+        await db.auth.signOut();
         showLogin();
         setAdminStatus("");
         setLoginMessage("Vous avez été déconnecté.", "success");
@@ -429,7 +437,7 @@
       async function init() {
         const {
           data: { session },
-        } = await client.auth.getSession();
+        } = await db.auth.getSession();
 
         if (session) {
           showAdmin();
@@ -439,7 +447,7 @@
         }
       }
 
-      client.auth.onAuthStateChange(async (event, session) => {
+      db.auth.onAuthStateChange(async (event, session) => {
         if (event === "SIGNED_OUT" || !session) {
           showLogin();
           imagesGrid.innerHTML = "";
