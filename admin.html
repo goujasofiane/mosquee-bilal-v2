@@ -1,465 +1,677 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Administration - Mosquee Bilal</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="icon" type="image/png" href="assets/logo1.png" />
+    <link rel="apple-touch-icon" href="assets/logo1.png" />
+    <title>Administration galerie — Mosquée Bilal</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      :root {
-        --bg-dark: #0f1217;
-        --panel-dark: #171c24;
-        --border: #2a3342;
-        --text: #f2f5f8;
-        --muted: #a7b3c2;
-        --primary: #21c78b;
-        --danger: #ff5d5d;
-        --danger-hover: #e64949;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        min-height: 100vh;
-        font-family: Arial, Helvetica, sans-serif;
-        color: var(--text);
-      }
-
       .hidden {
         display: none !important;
       }
 
-      .login-screen {
-        min-height: 100vh;
+      /* Même ambiance que mosquee.html : fond galerie bien noir */
+      body.admin-mosquee .mosquee-gallery-section {
+        background: #000000;
+        padding-top: 28px;
+        padding-bottom: 72px;
+      }
+
+      body.admin-mosquee .nh-main {
+        background: #000000;
+      }
+
+      .nh-nav-list a.nh-nav-admin-active {
+        color: #c9a84c !important;
+      }
+
+      .admin-login-wrap {
+        min-height: calc(100vh - 200px);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: radial-gradient(circle at top, #1b2230 0%, var(--bg-dark) 60%);
-        padding: 20px;
+        padding: 48px 20px 80px;
       }
 
-      .login-card {
+      .admin-login-card {
         width: 100%;
-        max-width: 420px;
-        background: var(--panel-dark);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 28px;
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+        max-width: 440px;
+        background: rgba(12, 12, 12, 0.92);
+        border: 1px solid rgba(201, 168, 76, 0.35);
+        border-radius: 22px;
+        padding: 32px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
       }
 
-      .login-card h1 {
-        margin-top: 0;
-        margin-bottom: 6px;
+      .admin-login-card h1 {
+        margin: 0 0 8px;
+        font-family: "Playfair Display", serif;
         font-size: 1.5rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #f5f0e1;
       }
 
-      .login-card p {
-        margin-top: 0;
-        color: var(--muted);
+      .admin-login-card > p {
+        margin: 0 0 22px;
+        color: rgba(245, 240, 228, 0.65);
+        font-size: 0.95rem;
       }
 
-      .field {
-        margin-bottom: 14px;
+      .admin-field {
+        margin-bottom: 16px;
       }
 
-      .field label {
+      .admin-field label {
         display: block;
         margin-bottom: 6px;
-        color: var(--muted);
-        font-size: 0.95rem;
+        color: rgba(245, 240, 228, 0.55);
+        font-size: 0.88rem;
       }
 
-      .field input {
+      .admin-field input {
         width: 100%;
-        padding: 11px 12px;
-        background: #10151d;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        color: var(--text);
-        font-size: 0.95rem;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(201, 168, 76, 0.25);
+        background: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        font-size: 1rem;
       }
 
-      .btn {
-        border: none;
-        border-radius: 8px;
-        padding: 10px 14px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        width: 100%;
-        margin-top: 4px;
-        background: var(--primary);
-        color: #06281b;
-      }
-
-      .message {
-        margin-top: 12px;
+      .admin-login-msg {
+        margin-top: 14px;
         min-height: 1.25rem;
         font-size: 0.9rem;
       }
 
-      .message.error {
+      .admin-login-msg.error {
         color: #ff9f9f;
       }
 
-      .message.success {
+      .admin-login-msg.success {
         color: #93f4ce;
       }
 
-      .admin-screen {
-        min-height: 100vh;
-        background: #0e131a;
-        color: var(--text);
-      }
-
-      .admin-container {
-        max-width: 1150px;
-        margin: 0 auto;
-        padding: 24px;
-      }
-
-      .admin-header {
+      .admin-toolbar-row {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
+        gap: 16px;
         margin-bottom: 20px;
-        flex-wrap: wrap;
       }
 
-      .admin-header h2 {
-        margin: 0;
+      .admin-status-inline {
+        flex: 1;
+        min-width: 200px;
+        min-height: 1.35rem;
+        color: rgba(245, 240, 228, 0.55);
+        font-size: 0.92rem;
       }
 
-      .admin-actions {
+      .admin-status-inline.is-error {
+        color: #ff9f9f;
+      }
+
+      .admin-file-input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Carte « Ajouter une image » (comme un bloc de la galerie) */
+      .admin-add-tile {
+        cursor: pointer;
+        border-radius: 28px;
+      }
+
+      .admin-add-tile .mosquee-masonry-inner {
+        border-radius: 28px;
+        min-height: 280px;
+        border: 2px dashed rgba(201, 168, 76, 0.45);
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 28px 20px;
+        transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .admin-add-tile:hover .admin-add-inner,
+      .admin-add-tile:focus-within .admin-add-inner {
+        border-color: #c9a84c;
+        background: rgba(201, 168, 76, 0.08);
+        box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2);
+      }
+
+      .admin-add-icon {
+        font-size: 2.5rem;
+        color: #c9a84c;
+        opacity: 0.9;
+      }
+
+      .admin-add-title {
+        font-family: "Playfair Display", serif;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.95rem;
+        color: #f5f0e1;
+        text-align: center;
+      }
+
+      .admin-add-hint {
+        font-size: 0.85rem;
+        color: rgba(245, 240, 228, 0.5);
+        text-align: center;
+      }
+
+      /* Vignettes images : même esprit que mosquee (coins arrondis + survol) */
+      .admin-gallery-tile .mosquee-masonry-inner {
+        border-radius: 28px;
+        position: relative;
+      }
+
+      .admin-gallery-tile .mosquee-masonry-inner img {
+        border-radius: 28px;
+        min-height: 180px;
+        max-height: 480px;
+        object-fit: cover;
+      }
+
+      .admin-masonry-overlay {
+        position: absolute;
+        inset: 0;
+        border-radius: 28px;
+        background: linear-gradient(145deg, rgba(12, 124, 89, 0.72), rgba(0, 0, 0, 0.72));
         display: flex;
         align-items: center;
-        gap: 10px;
-        flex-wrap: wrap;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
       }
 
-      #fileInput {
-        color: var(--muted);
+      .admin-gallery-tile:hover .admin-masonry-overlay {
+        opacity: 1;
+        pointer-events: auto;
       }
 
-      .btn-upload {
-        background: #2f79ff;
-        color: #ffffff;
+      .admin-overlay-inner {
+        text-align: center;
+        padding: 16px;
+        max-width: 95%;
       }
 
-      .btn-logout {
-        background: #505c6e;
-        color: #ffffff;
-      }
-
-      .btn-delete {
-        background: var(--danger);
-        color: #ffffff;
-        width: 100%;
-      }
-
-      .btn-delete:hover {
-        background: var(--danger-hover);
-      }
-
-      .admin-status {
-        margin-bottom: 16px;
-        color: var(--muted);
-        min-height: 1.3rem;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        gap: 14px;
-      }
-
-      .card {
-        background: #171d27;
-        border: 1px solid #2a3342;
-        border-radius: 10px;
-        padding: 10px;
-      }
-
-      .card img {
-        width: 100%;
-        height: 170px;
-        object-fit: cover;
-        border-radius: 8px;
-        display: block;
-        margin-bottom: 8px;
-        background: #0b0f15;
-      }
-
-      .file-name {
-        margin: 0 0 8px 0;
-        font-size: 0.82rem;
-        color: #d3dbe6;
+      .admin-file-name {
+        margin: 0 0 14px;
+        font-size: 0.72rem;
+        color: rgba(255, 255, 255, 0.92);
         word-break: break-word;
+        line-height: 1.35;
       }
 
-      .empty {
-        color: var(--muted);
+      .admin-btn-delete {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        cursor: pointer;
+        background: linear-gradient(135deg, #b33a3a, #ff5d5d);
+        color: #fff;
+        transition: filter 0.15s ease, transform 0.15s ease;
+      }
+
+      .admin-btn-delete:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+      }
+
+      .admin-empty {
+        column-span: all;
+        text-align: center;
+        color: rgba(245, 240, 228, 0.55);
+        padding: 48px 20px;
+      }
+
+      .admin-gallery-tile {
+        cursor: default;
+        border-radius: 28px;
+      }
+
+      .admin-gallery-tile:hover .mosquee-masonry-inner img {
+        transform: scale(1.04);
       }
     </style>
   </head>
-  <body>
-    <section id="loginView" class="login-screen">
-      <div class="login-card">
-        <h1>Espace administration</h1>
-        <p>Connectez-vous pour gérer les images.</p>
+  <body class="nh-site admin-mosquee">
+    <div class="nh-bg" aria-hidden="true"></div>
 
-        <form id="loginForm">
-          <div class="field">
-            <label for="email">Email</label>
-            <input id="email" type="email" autocomplete="username" required />
-          </div>
-
-          <div class="field">
-            <label for="password">Mot de passe</label>
-            <input id="password" type="password" autocomplete="current-password" required />
-          </div>
-
-          <button class="btn btn-primary" type="submit">Se connecter</button>
-        </form>
-
-        <div id="loginMessage" class="message"></div>
-      </div>
-    </section>
-
-    <section id="adminView" class="admin-screen hidden">
-      <div class="admin-container">
-        <div class="admin-header">
-          <h2>Gestion des images</h2>
-          <div class="admin-actions">
-            <input id="fileInput" type="file" accept="image/*" />
-            <button id="uploadBtn" class="btn btn-upload" type="button">Uploader l'image</button>
-            <button id="logoutBtn" class="btn btn-logout" type="button">Déconnexion</button>
-          </div>
+    <div class="nh-topbar">
+      <div class="nh-container">
+        <div class="nh-topbar-left">
+          <a href="mailto:contact@mosqueebilal.fr"><i class="fa-solid fa-envelope"></i> contact@mosqueebilal.fr</a>
+          <span class="nh-topbar-sep">|</span>
+          <a href="tel:+33123456789"><i class="fa-solid fa-phone"></i> +33 1 23 45 67 89</a>
         </div>
-
-        <div id="adminStatus" class="admin-status"></div>
-        <div id="imagesGrid" class="grid"></div>
+        <div class="nh-topbar-right">
+          <a class="social-icon-circle" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/icon-instagram.png" alt="Instagram" /></a>
+          <a class="social-icon-circle" href="https://www.facebook.com/MosqueeBilal.ACMCM" target="_blank" rel="noopener" aria-label="Facebook"><img src="assets/icon-facebook.png" alt="Facebook" /></a>
+          <a class="social-icon-circle" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><img src="assets/icon-tiktok.svg" alt="TikTok" /></a>
+          <a class="social-icon-circle" href="https://www.youtube.com/channel/UCqFvkR5CR2H0aakfThZopjQ" target="_blank" rel="noopener" aria-label="YouTube"><img src="assets/icon-youtube.svg" alt="YouTube" /></a>
+          <a class="social-icon-circle" href="https://wa.me/33123456789" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/icon-whatsapp.svg" alt="WhatsApp" /></a>
+          <a class="social-icon-circle" href="https://twitch.tv" target="_blank" rel="noopener" aria-label="Twitch"><img src="assets/icon-twitch.svg" alt="Twitch" /></a>
+          <a class="social-icon-circle" href="https://x.com" target="_blank" rel="noopener" aria-label="X"><img src="assets/icon-x.svg" alt="X" /></a>
+        </div>
       </div>
-    </section>
+    </div>
 
+    <div id="donation-banner" class="donation-banner">
+      <span class="donation-banner-text">
+        🕌 Aidez-nous à achever la Mosquée Bilal !
+        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer">FAIRE UN DON ❤️</a>
+      </span>
+      <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">&#10005;</button>
+    </div>
+
+    <header class="nh-header">
+      <div class="nh-header-inner">
+        <a class="nh-brand" href="index.html" aria-label="Mosquée Bilal">
+          <img src="assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
+          <span class="nh-brand-text">Mosquée Bilal</span>
+        </a>
+
+        <nav class="nh-nav" aria-label="Navigation principale">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nh-nav-list">
+            <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
+            <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
+            <li><a href="quran.html" data-i18n="navQuran">CORAN</a></li>
+            <li><a href="ai.html" data-i18n="navHadiths">HADITHS</a></li>
+            <li><a href="horaires.html" data-i18n="navSchedule">HORAIRES</a></li>
+            <li><a href="donation.html" class="nh-nav-donate" data-i18n="navDonation">DON</a></li>
+            <li><a href="location.html" data-i18n="navLocation">LOCALISATION</a></li>
+            <li><a href="social.html" data-i18n="navSocial">RÉSEAUX</a></li>
+            <li><a href="contact.html" data-i18n="navContact">CONTACT</a></li>
+            <li><a href="admin.html" class="nh-nav-admin-active" aria-current="page">ADMIN</a></li>
+          </ul>
+        </nav>
+
+        <div class="lang-switch nh-lang-switch">
+          <button data-lang="fr" class="active">FR</button>
+          <button data-lang="ar">AR</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="nh-main">
+      <section id="loginView" class="admin-login-wrap">
+        <div class="admin-login-card">
+          <h1>Connexion</h1>
+          <p>Accédez à la gestion des images de la galerie.</p>
+
+          <form id="loginForm">
+            <div class="admin-field">
+              <label for="email">Email</label>
+              <input id="email" type="email" autocomplete="username" required />
+            </div>
+            <div class="admin-field">
+              <label for="password">Mot de passe</label>
+              <input id="password" type="password" autocomplete="current-password" required />
+            </div>
+            <button class="nh-btn nh-btn-gold" type="submit" style="width: 100%; margin-top: 8px">Se connecter</button>
+          </form>
+
+          <div id="loginMessage" class="admin-login-msg"></div>
+        </div>
+      </section>
+
+      <div id="adminView" class="hidden">
+        <section class="mosquee-gallery-section">
+          <header class="mosquee-gallery-header">
+            <h1 class="mosquee-gallery-title">Mosquée Bilal — Galerie</h1>
+            <div class="mosquee-gallery-title-line"></div>
+            <p class="mosquee-gallery-subtitle">
+              Gestion des photos (Supabase, bucket « images »). La galerie publique :
+              <a href="mosquee.html" style="color: #c9a84c; text-decoration: underline">mosquee.html</a>
+              — survolez une image pour la supprimer.
+            </p>
+          </header>
+
+          <div class="nh-container admin-toolbar-row">
+            <div id="adminStatus" class="admin-status-inline"></div>
+            <button id="logoutBtn" class="nh-btn nh-btn-outline" type="button">Déconnexion</button>
+          </div>
+
+          <input id="fileInput" class="admin-file-input" type="file" accept="image/*" />
+
+          <div class="nh-container">
+            <div id="imagesGrid" class="mosquee-masonry-grid"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer style="background: #0a0a0a; padding: 30px 40px">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px">
+        <div>
+          <p style="color: white; font-weight: bold; margin: 0" data-i18n="footerBrand">MOSQUÉE BILAL</p>
+          <p style="color: gray; font-size: 12px; margin: 0" data-i18n="footerLocation">Clichy-sous-Bois</p>
+        </div>
+        <div style="flex: 1; text-align: center">
+          <a href="contact.html" style="color: #c9a84c; text-decoration: none; font-weight: bold" data-i18n="navContact">CONTACT</a>
+        </div>
+        <div>
+          <p style="color: gray; font-size: 12px; margin: 0" data-i18n="footerText">© 2026 Mosquée Bilal</p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script src="script.js"></script>
     <script>
-      const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4'
-      const BUCKET = "images";
+      (function () {
+        const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
+        const SUPABASE_ANON_KEY =
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4';
+        const BUCKET = "images";
 
-      const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth: {
-          persistSession: true,
-          storageKey: 'mosquee-admin-auth',
-          storage: window.localStorage,
-          autoRefreshToken: true,
-          detectSessionInUrl: false
-        }
-      })
-
-      const loginView = document.getElementById("loginView");
-      const adminView = document.getElementById("adminView");
-      const loginForm = document.getElementById("loginForm");
-      const loginMessage = document.getElementById("loginMessage");
-      const adminStatus = document.getElementById("adminStatus");
-      const imagesGrid = document.getElementById("imagesGrid");
-      const uploadBtn = document.getElementById("uploadBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const fileInput = document.getElementById("fileInput");
-
-      function setLoginMessage(text, type) {
-        loginMessage.textContent = text || "";
-        loginMessage.className = "message" + (type ? " " + type : "");
-      }
-
-      function setAdminStatus(text, isError) {
-        adminStatus.textContent = text || "";
-        adminStatus.style.color = isError ? "#ff9f9f" : "#a7b3c2";
-      }
-
-      function showLogin() {
-        loginView.classList.remove("hidden");
-        adminView.classList.add("hidden");
-      }
-
-      function showAdmin() {
-        loginView.classList.add("hidden");
-        adminView.classList.remove("hidden");
-      }
-
-      function escapeHtml(value) {
-        return value
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
-      function safeFileName(originalName) {
-        const cleaned = originalName.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
-        return cleaned.replace(/-+/g, "-");
-      }
-
-      async function renderImages() {
-        setAdminStatus("Chargement des images...");
-        imagesGrid.innerHTML = "";
-
-        const { data, error } = await db.storage.from(BUCKET).list("", {
-          limit: 200,
-          sortBy: { column: "name", order: "desc" },
-        });
-
-        if (error) {
-          setAdminStatus("Impossible de charger les images : " + error.message, true);
-          return;
+        function makeDb() {
+          const lib = window.supabase;
+          const createClient =
+            lib && typeof lib.createClient === "function"
+              ? lib.createClient
+              : lib && lib.default && typeof lib.default.createClient === "function"
+                ? lib.default.createClient
+                : null;
+          if (!createClient) return null;
+          return createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+              persistSession: true,
+              storageKey: "mosquee-admin-auth",
+              storage: window.localStorage,
+              autoRefreshToken: true,
+              detectSessionInUrl: false,
+            },
+          });
         }
 
-        const files = (data || []).filter((item) => item.name && !item.id?.endsWith("/"));
-        if (!files.length) {
-          imagesGrid.innerHTML = '<p class="empty">Aucune image dans le bucket pour le moment.</p>';
-          setAdminStatus("Aucune image trouvée.");
-          return;
+        const db = makeDb();
+        const loginView = document.getElementById("loginView");
+        const adminView = document.getElementById("adminView");
+        const loginForm = document.getElementById("loginForm");
+        const loginMessage = document.getElementById("loginMessage");
+        const adminStatus = document.getElementById("adminStatus");
+        const imagesGrid = document.getElementById("imagesGrid");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const fileInput = document.getElementById("fileInput");
+
+        function setLoginMessage(text, type) {
+          loginMessage.textContent = text || "";
+          loginMessage.className = "admin-login-msg" + (type ? " " + type : "");
         }
 
-        const cards = await Promise.all(
-          files.map(async (file) => {
-            const { data: signed, error: signedError } = await db.storage
-              .from(BUCKET)
-              .createSignedUrl(file.name, 60 * 60);
-
-            const imageUrl = signedError ? "" : signed.signedUrl;
-            const safeName = escapeHtml(file.name);
-
-            return `
-              <article class="card">
-                ${
-                  imageUrl
-                    ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy" />`
-                    : `<div style="height:170px;display:flex;align-items:center;justify-content:center;background:#0b0f15;border-radius:8px;margin-bottom:8px;color:#93a0b2;">Aperçu indisponible</div>`
-                }
-                <p class="file-name">${safeName}</p>
-                <button class="btn btn-delete" data-file="${safeName}" type="button">Supprimer</button>
-              </article>
-            `;
-          })
-        );
-
-        imagesGrid.innerHTML = cards.join("");
-        setAdminStatus(files.length + " image(s) affichée(s).");
-      }
-
-      loginForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        setLoginMessage("Connexion en cours...", "success");
-
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
-
-        const { error } = await db.auth.signInWithPassword({ email, password });
-        if (error) {
-          setLoginMessage("Erreur de connexion : " + error.message, "error");
-          return;
+        function setAdminStatus(text, isError) {
+          adminStatus.textContent = text || "";
+          adminStatus.classList.toggle("is-error", !!isError);
         }
 
-        setLoginMessage("Connexion réussie.", "success");
-        showAdmin();
-        await renderImages();
-      });
-
-      uploadBtn.addEventListener("click", async () => {
-        const file = fileInput.files && fileInput.files[0];
-        if (!file) {
-          setAdminStatus("Sélectionnez une image avant l'upload.", true);
-          return;
+        function showLogin() {
+          loginView.classList.remove("hidden");
+          adminView.classList.add("hidden");
         }
 
-        setAdminStatus("Upload en cours...");
-        const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
-        const uniqueName = `${Date.now()}-${safeFileName(file.name || "image")}.${extension}`;
-
-        const { error } = await db.storage.from(BUCKET).upload(uniqueName, file, {
-          cacheControl: "3600",
-          upsert: false,
-        });
-
-        if (error) {
-          setAdminStatus("Erreur upload : " + error.message, true);
-          return;
+        function showAdmin() {
+          loginView.classList.add("hidden");
+          adminView.classList.remove("hidden");
         }
 
-        fileInput.value = "";
-        setAdminStatus("Image uploadée avec succès.");
-        await renderImages();
-      });
-
-      imagesGrid.addEventListener("click", async (event) => {
-        const button = event.target.closest(".btn-delete");
-        if (!button) {
-          return;
+        function escapeHtml(value) {
+          return value
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
         }
 
-        const fileName = button.dataset.file;
-        if (!fileName) {
-          return;
+        function safeFileName(originalName) {
+          const cleaned = originalName.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+          return cleaned.replace(/-+/g, "-");
         }
 
-        const confirmDelete = window.confirm("Supprimer cette image ?");
-        if (!confirmDelete) {
-          return;
+        function addImageSlotHtml() {
+          return (
+            '<figure class="mosquee-masonry-item admin-add-tile" id="adminAddTile" role="button" tabindex="0" aria-label="Ajouter une image">' +
+            '<div class="mosquee-masonry-inner admin-add-inner">' +
+            '<i class="fa-solid fa-image admin-add-icon" aria-hidden="true"></i>' +
+            '<span class="admin-add-title">Ajouter une image</span>' +
+            '<span class="admin-add-hint">Cliquez pour choisir une photo</span>' +
+            "</div></figure>"
+          );
         }
 
-        setAdminStatus("Suppression en cours...");
-        const { error } = await db.storage.from(BUCKET).remove([fileName]);
-        if (error) {
-          setAdminStatus("Erreur suppression : " + error.message, true);
-          return;
+        function bindAddTile() {
+          const tile = document.getElementById("adminAddTile");
+          if (!tile) return;
+          tile.addEventListener("click", function () {
+            fileInput.click();
+          });
+          tile.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fileInput.click();
+            }
+          });
         }
 
-        setAdminStatus("Image supprimée.");
-        await renderImages();
-      });
+        async function uploadSelectedFile() {
+          if (!db) return;
+          const file = fileInput.files && fileInput.files[0];
+          if (!file) return;
 
-      logoutBtn.addEventListener("click", async () => {
-        await db.auth.signOut();
-        showLogin();
-        setAdminStatus("");
-        setLoginMessage("Vous avez été déconnecté.", "success");
-      });
+          setAdminStatus("Envoi en cours…");
+          const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
+          const uniqueName = Date.now() + "-" + safeFileName(file.name || "image") + "." + extension;
 
-      async function init() {
-        const {
-          data: { session },
-        } = await db.auth.getSession();
+          const { error } = await db.storage.from(BUCKET).upload(uniqueName, file, {
+            cacheControl: "3600",
+            upsert: false,
+          });
 
-        if (session) {
-          showAdmin();
-          await renderImages();
-        } else {
-          showLogin();
-        }
-      }
+          if (error) {
+            setAdminStatus("Erreur d’envoi : " + error.message, true);
+            return;
+          }
 
-      db.auth.onAuthStateChange(async (event, session) => {
-        if (event === "SIGNED_OUT" || !session) {
-          showLogin();
-          imagesGrid.innerHTML = "";
-          return;
-        }
-        if (event === "SIGNED_IN") {
-          showAdmin();
+          fileInput.value = "";
+          setAdminStatus("Image ajoutée.");
           await renderImages();
         }
-      });
 
-      init();
+        async function renderImages() {
+          if (!db) return;
+          setAdminStatus("Chargement des images…");
+          imagesGrid.innerHTML = addImageSlotHtml();
+          bindAddTile();
+
+          const { data, error } = await db.storage.from(BUCKET).list("", {
+            limit: 200,
+            sortBy: { column: "name", order: "desc" },
+          });
+
+          if (error) {
+            setAdminStatus("Impossible de charger les images : " + error.message, true);
+            return;
+          }
+
+          const files = (data || []).filter(function (item) {
+            return item.name && !(item.id && item.id.endsWith("/"));
+          });
+          if (!files.length) {
+            imagesGrid.insertAdjacentHTML(
+              "beforeend",
+              '<p class="admin-empty">Aucune image dans le stockage. Utilisez la carte « Ajouter une image ».</p>'
+            );
+            setAdminStatus("Aucune image pour le moment.");
+            return;
+          }
+
+          const cards = await Promise.all(
+            files.map(async function (file) {
+              const { data: signed, error: signedError } = await db.storage
+                .from(BUCKET)
+                .createSignedUrl(file.name, 60 * 60);
+              const imageUrl = signedError ? "" : signed.signedUrl;
+              const safeName = escapeHtml(file.name);
+              const dataFile = encodeURIComponent(file.name);
+
+              return (
+                '<figure class="mosquee-masonry-item admin-gallery-tile">' +
+                '<div class="mosquee-masonry-inner">' +
+                (imageUrl
+                  ? '<img src="' + imageUrl + '" alt="' + safeName + '" loading="lazy" />'
+                  : '<div style="min-height:200px;display:flex;align-items:center;justify-content:center;background:#111;color:rgba(255,255,255,0.45);border-radius:28px;">Aperçu indisponible</div>') +
+                '<div class="mosquee-masonry-overlay admin-masonry-overlay">' +
+                '<div class="admin-overlay-inner">' +
+                '<p class="admin-file-name">' +
+                safeName +
+                "</p>" +
+                '<button type="button" class="admin-btn-delete" data-file="' +
+                dataFile +
+                '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
+                "</div></div></div></figure>"
+              );
+            })
+          );
+
+          imagesGrid.insertAdjacentHTML("beforeend", cards.join(""));
+          setAdminStatus(files.length + " image(s) dans la galerie.");
+        }
+
+        if (!db) {
+          setLoginMessage(
+            "Impossible de charger la librairie Supabase (réessayez ou désactivez un bloqueur). Actualisez la page.",
+            "error"
+          );
+          return;
+        }
+
+        fileInput.addEventListener("change", function () {
+          uploadSelectedFile();
+        });
+
+        loginForm.addEventListener("submit", async function (event) {
+          event.preventDefault();
+          setLoginMessage("Connexion en cours…", "success");
+
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+
+          const { error } = await db.auth.signInWithPassword({ email, password });
+          if (error) {
+            setLoginMessage("Erreur de connexion : " + error.message, "error");
+            return;
+          }
+
+          setLoginMessage("Connexion réussie.", "success");
+          showAdmin();
+          await renderImages();
+        });
+
+        imagesGrid.addEventListener("click", async function (event) {
+          const button = event.target.closest(".admin-btn-delete");
+          if (!button || !db) return;
+
+          let fileName = button.getAttribute("data-file");
+          if (!fileName) return;
+          try {
+            fileName = decodeURIComponent(fileName);
+          } catch (e) {
+            return;
+          }
+
+          if (!window.confirm("Supprimer cette image ?")) return;
+
+          setAdminStatus("Suppression en cours…");
+          const { error } = await db.storage.from(BUCKET).remove([fileName]);
+          if (error) {
+            setAdminStatus("Erreur lors de la suppression : " + error.message, true);
+            return;
+          }
+
+          setAdminStatus("Image supprimée.");
+          await renderImages();
+        });
+
+        logoutBtn.addEventListener("click", async function () {
+          await db.auth.signOut();
+          showLogin();
+          setAdminStatus("");
+          setLoginMessage("Vous avez été déconnecté.", "success");
+        });
+
+        async function init() {
+          const {
+            data: { session },
+          } = await db.auth.getSession();
+          if (session) {
+            showAdmin();
+            await renderImages();
+          } else {
+            showLogin();
+          }
+        }
+
+        db.auth.onAuthStateChange(async function (event, session) {
+          if (event === "SIGNED_OUT" || !session) {
+            showLogin();
+            imagesGrid.innerHTML = "";
+            return;
+          }
+          if (event === "SIGNED_IN") {
+            showAdmin();
+            await renderImages();
+          }
+        });
+
+        init();
+      })();
     </script>
   </body>
 </html>

@@ -331,19 +331,32 @@
     </footer>
 
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
       const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
       const SUPABASE_ANON_KEY =
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qaGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NjI1NzUsImV4cCI6MjA2MDUzODU3NX0.Ta0C_FA6vYGDCFlBdHpONSwm5gyXIOuFVVBaOJ1ETZY";
 
+      function openSupabaseReadOnly() {
+        const lib = window.supabase;
+        const create =
+          lib && typeof lib.createClient === "function"
+            ? lib.createClient
+            : lib && lib.default && typeof lib.default.createClient === "function"
+              ? lib.default.createClient
+              : null;
+        if (!create) return null;
+        return create(SUPABASE_URL, SUPABASE_ANON_KEY);
+      }
+
       async function loadSupabaseGalleryImages() {
         const thumbsContainer = document.querySelector("#gallery .nh-gallery-thumbs");
-        if (!thumbsContainer || !window.supabase) {
+        const client = openSupabaseReadOnly();
+        if (!thumbsContainer || !client) {
           return;
         }
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const supabase = client;
         const { data, error } = await supabase
           .from("images")
           .select("*")
