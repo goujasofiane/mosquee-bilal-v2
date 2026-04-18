@@ -333,9 +333,11 @@
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
     <script>
+      /* Même projet / clé que admin.html pour éviter les erreurs « JWT » ou refus list. */
       const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
       const SUPABASE_ANON_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qaGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NjI1NzUsImV4cCI6MjA2MDUzODU3NX0.Ta0C_FA6vYGDCFlBdHpONSwm5gyXIOuFVVBaOJ1ETZY";
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qeGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NzI1MjAsImV4cCI6MjA5MjA0ODUyMH0.mfwX5JSHjsk516bjPnQYv2ccJy5ZbhsY9acZpQ8P4a4";
+      const BUCKET = "images";
 
       function openSupabaseReadOnly() {
         const lib = window.supabase;
@@ -349,36 +351,71 @@
         return create(SUPABASE_URL, SUPABASE_ANON_KEY);
       }
 
+      function isProbablyImageFile(name) {
+        return /\.(jpe?g|png|gif|webp|avif|bmp|svg)$/i.test(name || "");
+      }
+
       async function loadSupabaseGalleryImages() {
         const thumbsContainer = document.querySelector("#gallery .nh-gallery-thumbs");
+        const mainImg = document.querySelector("#gallery .nh-gallery-main img");
+        const quadImgs = document.querySelectorAll("#gallery .nh-gallery-quad .nh-gallery-tile img");
         const client = openSupabaseReadOnly();
         if (!thumbsContainer || !client) {
           return;
         }
 
-        const supabase = client;
-        const { data, error } = await supabase
-          .from("images")
-          .select("*")
-          .order("created_at", { ascending: false });
+        const { data: files, error: listError } = await client.storage.from(BUCKET).list("", {
+          limit: 100,
+          sortBy: { column: "name", order: "desc" },
+        });
 
-        if (error || !Array.isArray(data)) {
-          console.error("Erreur chargement Supabase images:", error?.message || "données invalides");
+        if (listError) {
+          console.error("Erreur liste bucket images:", listError.message);
           return;
         }
 
-        data.forEach((imageRow) => {
-          const imageUrl = imageRow.url || imageRow.image_url || imageRow.src || imageRow.path;
-          if (!imageUrl) {
-            return;
-          }
+        const items = (files || []).filter(function (f) {
+          return f.name && !(f.id && f.id.endsWith("/")) && isProbablyImageFile(f.name);
+        });
 
+        if (!items.length) {
+          return;
+        }
+
+        const urls = [];
+        for (const file of items) {
+          const { data: signed, error: signError } = await client.storage
+            .from(BUCKET)
+            .createSignedUrl(file.name, 3600);
+          if (signError || !signed || !signed.signedUrl) {
+            continue;
+          }
+          urls.push(signed.signedUrl);
+        }
+
+        if (!urls.length) {
+          return;
+        }
+
+        thumbsContainer.innerHTML = "";
+        urls.forEach(function (src) {
           const img = document.createElement("img");
-          img.src = imageUrl;
-          img.alt = "Vignette Supabase";
+          img.src = src;
+          img.alt = "Photo galerie";
           img.loading = "lazy";
           thumbsContainer.appendChild(img);
         });
+
+        if (mainImg && urls[0]) {
+          mainImg.src = urls[0];
+        }
+        if (quadImgs && quadImgs.length) {
+          for (let i = 0; i < quadImgs.length; i++) {
+            if (urls[i + 1]) {
+              quadImgs[i].src = urls[i + 1];
+            }
+          }
+        }
       }
 
       window.addEventListener("DOMContentLoaded", () => {

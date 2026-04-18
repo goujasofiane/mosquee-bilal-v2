@@ -472,30 +472,37 @@ function initScrollReveal() {
   elements.forEach((el) => observer.observe(el));
 }
 
+const GALLERY_LIGHTBOX_IMG_SELECTOR =
+  ".home-gallery-grid img, .mosquee-masonry-grid img, .nh-gallery img, .nh-gallery-thumbs img";
+
 function initGalleryLightbox() {
-  const thumbs = document.querySelectorAll(
-    ".home-gallery-grid img, .mosquee-masonry-grid img, .nh-gallery img, .nh-gallery-thumbs img"
-  );
   const lightbox = document.getElementById("gallery-lightbox");
-  if (!thumbs.length || !lightbox) return;
+  if (!lightbox) return;
 
   const lightboxImg = lightbox.querySelector("img");
   const closeBtn = lightbox.querySelector(".gallery-lightbox-close");
   const prevBtn = lightbox.querySelector(".gallery-lightbox-prev");
   const nextBtn = lightbox.querySelector(".gallery-lightbox-next");
-  const sources = Array.from(thumbs).map((img) => ({
-    src: img.src,
-    alt: img.alt || "",
-  }));
   let currentIndex = 0;
 
+  function getSources() {
+    return Array.from(document.querySelectorAll(GALLERY_LIGHTBOX_IMG_SELECTOR)).map((img) => ({
+      src: img.src,
+      alt: img.alt || "",
+    }));
+  }
+
   function showAt(index) {
+    const sources = getSources();
+    if (!sources.length || !lightboxImg) return;
     currentIndex = (index + sources.length) % sources.length;
     lightboxImg.src = sources[currentIndex].src;
     lightboxImg.alt = sources[currentIndex].alt;
   }
 
   function openLightbox(index) {
+    const sources = getSources();
+    if (!sources.length) return;
     showAt(index);
     lightbox.classList.add("open");
     lightbox.setAttribute("aria-hidden", "false");
@@ -508,10 +515,16 @@ function initGalleryLightbox() {
     document.body.style.overflow = "";
   }
 
-  thumbs.forEach((img, index) => {
-    img.addEventListener("click", () => {
-      openLightbox(index);
-    });
+  /** Délégation : les images ajoutées après coup (Supabase) restent cliquables. */
+  document.addEventListener("click", (e) => {
+    const t = e.target;
+    if (!t || t.tagName !== "IMG") return;
+    if (!t.matches(GALLERY_LIGHTBOX_IMG_SELECTOR)) return;
+    const imgs = Array.from(document.querySelectorAll(GALLERY_LIGHTBOX_IMG_SELECTOR));
+    const resolved = imgs.indexOf(t);
+    if (resolved < 0) return;
+    e.preventDefault();
+    openLightbox(resolved);
   });
 
   if (closeBtn) {
