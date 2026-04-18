@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Administration - Mosquee Bilal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      :root {
+        --bg-dark: #0f1217;
+        --panel-dark: #171c24;
+        --border: #2a3342;
+        --text: #f2f5f8;
+        --muted: #a7b3c2;
+        --primary: #21c78b;
+        --danger: #ff5d5d;
+        --danger-hover: #e64949;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .login-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, #1b2230 0%, var(--bg-dark) 60%);
+        padding: 20px;
+      }
+
+      .login-card {
+        width: 100%;
+        max-width: 420px;
+        background: var(--panel-dark);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 28px;
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .login-card h1 {
+        margin-top: 0;
+        margin-bottom: 6px;
+        font-size: 1.5rem;
+      }
+
+      .login-card p {
+        margin-top: 0;
+        color: var(--muted);
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .field input {
+        width: 100%;
+        padding: 11px 12px;
+        background: #10151d;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text);
+        font-size: 0.95rem;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        width: 100%;
+        margin-top: 4px;
+        background: var(--primary);
+        color: #06281b;
+      }
+
+      .message {
+        margin-top: 12px;
+        min-height: 1.25rem;
+        font-size: 0.9rem;
+      }
+
+      .message.error {
+        color: #ff9f9f;
+      }
+
+      .message.success {
+        color: #93f4ce;
+      }
+
+      .admin-screen {
+        min-height: 100vh;
+        background: #0e131a;
+        color: var(--text);
+      }
+
+      .admin-container {
+        max-width: 1150px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .admin-header h2 {
+        margin: 0;
+      }
+
+      .admin-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      #fileInput {
+        color: var(--muted);
+      }
+
+      .btn-upload {
+        background: #2f79ff;
+        color: #ffffff;
+      }
+
+      .btn-logout {
+        background: #505c6e;
+        color: #ffffff;
+      }
+
+      .btn-delete {
+        background: var(--danger);
+        color: #ffffff;
+        width: 100%;
+      }
+
+      .btn-delete:hover {
+        background: var(--danger-hover);
+      }
+
+      .admin-status {
+        margin-bottom: 16px;
+        color: var(--muted);
+        min-height: 1.3rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        background: #171d27;
+        border: 1px solid #2a3342;
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .card img {
+        width: 100%;
+        height: 170px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: block;
+        margin-bottom: 8px;
+        background: #0b0f15;
+      }
+
+      .file-name {
+        margin: 0 0 8px 0;
+        font-size: 0.82rem;
+        color: #d3dbe6;
+        word-break: break-word;
+      }
+
+      .empty {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <section id="loginView" class="login-screen">
+      <div class="login-card">
+        <h1>Espace administration</h1>
+        <p>Connectez-vous pour gérer les images.</p>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" autocomplete="username" required />
+          </div>
+
+          <div class="field">
+            <label for="password">Mot de passe</label>
+            <input id="password" type="password" autocomplete="current-password" required />
+          </div>
+
+          <button class="btn btn-primary" type="submit">Se connecter</button>
+        </form>
+
+        <div id="loginMessage" class="message"></div>
+      </div>
+    </section>
+
+    <section id="adminView" class="admin-screen hidden">
+      <div class="admin-container">
+        <div class="admin-header">
+          <h2>Gestion des images</h2>
+          <div class="admin-actions">
+            <input id="fileInput" type="file" accept="image/*" />
+            <button id="uploadBtn" class="btn btn-upload" type="button">Uploader l'image</button>
+            <button id="logoutBtn" class="btn btn-logout" type="button">Déconnexion</button>
+          </div>
+        </div>
+
+        <div id="adminStatus" class="admin-status"></div>
+        <div id="imagesGrid" class="grid"></div>
+      </div>
+    </section>
+
+    <script>
+      const SUPABASE_URL = "https://znwepeqmlthlojxifrfs.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpud2VwZXFtbHRobG9qaGlmcmZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5NjI1NzUsImV4cCI6MjA2MDUzODU3NX0.Ta0C_FA6vYGDCFlBdHpONSwm5gyXIOuFVVBaOJ1ETZY";
+      const BUCKET = "images";
+
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const loginView = document.getElementById("loginView");
+      const adminView = document.getElementById("adminView");
+      const loginForm = document.getElementById("loginForm");
+      const loginMessage = document.getElementById("loginMessage");
+      const adminStatus = document.getElementById("adminStatus");
+      const imagesGrid = document.getElementById("imagesGrid");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const fileInput = document.getElementById("fileInput");
+
+      function setLoginMessage(text, type) {
+        loginMessage.textContent = text || "";
+        loginMessage.className = "message" + (type ? " " + type : "");
+      }
+
+      function setAdminStatus(text, isError) {
+        adminStatus.textContent = text || "";
+        adminStatus.style.color = isError ? "#ff9f9f" : "#a7b3c2";
+      }
+
+      function showLogin() {
+        loginView.classList.remove("hidden");
+        adminView.classList.add("hidden");
+      }
+
+      function showAdmin() {
+        loginView.classList.add("hidden");
+        adminView.classList.remove("hidden");
+      }
+
+      function escapeHtml(value) {
+        return value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function safeFileName(originalName) {
+        const cleaned = originalName.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
+        return cleaned.replace(/-+/g, "-");
+      }
+
+      async function renderImages() {
+        setAdminStatus("Chargement des images...");
+        imagesGrid.innerHTML = "";
+
+        const { data, error } = await client.storage.from(BUCKET).list("", {
+          limit: 200,
+          sortBy: { column: "name", order: "desc" },
+        });
+
+        if (error) {
+          setAdminStatus("Impossible de charger les images : " + error.message, true);
+          return;
+        }
+
+        const files = (data || []).filter((item) => item.name && !item.id?.endsWith("/"));
+        if (!files.length) {
+          imagesGrid.innerHTML = '<p class="empty">Aucune image dans le bucket pour le moment.</p>';
+          setAdminStatus("Aucune image trouvée.");
+          return;
+        }
+
+        const cards = await Promise.all(
+          files.map(async (file) => {
+            const { data: signed, error: signedError } = await client.storage
+              .from(BUCKET)
+              .createSignedUrl(file.name, 60 * 60);
+
+            const imageUrl = signedError ? "" : signed.signedUrl;
+            const safeName = escapeHtml(file.name);
+
+            return `
+              <article class="card">
+                ${
+                  imageUrl
+                    ? `<img src="${imageUrl}" alt="${safeName}" loading="lazy" />`
+                    : `<div style="height:170px;display:flex;align-items:center;justify-content:center;background:#0b0f15;border-radius:8px;margin-bottom:8px;color:#93a0b2;">Aperçu indisponible</div>`
+                }
+                <p class="file-name">${safeName}</p>
+                <button class="btn btn-delete" data-file="${safeName}" type="button">Supprimer</button>
+              </article>
+            `;
+          })
+        );
+
+        imagesGrid.innerHTML = cards.join("");
+        setAdminStatus(files.length + " image(s) affichée(s).");
+      }
+
+      loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setLoginMessage("Connexion en cours...", "success");
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const { error } = await client.auth.signInWithPassword({ email, password });
+        if (error) {
+          setLoginMessage("Erreur de connexion : " + error.message, "error");
+          return;
+        }
+
+        setLoginMessage("Connexion réussie.", "success");
+        showAdmin();
+        await renderImages();
+      });
+
+      uploadBtn.addEventListener("click", async () => {
+        const file = fileInput.files && fileInput.files[0];
+        if (!file) {
+          setAdminStatus("Sélectionnez une image avant l'upload.", true);
+          return;
+        }
+
+        setAdminStatus("Upload en cours...");
+        const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
+        const uniqueName = `${Date.now()}-${safeFileName(file.name || "image")}.${extension}`;
+
+        const { error } = await client.storage.from(BUCKET).upload(uniqueName, file, {
+          cacheControl: "3600",
+          upsert: false,
+        });
+
+        if (error) {
+          setAdminStatus("Erreur upload : " + error.message, true);
+          return;
+        }
+
+        fileInput.value = "";
+        setAdminStatus("Image uploadée avec succès.");
+        await renderImages();
+      });
+
+      imagesGrid.addEventListener("click", async (event) => {
+        const button = event.target.closest(".btn-delete");
+        if (!button) {
+          return;
+        }
+
+        const fileName = button.dataset.file;
+        if (!fileName) {
+          return;
+        }
+
+        const confirmDelete = window.confirm("Supprimer cette image ?");
+        if (!confirmDelete) {
+          return;
+        }
+
+        setAdminStatus("Suppression en cours...");
+        const { error } = await client.storage.from(BUCKET).remove([fileName]);
+        if (error) {
+          setAdminStatus("Erreur suppression : " + error.message, true);
+          return;
+        }
+
+        setAdminStatus("Image supprimée.");
+        await renderImages();
+      });
+
+      logoutBtn.addEventListener("click", async () => {
+        await client.auth.signOut();
+        showLogin();
+        setAdminStatus("");
+        setLoginMessage("Vous avez été déconnecté.", "success");
+      });
+
+      async function init() {
+        const {
+          data: { session },
+        } = await client.auth.getSession();
+
+        if (session) {
+          showAdmin();
+          await renderImages();
+        } else {
+          showLogin();
+        }
+      }
+
+      client.auth.onAuthStateChange(async (event, session) => {
+        if (event === "SIGNED_OUT" || !session) {
+          showLogin();
+          imagesGrid.innerHTML = "";
+          return;
+        }
+        if (event === "SIGNED_IN") {
+          showAdmin();
+          await renderImages();
+        }
+      });
+
+      init();
+    </script>
+  </body>
+</html>
