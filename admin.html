@@ -460,9 +460,41 @@
             .replace(/'/g, "&#039;");
         }
 
-        function safeFileName(originalName) {
-          const cleaned = originalName.toLowerCase().replace(/[^a-z0-9._-]/g, "-");
-          return cleaned.replace(/-+/g, "-");
+        /** Clé Storage + nom du fichier multipart : ASCII strict (évite « File name is invalid » côté API). */
+        function safeExtension(originalName) {
+          if (!originalName || !originalName.includes(".")) return "jpg";
+          const ext = originalName.split(".").pop().toLowerCase();
+          const map = {
+            jpg: "jpg",
+            jpeg: "jpg",
+            png: "png",
+            gif: "gif",
+            webp: "webp",
+            avif: "avif",
+            bmp: "bmp",
+            svg: "svg",
+          };
+          return map[ext] || "jpg";
+        }
+
+        function safeStorageBaseName(originalName) {
+          const name = originalName || "image";
+          const lastDot = name.lastIndexOf(".");
+          const base = lastDot > 0 ? name.slice(0, lastDot) : name;
+          let ascii = base;
+          try {
+            ascii = base.normalize("NFD").replace(/\p{M}/gu, "");
+          } catch (e) {
+            ascii = base;
+          }
+          let s = ascii
+            .toLowerCase()
+            .replace(/[^a-z0-9_-]/g, "-")
+            .replace(/-+/g, "-")
+            .replace(/^-+|-+$/g, "");
+          if (!s) s = "image";
+          if (s.length > 120) s = s.slice(0, 120).replace(/-+$/g, "") || "image";
+          return s;
         }
 
         function addImageSlotHtml() {
@@ -496,10 +528,15 @@
           if (!file) return;
 
           setAdminStatus("Envoi en cours…");
-          const extension = file.name.includes(".") ? file.name.split(".").pop().toLowerCase() : "jpg";
-          const uniqueName = Date.now() + "-" + safeFileName(file.name || "image") + "." + extension;
+          const extension = safeExtension(file.name || "");
+          const uniqueName = Date.now() + "-" + safeStorageBaseName(file.name || "image") + "." + extension;
 
-          const { error } = await db.storage.from(BUCKET).upload(uniqueName, file, {
+          const payload =
+            typeof File !== "undefined"
+              ? new File([file], uniqueName, { type: file.type || "application/octet-stream" })
+              : file;
+
+          const { error } = await db.storage.from(BUCKET).upload(uniqueName, payload, {
             cacheControl: "3600",
             upsert: false,
           });
