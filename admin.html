@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/logo1.png" />
     <link rel="apple-touch-icon" href="assets/logo1.png" />
-    <title>Administration galerie — Mosquée Bilal</title>
+    <title>Administration — Mosquée Bilal</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
@@ -20,282 +20,9 @@
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      .hidden {
-        display: none !important;
-      }
-
-      body.admin-mosquee .mosquee-gallery-section {
-        background: #000000;
-        padding-top: 28px;
-        padding-bottom: 72px;
-      }
-
-      body.admin-mosquee .nh-main {
-        background: #000000;
-      }
-
-      .nh-nav-list a.nh-nav-admin-active {
-        color: #c9a84c !important;
-      }
-
-      .admin-login-wrap {
-        min-height: calc(100vh - 200px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 48px 20px 80px;
-      }
-
-      .admin-login-card {
-        width: 100%;
-        max-width: 440px;
-        background: rgba(12, 12, 12, 0.92);
-        border: 1px solid rgba(201, 168, 76, 0.35);
-        border-radius: 22px;
-        padding: 32px;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-      }
-
-      .admin-login-card h1 {
-        margin: 0 0 8px;
-        font-family: "Playfair Display", serif;
-        font-size: 1.5rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #f5f0e1;
-      }
-
-      .admin-login-card > p {
-        margin: 0 0 22px;
-        color: rgba(245, 240, 228, 0.65);
-        font-size: 0.95rem;
-      }
-
-      .admin-field {
-        margin-bottom: 16px;
-      }
-
-      .admin-field label {
-        display: block;
-        margin-bottom: 6px;
-        color: rgba(245, 240, 228, 0.55);
-        font-size: 0.88rem;
-      }
-
-      .admin-field input {
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(201, 168, 76, 0.25);
-        background: rgba(0, 0, 0, 0.45);
-        color: #fff;
-        font-size: 1rem;
-      }
-
-      .admin-login-msg {
-        margin-top: 14px;
-        min-height: 1.25rem;
-        font-size: 0.9rem;
-      }
-
-      .admin-login-msg.error {
-        color: #ff9f9f;
-      }
-
-      .admin-login-msg.success {
-        color: #93f4ce;
-      }
-
-      .admin-toolbar-row {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 20px;
-      }
-
-      .admin-status-inline {
-        flex: 1;
-        min-width: 200px;
-        min-height: 1.35rem;
-        color: rgba(245, 240, 228, 0.55);
-        font-size: 0.92rem;
-      }
-
-      .admin-status-inline.is-error {
-        color: #ff9f9f;
-      }
-
-      .admin-file-input {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-
-      .admin-add-tile {
-        cursor: pointer;
-        border-radius: 28px;
-      }
-
-      .admin-add-tile .mosquee-masonry-inner {
-        border-radius: 28px;
-        min-height: 280px;
-        border: 2px dashed rgba(201, 168, 76, 0.45);
-        background: rgba(255, 255, 255, 0.02);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 28px 20px;
-        transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      .admin-add-tile:hover .admin-add-inner,
-      .admin-add-tile:focus-within .admin-add-inner {
-        border-color: #c9a84c;
-        background: rgba(201, 168, 76, 0.08);
-        box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.2);
-      }
-
-      .admin-add-icon {
-        font-size: 2.5rem;
-        color: #c9a84c;
-        opacity: 0.9;
-      }
-
-      .admin-add-title {
-        font-family: "Playfair Display", serif;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        font-size: 0.95rem;
-        color: #f5f0e1;
-        text-align: center;
-      }
-
-      .admin-add-hint {
-        font-size: 0.85rem;
-        color: rgba(245, 240, 228, 0.5);
-        text-align: center;
-      }
-
-      .admin-gallery-tile .mosquee-masonry-inner {
-        border-radius: 28px;
-        position: relative;
-      }
-
-      .admin-gallery-tile .mosquee-masonry-inner img {
-        border-radius: 28px;
-        min-height: 180px;
-        max-height: 480px;
-        object-fit: cover;
-      }
-
-      .admin-masonry-overlay {
-        position: absolute;
-        inset: 0;
-        border-radius: 28px;
-        background: linear-gradient(145deg, rgba(12, 124, 89, 0.72), rgba(0, 0, 0, 0.72));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-      }
-
-      .admin-gallery-tile:hover .admin-masonry-overlay {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .admin-overlay-inner {
-        text-align: center;
-        padding: 16px;
-        max-width: 95%;
-      }
-
-      .admin-file-name {
-        margin: 0 0 14px;
-        font-size: 0.72rem;
-        color: rgba(255, 255, 255, 0.92);
-        word-break: break-word;
-        line-height: 1.35;
-      }
-
-      .admin-btn-delete {
-        border: none;
-        border-radius: 999px;
-        padding: 10px 20px;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        font-size: 0.7rem;
-        cursor: pointer;
-        background: linear-gradient(135deg, #b33a3a, #ff5d5d);
-        color: #fff;
-        transition: filter 0.15s ease, transform 0.15s ease;
-      }
-
-      .admin-btn-delete:hover {
-        filter: brightness(1.08);
-        transform: translateY(-1px);
-      }
-
-      .admin-empty {
-        column-span: all;
-        text-align: center;
-        color: rgba(245, 240, 228, 0.55);
-        padding: 48px 20px;
-      }
-
-      .admin-gallery-tile {
-        cursor: default;
-        border-radius: 28px;
-      }
-
-      .admin-gallery-tile:hover .mosquee-masonry-inner img {
-        transform: scale(1.04);
-      }
-    </style>
   </head>
-  <body class="nh-site admin-mosquee">
+  <body class="nh-site admin-auth-page">
     <div class="nh-bg" aria-hidden="true"></div>
-
-    <div class="nh-topbar">
-      <div class="nh-container">
-        <div class="nh-topbar-left">
-          <a href="mailto:contact@mosqueebilal.fr"><i class="fa-solid fa-envelope"></i> contact@mosqueebilal.fr</a>
-          <span class="nh-topbar-sep">|</span>
-          <a href="tel:+33123456789"><i class="fa-solid fa-phone"></i> +33 1 23 45 67 89</a>
-        </div>
-        <div class="nh-topbar-right">
-          <a class="social-icon-circle" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><img src="assets/icon-instagram.png" alt="Instagram" /></a>
-          <a class="social-icon-circle" href="https://www.facebook.com/MosqueeBilal.ACMCM" target="_blank" rel="noopener" aria-label="Facebook"><img src="assets/icon-facebook.png" alt="Facebook" /></a>
-          <a class="social-icon-circle" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><img src="assets/icon-tiktok.svg" alt="TikTok" /></a>
-          <a class="social-icon-circle" href="https://www.youtube.com/channel/UCqFvkR5CR2H0aakfThZopjQ" target="_blank" rel="noopener" aria-label="YouTube"><img src="assets/icon-youtube.svg" alt="YouTube" /></a>
-          <a class="social-icon-circle" href="https://wa.me/33123456789" target="_blank" rel="noopener" aria-label="WhatsApp"><img src="assets/icon-whatsapp.svg" alt="WhatsApp" /></a>
-          <a class="social-icon-circle" href="https://twitch.tv" target="_blank" rel="noopener" aria-label="Twitch"><img src="assets/icon-twitch.svg" alt="Twitch" /></a>
-          <a class="social-icon-circle" href="https://x.com" target="_blank" rel="noopener" aria-label="X"><img src="assets/icon-x.svg" alt="X" /></a>
-        </div>
-      </div>
-    </div>
-
-    <div id="donation-banner" class="donation-banner">
-      <span class="donation-banner-text">
-        🕌 Aidez-nous à achever la Mosquée Bilal !
-        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer">FAIRE UN DON ❤️</a>
-      </span>
-      <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">&#10005;</button>
-    </div>
 
     <header class="nh-header">
       <div class="nh-header-inner">
@@ -303,7 +30,6 @@
           <img src="assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
           <span class="nh-brand-text">Mosquée Bilal</span>
         </a>
-
         <nav class="nh-nav" aria-label="Navigation principale">
           <button class="nh-nav-toggle" type="button" aria-label="Menu">
             <span></span><span></span><span></span>
@@ -311,392 +37,81 @@
           <ul class="nh-nav-list">
             <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
             <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
-            <li><a href="quran.html" data-i18n="navQuran">CORAN</a></li>
-            <li><a href="ai.html" data-i18n="navHadiths">HADITHS</a></li>
-            <li><a href="horaires.html" data-i18n="navSchedule">HORAIRES</a></li>
-            <li><a href="donation.html" class="nh-nav-donate" data-i18n="navDonation">DON</a></li>
-            <li><a href="location.html" data-i18n="navLocation">LOCALISATION</a></li>
-            <li><a href="social.html" data-i18n="navSocial">RÉSEAUX</a></li>
-            <li><a href="contact.html" data-i18n="navContact">CONTACT</a></li>
+            <li><a href="annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
             <li><a href="admin.html" class="nh-nav-admin-active" aria-current="page">ADMIN</a></li>
           </ul>
         </nav>
-
-        <div class="lang-switch nh-lang-switch">
-          <button data-lang="fr" class="active">FR</button>
-          <button data-lang="ar">AR</button>
-        </div>
       </div>
     </header>
 
     <main class="nh-main">
-      <section id="loginView" class="admin-login-wrap">
+      <section class="admin-login-wrap">
         <div class="admin-login-card">
-          <h1>Connexion</h1>
-          <p>
-            Mot de passe défini sur Vercel (variable <code style="color: #c9a84c">MOSQUEE_GALLERY_SECRET</code>). Même mot de passe pour toute l’équipe.
-          </p>
-
+          <h1>Connexion admin</h1>
+          <p>Gérez les annonces de la Mosquée Bilal.</p>
           <form id="loginForm">
             <div class="admin-field">
-              <label for="adminSecret">Mot de passe galerie</label>
-              <input id="adminSecret" type="password" autocomplete="current-password" required />
+              <label for="email">Email</label>
+              <input id="email" type="email" autocomplete="username" required />
             </div>
-            <button class="nh-btn nh-btn-gold" type="submit" style="width: 100%; margin-top: 8px">Se connecter</button>
+            <div class="admin-field">
+              <label for="password">Mot de passe</label>
+              <input id="password" type="password" autocomplete="current-password" required />
+            </div>
+            <button class="nh-btn nh-btn-gold" type="submit" style="width: 100%; margin-top: 8px">
+              Se connecter
+            </button>
           </form>
-
-          <div id="loginMessage" class="admin-login-msg"></div>
+          <div id="loginMessage" class="admin-login-msg" role="alert"></div>
         </div>
       </section>
-
-      <div id="adminView" class="hidden">
-        <section class="mosquee-gallery-section">
-          <header class="mosquee-gallery-header">
-            <h1 class="mosquee-gallery-title">Mosquée Bilal — Galerie</h1>
-            <div class="mosquee-gallery-title-line"></div>
-            <p class="mosquee-gallery-subtitle">
-              Photos hébergées sur Vercel Blob (plus besoin de Supabase). Galerie publique :
-              <a href="mosquee.html" style="color: #c9a84c; text-decoration: underline">mosquee.html</a>
-              — survolez une image pour la supprimer.
-            </p>
-          </header>
-
-          <div class="nh-container admin-toolbar-row">
-            <div id="adminStatus" class="admin-status-inline"></div>
-            <button id="logoutBtn" class="nh-btn nh-btn-outline" type="button">Déconnexion</button>
-          </div>
-
-          <input id="fileInput" class="admin-file-input" type="file" accept="image/*" />
-
-          <div class="nh-container">
-            <div id="imagesGrid" class="mosquee-masonry-grid"></div>
-          </div>
-        </section>
-      </div>
     </main>
-
-    <footer style="background: #0a0a0a; padding: 30px 40px">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px">
-        <div>
-          <p style="color: white; font-weight: bold; margin: 0" data-i18n="footerBrand">MOSQUÉE BILAL</p>
-          <p style="color: gray; font-size: 12px; margin: 0" data-i18n="footerLocation">Clichy-sous-Bois</p>
-        </div>
-        <div style="flex: 1; text-align: center">
-          <a href="contact.html" style="color: #c9a84c; text-decoration: none; font-weight: bold" data-i18n="navContact">CONTACT</a>
-        </div>
-        <div>
-          <p style="color: gray; font-size: 12px; margin: 0" data-i18n="footerText">© 2026 Mosquée Bilal</p>
-        </div>
-      </div>
-    </footer>
 
     <script src="script.js"></script>
     <script>
       (function () {
-        const SESSION_KEY = "mosquee-gallery-admin-secret";
+        var TOKEN_KEY = "mosquee_admin_jwt";
+        var form = document.getElementById("loginForm");
+        var msg = document.getElementById("loginMessage");
 
-        const loginView = document.getElementById("loginView");
-        const adminView = document.getElementById("adminView");
-        const loginForm = document.getElementById("loginForm");
-        const loginMessage = document.getElementById("loginMessage");
-        const adminStatus = document.getElementById("adminStatus");
-        const imagesGrid = document.getElementById("imagesGrid");
-        const logoutBtn = document.getElementById("logoutBtn");
-        const fileInput = document.getElementById("fileInput");
+        function setMsg(text, isError) {
+          msg.textContent = text || "";
+          msg.className = "admin-login-msg" + (isError ? " error" : text ? " success" : "");
+        }
 
-        function getAdminSecret() {
+        if (sessionStorage.getItem(TOKEN_KEY)) {
+          window.location.replace("/admin/dashboard.html");
+          return;
+        }
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          setMsg("Connexion…", false);
+
+          var email = document.getElementById("email").value.trim();
+          var password = document.getElementById("password").value;
+
           try {
-            return sessionStorage.getItem(SESSION_KEY) || "";
-          } catch (e) {
-            return "";
-          }
-        }
+            var r = await fetch("/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: email, password: password }),
+            });
+            var data = await r.json().catch(function () {
+              return {};
+            });
 
-        function setAdminSecret(value) {
-          try {
-            if (value) sessionStorage.setItem(SESSION_KEY, value);
-            else sessionStorage.removeItem(SESSION_KEY);
-          } catch (e) {}
-        }
-
-        function setLoginMessage(text, type) {
-          loginMessage.textContent = text || "";
-          loginMessage.className = "admin-login-msg" + (type ? " " + type : "");
-        }
-
-        function setAdminStatus(text, isError) {
-          adminStatus.textContent = text || "";
-          adminStatus.classList.toggle("is-error", !!isError);
-        }
-
-        function showLogin() {
-          loginView.classList.remove("hidden");
-          adminView.classList.add("hidden");
-        }
-
-        function showAdmin() {
-          loginView.classList.add("hidden");
-          adminView.classList.remove("hidden");
-        }
-
-        function escapeHtml(value) {
-          return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-        }
-
-        async function probeSecret(secret) {
-          const r = await fetch("/api/gallery", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-mosquee-admin": secret,
-            },
-            body: JSON.stringify({ probe: true }),
-          });
-          return r.status === 204;
-        }
-
-        function addImageSlotHtml() {
-          return (
-            '<figure class="mosquee-masonry-item admin-add-tile" id="adminAddTile" role="button" tabindex="0" aria-label="Ajouter une image">' +
-            '<div class="mosquee-masonry-inner admin-add-inner">' +
-            '<i class="fa-solid fa-image admin-add-icon" aria-hidden="true"></i>' +
-            '<span class="admin-add-title">Ajouter une image</span>' +
-            '<span class="admin-add-hint">Cliquez pour choisir une photo</span>' +
-            "</div></figure>"
-          );
-        }
-
-        function bindAddTile() {
-          const tile = document.getElementById("adminAddTile");
-          if (!tile) return;
-          tile.addEventListener("click", function () {
-            fileInput.click();
-          });
-          tile.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              fileInput.click();
+            if (!r.ok || !data.token) {
+              setMsg(data.error || "Identifiants incorrects.", true);
+              return;
             }
-          });
-        }
 
-        async function uploadSelectedFile() {
-          const secret = getAdminSecret();
-          if (!secret) {
-            setAdminStatus("Session expirée — reconnectez-vous.", true);
-            showLogin();
-            return;
+            sessionStorage.setItem(TOKEN_KEY, data.token);
+            window.location.href = "/admin/dashboard.html";
+          } catch (err) {
+            setMsg("Identifiants incorrects.", true);
           }
-
-          const file = fileInput.files && fileInput.files[0];
-          if (!file) return;
-
-          setAdminStatus("Envoi en cours…");
-          const fd = new FormData();
-          fd.append("file", file);
-
-          let r;
-          try {
-            r = await fetch("/api/gallery", {
-              method: "POST",
-              headers: { "x-mosquee-admin": secret },
-              body: fd,
-            });
-          } catch (e) {
-            setAdminStatus("Réseau : impossible de joindre le serveur (déployez sur Vercel ou lancez vercel dev).", true);
-            return;
-          }
-
-          const data = await r.json().catch(function () {
-            return {};
-          });
-
-          if (!r.ok) {
-            setAdminStatus(data.error || "Erreur d’envoi (" + r.status + ").", true);
-            return;
-          }
-
-          fileInput.value = "";
-          setAdminStatus("Image ajoutée.");
-          await renderImages();
-        }
-
-        async function renderImages() {
-          setAdminStatus("Chargement des images…");
-          imagesGrid.innerHTML = addImageSlotHtml();
-          bindAddTile();
-
-          let r;
-          try {
-            r = await fetch("/api/gallery");
-          } catch (e) {
-            setAdminStatus("Impossible de charger la liste (réseau ou site non déployé).", true);
-            return;
-          }
-
-          const data = await r.json().catch(function () {
-            return { items: [] };
-          });
-          const items = data.items || [];
-
-          if (data.warning) {
-            console.warn(data.warning);
-          }
-
-          if (!items.length) {
-            imagesGrid.insertAdjacentHTML(
-              "beforeend",
-              '<p class="admin-empty">Aucune image pour le moment. Utilisez la carte « Ajouter une image » (vérifiez que Vercel Blob est activé sur le projet).</p>'
-            );
-            setAdminStatus("Aucune image pour le moment.");
-            return;
-          }
-
-          const cards = items.map(function (item) {
-            const url = item.url || "";
-            const safeUrlAttr = escapeHtml(url).replace(/"/g, "&quot;");
-            const shortLabel = escapeHtml((item.pathname || url).split("/").pop() || "photo");
-            const encUrl = encodeURIComponent(url);
-
-            return (
-              '<figure class="mosquee-masonry-item admin-gallery-tile">' +
-              '<div class="mosquee-masonry-inner">' +
-              (url
-                ? '<img src="' + safeUrlAttr + '" alt="' + shortLabel + '" loading="lazy" />'
-                : '<div style="min-height:200px;display:flex;align-items:center;justify-content:center;background:#111;color:rgba(255,255,255,0.45);border-radius:28px;">Aperçu indisponible</div>') +
-              '<div class="mosquee-masonry-overlay admin-masonry-overlay">' +
-              '<div class="admin-overlay-inner">' +
-              '<p class="admin-file-name">' +
-              shortLabel +
-              "</p>" +
-              '<button type="button" class="admin-btn-delete" data-blob-url="' +
-              encUrl +
-              '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
-              "</div></div></div></figure>"
-            );
-          });
-
-          imagesGrid.insertAdjacentHTML("beforeend", cards.join(""));
-          setAdminStatus(items.length + " image(s) dans la galerie.");
-        }
-
-        fileInput.addEventListener("change", function () {
-          uploadSelectedFile();
         });
-
-        loginForm.addEventListener("submit", async function (event) {
-          event.preventDefault();
-          setLoginMessage("Vérification…", "success");
-
-          const secret = document.getElementById("adminSecret").value;
-          if (!secret) {
-            setLoginMessage("Saisissez le mot de passe.", "error");
-            return;
-          }
-
-          let ok;
-          try {
-            ok = await probeSecret(secret);
-          } catch (e) {
-            ok = false;
-          }
-
-          if (!ok) {
-            setLoginMessage(
-              "Mot de passe refusé ou API indisponible. Sur Vercel : variable MOSQUEE_GALLERY_SECRET + Blob activé.",
-              "error"
-            );
-            return;
-          }
-
-          setAdminSecret(secret);
-          setLoginMessage("Connexion réussie.", "success");
-          showAdmin();
-          await renderImages();
-        });
-
-        imagesGrid.addEventListener("click", async function (event) {
-          const button = event.target.closest(".admin-btn-delete");
-          if (!button) return;
-
-          const secret = getAdminSecret();
-          if (!secret) {
-            showLogin();
-            return;
-          }
-
-          let blobUrl = button.getAttribute("data-blob-url");
-          if (!blobUrl) return;
-          try {
-            blobUrl = decodeURIComponent(blobUrl);
-          } catch (e) {
-            return;
-          }
-
-          if (!blobUrl.startsWith("http")) return;
-
-          if (!window.confirm("Supprimer cette image ?")) return;
-
-          setAdminStatus("Suppression en cours…");
-
-          let r;
-          try {
-            r = await fetch("/api/gallery", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-mosquee-admin": secret,
-              },
-              body: JSON.stringify({ deleteUrl: blobUrl }),
-            });
-          } catch (e) {
-            setAdminStatus("Erreur réseau pendant la suppression.", true);
-            return;
-          }
-
-          const data = await r.json().catch(function () {
-            return {};
-          });
-          if (!r.ok) {
-            setAdminStatus(data.error || "Suppression refusée.", true);
-            return;
-          }
-
-          setAdminStatus("Image supprimée.");
-          await renderImages();
-        });
-
-        logoutBtn.addEventListener("click", function () {
-          setAdminSecret("");
-          showLogin();
-          imagesGrid.innerHTML = "";
-          setAdminStatus("");
-          setLoginMessage("Vous avez été déconnecté.", "success");
-        });
-
-        async function init() {
-          const saved = getAdminSecret();
-          if (!saved) {
-            showLogin();
-            return;
-          }
-          const ok = await probeSecret(saved);
-          if (ok) {
-            showAdmin();
-            await renderImages();
-          } else {
-            setAdminSecret("");
-            showLogin();
-            setLoginMessage("Session expirée ou mot de passe changé — reconnectez-vous.", "error");
-          }
-        }
-
-        init();
       })();
     </script>
   </body>

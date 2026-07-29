@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="../assets/logo1.png" />
+    <link rel="apple-touch-icon" href="../assets/logo1.png" />
+    <title>Dashboard annonces — Mosquée Bilal</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="nh-site admin-dashboard-page">
+    <div class="nh-bg" aria-hidden="true"></div>
+
+    <header class="nh-header">
+      <div class="nh-header-inner">
+        <a class="nh-brand" href="../index.html" aria-label="Mosquée Bilal">
+          <img src="../assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
+          <span class="nh-brand-text">Mosquée Bilal</span>
+        </a>
+        <nav class="nh-nav" aria-label="Navigation">
+          <ul class="nh-nav-list">
+            <li><a href="../annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
+            <li><a href="../index.html" data-i18n="navHome">ACCUEIL</a></li>
+            <li><button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding: 8px 14px">Déconnexion</button></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="nh-main">
+      <section class="nh-section annonces-admin-section">
+        <div class="nh-container" style="max-width: 820px">
+          <h1 class="nh-title" style="color: #c9a84c; margin-bottom: 8px">Dashboard — Annonces</h1>
+          <p class="nh-text" style="margin-bottom: 28px; color: rgba(245, 240, 228, 0.65)">
+            Ajoutez ou supprimez les annonces affichées sur le site.
+          </p>
+
+          <form id="annonceForm" class="annonce-admin-form">
+            <div class="admin-field">
+              <label for="titre">Titre</label>
+              <input id="titre" type="text" maxlength="200" required />
+            </div>
+            <div class="admin-field">
+              <label for="texte">Texte</label>
+              <textarea id="texte" rows="4" maxlength="4000" required></textarea>
+            </div>
+            <button class="nh-btn nh-btn-gold" type="submit">Ajouter l’annonce</button>
+            <p id="formStatus" class="admin-status-inline" style="margin-top: 12px"></p>
+          </form>
+
+          <h2 class="nh-kicker" style="margin: 40px 0 16px">Annonces existantes</h2>
+          <div id="annoncesList" class="annonces-admin-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        var TOKEN_KEY = "mosquee_admin_jwt";
+        var token = sessionStorage.getItem(TOKEN_KEY);
+        var listEl = document.getElementById("annoncesList");
+        var form = document.getElementById("annonceForm");
+        var formStatus = document.getElementById("formStatus");
+
+        function setStatus(text, isError) {
+          formStatus.textContent = text || "";
+          formStatus.classList.toggle("is-error", !!isError);
+        }
+
+        function redirectLogin() {
+          sessionStorage.removeItem(TOKEN_KEY);
+          window.location.replace("/admin.html");
+        }
+
+        if (!token) {
+          redirectLogin();
+          return;
+        }
+
+        async function api(path, options) {
+          options = options || {};
+          var headers = Object.assign({}, options.headers || {}, {
+            Authorization: "Bearer " + token,
+          });
+          if (options.body && !headers["Content-Type"]) {
+            headers["Content-Type"] = "application/json";
+          }
+          var r = await fetch(path, Object.assign({}, options, { headers: headers }));
+          var data = await r.json().catch(function () {
+            return {};
+          });
+          if (r.status === 401) {
+            redirectLogin();
+            throw new Error("unauthorized");
+          }
+          return { ok: r.ok, status: r.status, data: data };
+        }
+
+        function formatDate(iso) {
+          try {
+            return new Date(iso).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+          } catch (e) {
+            return "";
+          }
+        }
+
+        function escapeHtml(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        async function verifySession() {
+          var res = await api("/api/annonces", {
+            method: "POST",
+            body: JSON.stringify({ action: "verify" }),
+          });
+          if (!res.ok) redirectLogin();
+        }
+
+        async function loadList() {
+          listEl.innerHTML = "<p class=\"nh-text\">Chargement…</p>";
+          var res = await api("/api/annonces");
+          if (!res.ok) {
+            listEl.innerHTML = "<p class=\"admin-status-inline is-error\">Impossible de charger les annonces.</p>";
+            return;
+          }
+          var items = res.data.items || [];
+          if (!items.length) {
+            listEl.innerHTML = "<p class=\"nh-text\" style=\"color:rgba(245,240,228,0.55)\">Aucune annonce.</p>";
+            return;
+          }
+          listEl.innerHTML = items
+            .map(function (item) {
+              return (
+                '<article class="annonce-admin-item" data-id="' +
+                escapeHtml(item.id) +
+                '">' +
+                "<div>" +
+                '<h3 class="annonce-card-title">' +
+                escapeHtml(item.titre) +
+                "</h3>" +
+                '<p class="annonce-card-date">' +
+                escapeHtml(formatDate(item.date)) +
+                "</p>" +
+                '<p class="annonce-card-text">' +
+                escapeHtml(item.texte) +
+                "</p>" +
+                "</div>" +
+                '<button type="button" class="admin-btn-delete annonce-delete-btn" data-id="' +
+                escapeHtml(item.id) +
+                '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
+                "</article>"
+              );
+            })
+            .join("");
+        }
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+          var titre = document.getElementById("titre").value.trim();
+          var texte = document.getElementById("texte").value.trim();
+          setStatus("Enregistrement…");
+          try {
+            var res = await api("/api/annonces", {
+              method: "POST",
+              body: JSON.stringify({ titre: titre, texte: texte }),
+            });
+            if (!res.ok) {
+              setStatus(res.data.error || "Erreur à l’enregistrement.", true);
+              return;
+            }
+            form.reset();
+            setStatus("Annonce ajoutée.");
+            await loadList();
+          } catch (err) {
+            if (err.message !== "unauthorized") setStatus("Erreur réseau.", true);
+          }
+        });
+
+        listEl.addEventListener("click", async function (e) {
+          var btn = e.target.closest(".annonce-delete-btn");
+          if (!btn) return;
+          var id = btn.getAttribute("data-id");
+          if (!id || !window.confirm("Supprimer cette annonce ?")) return;
+          setStatus("Suppression…");
+          try {
+            var res = await api("/api/annonces?id=" + encodeURIComponent(id), { method: "DELETE" });
+            if (!res.ok) {
+              setStatus(res.data.error || "Suppression impossible.", true);
+              return;
+            }
+            setStatus("Annonce supprimée.");
+            await loadList();
+          } catch (err) {
+            if (err.message !== "unauthorized") setStatus("Erreur réseau.", true);
+          }
+        });
+
+        document.getElementById("logoutBtn").addEventListener("click", function () {
+          sessionStorage.removeItem(TOKEN_KEY);
+          window.location.href = "/admin.html";
+        });
+
+        verifySession()
+          .then(loadList)
+          .catch(function () {
+            redirectLogin();
+          });
+      })();
+    </script>
+  </body>
+</html>

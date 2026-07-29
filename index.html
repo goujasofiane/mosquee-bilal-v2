@@ -89,6 +89,7 @@
           <ul class="nh-nav-list">
             <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
             <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
+            <li><a href="annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
             <li><a href="quran.html" data-i18n="navQuran">CORAN</a></li>
             <li><a href="ai.html" data-i18n="navHadiths">HADITHS</a></li>
             <li><a href="horaires.html" data-i18n="navSchedule">HORAIRES</a></li>
@@ -114,6 +115,7 @@
         <div class="nh-hero-inner">
           <h1 class="nh-hero-title" data-i18n="heroTitle">Mosquée Bilal</h1>
           <p class="nh-hero-subtitle" data-i18n="heroSubtitle">Un lieu de prière, de connaissance et de fraternité</p>
+          <div id="heroAnnonces" class="hero-annonces" aria-live="polite"></div>
           <div class="nh-hero-actions">
             <a
               href="https://www.cotizup.com/achever-mosquee-bilal"
@@ -376,8 +378,66 @@
         }
       }
 
+      async function loadHeroAnnonces() {
+        var root = document.getElementById("heroAnnonces");
+        if (!root) return;
+
+        function formatDate(iso) {
+          try {
+            return new Date(iso).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            });
+          } catch (e) {
+            return "";
+          }
+        }
+        function escapeHtml(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        try {
+          var r = await fetch("/api/annonces?limit=3");
+          var data = await r.json();
+          var items = (data && data.items) || [];
+          if (!items.length) {
+            root.innerHTML = "";
+            return;
+          }
+          root.innerHTML =
+            '<div class="hero-annonces-list">' +
+            items
+              .slice(0, 3)
+              .map(function (item) {
+                return (
+                  '<article class="hero-annonce-item">' +
+                  '<span class="hero-annonce-date">' +
+                  escapeHtml(formatDate(item.date)) +
+                  "</span>" +
+                  '<strong class="hero-annonce-title">' +
+                  escapeHtml(item.titre) +
+                  "</strong>" +
+                  '<p class="hero-annonce-text">' +
+                  escapeHtml(item.texte) +
+                  "</p>" +
+                  "</article>"
+                );
+              })
+              .join("") +
+            '</div><a class="hero-annonces-link" href="annonces.html">Voir toutes les annonces</a>';
+        } catch (e) {
+          root.innerHTML = "";
+        }
+      }
+
       window.addEventListener("DOMContentLoaded", function () {
         loadGalleryFromVercelBlob();
+        loadHeroAnnonces();
       });
     </script>
   </body>

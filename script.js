@@ -4,6 +4,7 @@ const translations = {
     siteSubtitle: "Lumière, savoir et sérénité",
     navHome: "Accueil",
     navGallery: "Galerie",
+    navAnnonces: "Annonces",
     navSchedule: "Horaires",
     navQuran: "Coran",
     navHadiths: "Hadiths",
@@ -128,6 +129,8 @@ const translations = {
     footerBrand: "MOSQUÉE BILAL",
     footerLocation: "Clichy-sous-Bois",
     footerText: "© {year} Mosquée Bilal",
+    annoncesPageTitle: "Annonces",
+    annoncesPageSubtitle: "Les dernières informations de la Mosquée Bilal.",
     viewPrayerTimes: "Voir les horaires de prière",
     dateHijri: "Date islamique",
     dateGregorian: "Date grégorienne",
@@ -143,6 +146,7 @@ const translations = {
     siteSubtitle: "نور وعلم وسكينة",
     navHome: "الرئيسية",
     navGallery: "المعرض",
+    navAnnonces: "إعلانات",
     navSchedule: "مواقيت الصلاة",
     navQuran: "القرآن",
     navHadiths: "الأحاديث",
@@ -267,6 +271,8 @@ const translations = {
     footerBrand: "مسجد بلال",
     footerLocation: "كليشي-سوس-بوا",
     footerText: "© {year} مسجد بلال",
+    annoncesPageTitle: "إعلانات",
+    annoncesPageSubtitle: "آخر أخبار مسجد بلال.",
   },
 };
 

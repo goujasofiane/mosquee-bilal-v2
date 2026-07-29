@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="assets/logo1.png" />
     <link rel="apple-touch-icon" href="assets/logo1.png" />
-    <title>Mosquée Bilal - Horaires</title>
+    <title>Annonces — Mosquée Bilal</title>
     <link rel="stylesheet" href="styles.css" />
     <link
       rel="stylesheet"
@@ -59,7 +59,7 @@
           <ul class="nh-nav-list">
             <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
             <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
-            <li><a href="annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
+            <li><a href="annonces.html" data-i18n="navAnnonces" aria-current="page">ANNONCES</a></li>
             <li><a href="quran.html" data-i18n="navQuran">CORAN</a></li>
             <li><a href="ai.html" data-i18n="navHadiths">HADITHS</a></li>
             <li><a href="horaires.html" data-i18n="navSchedule">HORAIRES</a></li>
@@ -78,19 +78,16 @@
     </header>
 
     <main class="nh-main">
-      <section class="nh-section" style="padding: 30px 0;">
-        <div class="nh-container">
-          <h1 class="nh-title nh-title-center" style="margin-bottom: 16px;" data-i18n="navSchedule">HORAIRES</h1>
-          <div class="nh-embed">
-            <iframe
-              src="https://mawaqit.net/fr/w/stamu-ii-clichy-sous-bois-93390-france"
-              width="100%"
-              height="700px"
-              frameborder="0"
-              style="border:none;"
-              loading="lazy"
-              title="Horaires de prière - Mawaqit"
-            ></iframe>
+      <section class="nh-section annonces-page-section">
+        <div class="nh-container" style="max-width: 900px">
+          <h1 class="nh-title nh-title-center" style="color: #c9a84c; margin-bottom: 12px" data-i18n="annoncesPageTitle">
+            Annonces
+          </h1>
+          <p class="nh-section-desc nh-title-center" style="margin-bottom: 36px" data-i18n="annoncesPageSubtitle">
+            Les dernières informations de la Mosquée Bilal.
+          </p>
+          <div id="annoncesList" class="annonces-list" aria-live="polite">
+            <p class="nh-text" style="text-align: center; color: rgba(245, 240, 228, 0.55)">Chargement…</p>
           </div>
         </div>
       </section>
@@ -112,7 +109,62 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+      (function () {
+        function formatDate(iso) {
+          try {
+            return new Date(iso).toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+          } catch (e) {
+            return "";
+          }
+        }
+        function escapeHtml(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        document.addEventListener("DOMContentLoaded", async function () {
+          var root = document.getElementById("annoncesList");
+          if (!root) return;
+          try {
+            var r = await fetch("/api/annonces");
+            var data = await r.json();
+            var items = (data && data.items) || [];
+            if (!items.length) {
+              root.innerHTML =
+                '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune annonce pour le moment.</p>';
+              return;
+            }
+            root.innerHTML = items
+              .map(function (item) {
+                return (
+                  '<article class="annonce-card">' +
+                  '<h2 class="annonce-card-title">' +
+                  escapeHtml(item.titre) +
+                  "</h2>" +
+                  '<p class="annonce-card-date">' +
+                  escapeHtml(formatDate(item.date)) +
+                  "</p>" +
+                  '<p class="annonce-card-text">' +
+                  escapeHtml(item.texte) +
+                  "</p>" +
+                  "</article>"
+                );
+              })
+              .join("");
+          } catch (e) {
+            root.innerHTML =
+              '<p class="nh-text" style="text-align:center;color:#ff9f9f">Impossible de charger les annonces.</p>';
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
-
-
