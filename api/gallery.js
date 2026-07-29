@@ -1,33 +1,32 @@
 /**
- * Galerie sans Supabase : Vercel Blob + cette route.
+ * Galerie (Vercel Blob) — runtime Node.js (pas Edge).
  *
- * Sur Vercel : activer Blob (Storage) sur le projet pour injecter BLOB_READ_WRITE_TOKEN.
- * Variables à ajouter manuellement :
- *   MOSQUEE_GALLERY_SECRET = un mot de passe long (même valeur que saisi sur /admin)
- *
- * GET /api/gallery → { items: [{ url, pathname, uploadedAt }] } (public)
- * POST /api/gallery (JSON {probe:true}) + header x-mosquee-admin → vérif mot de passe
- * POST /api/gallery (multipart file=…) + header x-mosquee-admin → upload
- * POST /api/gallery (JSON {deleteUrl}) + header x-mosquee-admin → suppression
+ * GET  /api/gallery → { items: [...] }
+ * POST /api/gallery + header x-mosquee-admin → probe / delete / upload
  */
 
-import { del, list, put } from "@vercel/blob";
+const { del, list, put } = require("@vercel/blob");
 
 const PREFIX = "mosquee-gallery/";
 
-function json(body, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-  });
+module.exports.config = {
+  runtime: "nodejs",
+  api: {
+    bodyParser: false,
+  },
+};
+
+function json(res, status, body) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.setHeader("Cache-Control", "no-store");
+  res.end(JSON.stringify(body));
 }
 
-function requireAdmin(request) {
+function requireAdmin(req) {
   const secret = process.env.MOSQUEE_GALLERY_SECRET || "";
-  const sent = request.headers.get("x-mosquee-admin") || "";
-  if (!secret || sent !== secret) {
-    return false;
-  }
+  const sent = req.headers["x-mosquee-admin"] || "";
+  if (!secret || sent !== secret) return false;
   return true;
 }
 
@@ -38,7 +37,7 @@ function safeObjectName(originalName) {
   let ascii = base;
   try {
     ascii = base.normalize("NFD").replace(/\p{M}/gu, "");
-  } catch {
+  } catch (e) {
     ascii = base;
   }
   let s = ascii
@@ -49,95 +48,161 @@ function safeObjectName(originalName) {
   if (!s) s = "image";
   if (s.length > 100) s = s.slice(0, 100).replace(/-+$/g, "") || "image";
   const ext = lastDot > 0 ? name.slice(lastDot + 1).toLowerCase() : "jpg";
-  const map = { jpg: "jpg", jpeg: "jpg", png: "png", gif: "gif", webp: "webp", avif: "avif", bmp: "bmp", svg: "svg" };
+  const map = {
+    jpg: "jpg",
+    jpeg: "jpg",
+    png: "png",
+    gif: "gif",
+    webp: "webp",
+    avif: "avif",
+    bmp: "bmp",
+    svg: "svg",
+  };
   const e = map[ext] || "jpg";
-  return `${Date.now()}-${s}.${e}`;
+  return Date.now() + "-" + s + "." + e;
 }
 
-export const config = { runtime: "edge" };
+function readRawBody(req) {
+  return new Promise(function (resolve, reject) {
+    const chunks = [];
+    req.on("data", function (c) {
+      chunks.push(c);
+    });
+    req.on("end", function () {
+      resolve(Buffer.concat(chunks));
+    });
+    req.on("error", reject);
+  });
+}
 
-export default async function handler(request) {
+function parseMultipart(buffer, contentType) {
+  const m = /boundary=(?:"([^"]+)"|([^;]+))/i.exec(contentType || "");
+  if (!m) return null;
+  const boundary = m[1] || m[2];
+  const parts = buffer.toString("binary").split("--" + boundary);
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (!part || part === "--\r\n" || part === "--") continue;
+    const sep = part.indexOf("\r\n\r\n");
+    if (sep < 0) continue;
+    const headers = part.slice(0, sep);
+    let body = part.slice(sep + 4);
+    if (body.endsWith("\r\n")) body = body.slice(0, -2);
+    const nameMatch = /name="([^"]+)"/i.exec(headers);
+    const fileMatch = /filename="([^"]*)"/i.exec(headers);
+    if (!nameMatch || nameMatch[1] !== "file" || !fileMatch) continue;
+    const filename = fileMatch[1] || "image.jpg";
+    const typeMatch = /Content-Type:\s*([^\r\n]+)/i.exec(headers);
+    const type = typeMatch ? typeMatch[1].trim() : "application/octet-stream";
+    const fileBuffer = Buffer.from(body, "binary");
+    return { filename: filename, type: type, buffer: fileBuffer };
+  }
+  return null;
+}
+
+module.exports = async function handler(req, res) {
   const token = process.env.BLOB_READ_WRITE_TOKEN;
 
-  if (request.method === "GET") {
+  if (req.method === "GET") {
     if (!token) {
-      return json({ items: [], warning: "BLOB_READ_WRITE_TOKEN manquant — activez Vercel Blob sur ce projet." });
+      return json(res, 200, {
+        items: [],
+        warning: "BLOB_READ_WRITE_TOKEN manquant — activez Vercel Blob sur ce projet.",
+      });
     }
     try {
-      const { blobs } = await list({ prefix: PREFIX, token });
-      const sorted = [...blobs].sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
-      return json({
-        items: sorted.map((b) => ({
-          url: b.url,
-          pathname: b.pathname,
-          uploadedAt: b.uploadedAt instanceof Date ? b.uploadedAt.toISOString() : b.uploadedAt,
-        })),
+      const result = await list({ prefix: PREFIX, token: token });
+      const blobs = result.blobs || [];
+      const sorted = blobs.slice().sort(function (a, b) {
+        return new Date(b.uploadedAt) - new Date(a.uploadedAt);
+      });
+      return json(res, 200, {
+        items: sorted.map(function (b) {
+          return {
+            url: b.url,
+            pathname: b.pathname,
+            uploadedAt:
+              b.uploadedAt instanceof Date ? b.uploadedAt.toISOString() : b.uploadedAt,
+          };
+        }),
       });
     } catch (e) {
-      return json({ items: [], error: e instanceof Error ? e.message : "list_failed" }, 200);
+      return json(res, 200, {
+        items: [],
+        error: e && e.message ? e.message : "list_failed",
+      });
     }
   }
 
-  if (request.method === "POST") {
-    if (!requireAdmin(request)) {
-      return json({ error: "Non autorisé — mot de passe incorrect ou secret non configuré sur le serveur." }, 401);
+  if (req.method === "POST") {
+    if (!requireAdmin(req)) {
+      return json(res, 401, {
+        error: "Non autorisé — mot de passe incorrect ou secret non configuré sur le serveur.",
+      });
     }
     if (!token) {
-      return json({ error: "Stockage non configuré sur Vercel (Blob)." }, 503);
+      return json(res, 503, { error: "Stockage non configuré sur Vercel (Blob)." });
     }
 
-    const ct = request.headers.get("content-type") || "";
+    const ct = String(req.headers["content-type"] || "");
 
     if (ct.includes("application/json")) {
-      let body;
+      let body = {};
       try {
-        body = await request.json();
-      } catch {
-        return json({ error: "JSON invalide" }, 400);
+        const raw = await readRawBody(req);
+        body = raw.length ? JSON.parse(raw.toString("utf8")) : {};
+      } catch (e) {
+        return json(res, 400, { error: "JSON invalide" });
       }
       if (body && body.probe === true) {
-        return new Response(null, { status: 204 });
+        res.statusCode = 204;
+        res.end();
+        return;
       }
-      if (body && typeof body.deleteUrl === "string" && body.deleteUrl.startsWith("http")) {
+      if (body && typeof body.deleteUrl === "string" && body.deleteUrl.indexOf("http") === 0) {
         try {
-          await del(body.deleteUrl, { token });
-          return json({ ok: true });
+          await del(body.deleteUrl, { token: token });
+          return json(res, 200, { ok: true });
         } catch (e) {
-          return json({ error: e instanceof Error ? e.message : "delete_failed" }, 500);
+          return json(res, 500, {
+            error: e && e.message ? e.message : "delete_failed",
+          });
         }
       }
-      return json({ error: "Action JSON non reconnue (probe ou deleteUrl)." }, 400);
+      return json(res, 400, { error: "Action JSON non reconnue (probe ou deleteUrl)." });
     }
 
     if (ct.includes("multipart/form-data")) {
-      let formData;
+      let filePart;
       try {
-        formData = await request.formData();
-      } catch {
-        return json({ error: "Formulaire invalide" }, 400);
-      }
-      const file = formData.get("file");
-      if (!file || typeof file === "string") {
-        return json({ error: "Fichier manquant (champ « file »)." }, 400);
-      }
-
-      const origName = typeof file.name === "string" ? file.name : "image";
-      const key = PREFIX + safeObjectName(origName);
-
-      try {
-        const blob = await put(key, file, {
-          access: "public",
-          token,
-          addRandomSuffix: false,
-        });
-        return json({ ok: true, url: blob.url, pathname: blob.pathname });
+        const raw = await readRawBody(req);
+        filePart = parseMultipart(raw, ct);
       } catch (e) {
-        return json({ error: e instanceof Error ? e.message : "upload_failed" }, 500);
+        return json(res, 400, { error: "Formulaire invalide" });
+      }
+      if (!filePart) {
+        return json(res, 400, { error: "Fichier manquant (champ « file »)." });
+      }
+
+      const key = PREFIX + safeObjectName(filePart.filename);
+      try {
+        const blob = await put(key, filePart.buffer, {
+          access: "public",
+          token: token,
+          addRandomSuffix: false,
+          contentType: filePart.type,
+        });
+        return json(res, 200, { ok: true, url: blob.url, pathname: blob.pathname });
+      } catch (e) {
+        return json(res, 500, {
+          error: e && e.message ? e.message : "upload_failed",
+        });
       }
     }
 
-    return json({ error: "Content-Type non supporté pour POST." }, 415);
+    return json(res, 415, { error: "Content-Type non supporté pour POST." });
   }
 
-  return new Response("Method Not Allowed", { status: 405 });
-}
+  res.statusCode = 405;
+  res.end("Method Not Allowed");
+};
