@@ -334,7 +334,7 @@
 
     <script src="script.js"></script>
     <script>
-      async function loadGalleryFromVercelBlob() {
+      async function loadGalleryFromSupabase() {
         const thumbsContainer = document.querySelector("#gallery .nh-gallery-thumbs");
         const mainImg = document.querySelector("#gallery .nh-gallery-main img");
         const quadImgs = document.querySelectorAll("#gallery .nh-gallery-quad .nh-gallery-tile img");
@@ -342,7 +342,7 @@
 
         let data;
         try {
-          const r = await fetch("/api/gallery");
+          const r = await fetch("/api/photos");
           data = await r.json();
         } catch (e) {
           return;
@@ -401,14 +401,18 @@
             .replace(/"/g, "&quot;");
         }
 
+        root.innerHTML = '<p class="hero-annonces-loading">Chargement des annonces…</p>';
+
         try {
           var r = await fetch("/api/annonces?limit=3");
           var data = await r.json();
           var items = (data && data.items) || [];
           if (!items.length) {
             root.innerHTML = "";
+            root.setAttribute("hidden", "");
             return;
           }
+          root.removeAttribute("hidden");
           root.innerHTML =
             '<div class="hero-annonces-list">' +
             items
@@ -436,7 +440,7 @@
       }
 
       window.addEventListener("DOMContentLoaded", function () {
-        loadGalleryFromVercelBlob();
+        loadGalleryFromSupabase();
         loadHeroAnnonces();
       });
     </script>

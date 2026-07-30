@@ -287,7 +287,7 @@
         (async function () {
           let data;
           try {
-            const r = await fetch("/api/gallery");
+            const r = await fetch("/api/photos");
             data = await r.json();
           } catch (e) {
             return;

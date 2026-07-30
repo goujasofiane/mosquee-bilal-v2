@@ -183,9 +183,12 @@ body.nh-site .pattern-bg {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 14px;
   padding: 0;
   margin: 0;
+  max-width: 100%;
 }
 
 [dir="rtl"] .nh-nav-list {
@@ -273,7 +276,8 @@ body.nh-site .nh-lang-switch button.active {
   min-height: calc(100vh - 120px);
   display: grid;
   place-items: center;
-  overflow: hidden;
+  overflow: visible;
+  padding: 48px 0 56px;
 }
 
 .nh-hero-bg {
@@ -308,7 +312,7 @@ body.nh-site .nh-lang-switch button.active {
 }
 
 .nh-hero-subtitle {
-  margin: 0 auto 26px auto;
+  margin: 0 auto 16px auto;
   max-width: 720px;
   font-size: 1.05rem;
   line-height: 1.7;
@@ -3691,6 +3695,70 @@ body.nh-site.social-page-v2 .social-follow-btn {
   transform: translateY(-10px);
 }
 
+/* Menu : burger dès 1100px pour que ANNONCES (et tous les liens) restent accessibles */
+@media (max-width: 1100px) {
+  .nh-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    z-index: 1002;
+  }
+
+  .nh-nav-toggle span {
+    display: none;
+  }
+
+  .nh-nav-toggle::after {
+    content: "☰";
+    font-size: 1.65rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .nh-nav {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
+
+  .nh-nav-list {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    padding: 88px 24px 120px !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+    background: rgba(10, 10, 10, 0.98) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    overflow-y: auto !important;
+    z-index: 1001 !important;
+    transition: opacity 0.22s ease !important;
+  }
+
+  .nh-nav-list.open {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .nh-nav-list li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nh-nav-list a {
+    font-size: 1rem !important;
+    letter-spacing: 0.1em !important;
+  }
+}
+
 /* Mobile / tablette (≤768px) : responsive nh-site + pages internes */
 @media (max-width: 768px) {
   .nh-topbar {
@@ -3910,6 +3978,18 @@ body.nh-site.social-page-v2 .social-follow-btn {
     font-size: 2.5rem;
   }
 
+  .nh-hero {
+    min-height: auto;
+    overflow: visible;
+    padding: 36px 0 44px;
+    place-items: start center;
+  }
+
+  .nh-hero-inner {
+    width: min(900px, 100%);
+    padding-top: 12px;
+  }
+
   .nh-hero-actions {
     flex-direction: column;
     align-items: stretch;
@@ -4047,8 +4127,10 @@ body.nh-site.social-page-v2 .social-follow-btn {
 /* —— Annonces + admin login —— */
 .hero-annonces {
   width: min(720px, 100%);
-  margin: 22px auto 8px;
+  margin: 10px auto 22px;
   text-align: left;
+  position: relative;
+  z-index: 3;
 }
 
 .hero-annonces-list {
@@ -4264,6 +4346,54 @@ body.nh-site.social-page-v2 .social-follow-btn {
 @media (max-width: 720px) {
   .hero-annonces {
     text-align: left;
+    width: 100%;
+    margin: 12px auto 20px;
   }
+
+  .hero-annonce-item {
+    padding: 12px 14px;
+  }
+
+  .hero-annonce-text {
+    -webkit-line-clamp: 3;
+  }
+}
+
+.admin-section-divider {
+  border: none;
+  border-top: 1px solid rgba(201, 168, 76, 0.22);
+  margin: 48px 0 28px;
+}
+
+.admin-photos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.admin-photo-tile {
+  margin: 0;
+  background: rgba(12, 12, 12, 0.92);
+  border: 1px solid rgba(201, 168, 76, 0.22);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-photo-tile img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.admin-photo-caption {
+  color: rgba(245, 240, 228, 0.55);
+  font-size: 0.75rem;
+  word-break: break-all;
+  margin: 0;
 }
 
