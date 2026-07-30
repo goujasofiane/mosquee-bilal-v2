@@ -209,42 +209,69 @@
         }
 
         async function loadPhotos() {
+          if (!photosGrid) return;
           photosGrid.innerHTML = '<p class="nh-text">Chargement des photos…</p>';
-          var res = await api("/api/photos");
-          if (!res.ok) {
-            photosGrid.innerHTML =
-              '<p class="admin-status-inline is-error">' +
-              escapeHtml((res.data && res.data.error) || "Impossible de charger les photos.") +
-              "</p>";
-            return;
-          }
-          var items = res.data.items || [];
-          if (!items.length) {
-            photosGrid.innerHTML =
-              '<p class="nh-text" style="color:rgba(245,240,228,0.55)">Aucune photo dans le bucket galerie.</p>';
-            return;
-          }
-          photosGrid.innerHTML = items
-            .map(function (item) {
-              var name = escapeHtml(item.name);
-              var url = escapeHtml(item.url);
-              return (
-                '<figure class="admin-photo-tile">' +
-                '<img src="' +
-                url +
-                '" alt="' +
-                name +
-                '" loading="lazy" />' +
-                '<figcaption class="admin-photo-caption">' +
-                name +
-                "</figcaption>" +
-                '<button type="button" class="admin-btn-delete photo-delete-btn" data-name="' +
-                encodeURIComponent(item.name) +
-                '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
-                "</figure>"
+          try {
+            var res = await api("/api/photos");
+            if (!res.ok) {
+              photosGrid.innerHTML =
+                '<p class="admin-status-inline is-error">' +
+                escapeHtml((res.data && res.data.error) || "Impossible de charger les photos.") +
+                "</p>";
+              setStatus(
+                photoStatus,
+                (res.data && res.data.error) || "Erreur de chargement des photos.",
+                true
               );
-            })
-            .join("");
+              return;
+            }
+            var items = Array.isArray(res.data.items) ? res.data.items : [];
+            if (!items.length) {
+              photosGrid.innerHTML =
+                '<p class="nh-text admin-photos-empty" style="color:rgba(245,240,228,0.55)">Aucune photo</p>';
+              return;
+            }
+            photosGrid.innerHTML = items
+              .map(function (item) {
+                var name = escapeHtml(item.name || "");
+                var url = escapeHtml(item.url || "");
+                var encName = encodeURIComponent(item.name || "");
+                return (
+                  '<figure class="admin-photo-tile">' +
+                  (url
+                    ? '<img src="' + url + '" alt="' + name + '" loading="lazy" />'
+                    : '<div class="admin-photo-missing">Aperçu indisponible</div>') +
+                  '<figcaption class="admin-photo-caption">' +
+                  name +
+                  "</figcaption>" +
+                  '<button type="button" class="admin-btn-delete photo-delete-btn" data-name="' +
+                  encName +
+                  '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
+                  "</figure>"
+                );
+              })
+              .join("");
+          } catch (err) {
+            if (err.message === "unauthorized") return;
+            photosGrid.innerHTML =
+              '<p class="admin-status-inline is-error">Impossible de charger les photos.</p>';
+            setStatus(photoStatus, "Erreur réseau lors du chargement.", true);
+          }
+        }
+
+        function fileToBase64Payload(file) {
+          return new Promise(function (resolve, reject) {
+            var reader = new FileReader();
+            reader.onload = function () {
+              resolve({
+                filename: file.name || "image.jpg",
+                contentType: file.type || "application/octet-stream",
+                data: String(reader.result || ""),
+              });
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
         }
 
         form.addEventListener("submit", async function (e) {
@@ -292,30 +319,23 @@
           var file = photoInput.files && photoInput.files[0];
           if (!file) return;
           setStatus(photoStatus, "Envoi de la photo…");
-          var fd = new FormData();
-          fd.append("file", file);
           try {
-            var r = await fetch("/api/photos", {
+            var payload = await fileToBase64Payload(file);
+            var res = await api("/api/photos", {
               method: "POST",
-              headers: { Authorization: "Bearer " + token },
-              body: fd,
+              jsonBody: payload,
             });
-            var data = await r.json().catch(function () {
-              return {};
-            });
-            if (r.status === 401) {
-              redirectLogin();
-              return;
-            }
-            if (!r.ok) {
-              setStatus(photoStatus, data.error || "Erreur d’envoi.", true);
+            if (!res.ok) {
+              setStatus(photoStatus, res.data.error || "Erreur d’envoi.", true);
               return;
             }
             photoInput.value = "";
             setStatus(photoStatus, "Photo ajoutée.");
             await loadPhotos();
           } catch (err) {
-            setStatus(photoStatus, "Erreur réseau.", true);
+            if (err.message !== "unauthorized") {
+              setStatus(photoStatus, "Erreur réseau.", true);
+            }
           }
         });
 
@@ -353,7 +373,9 @@
 
         verifySession()
           .then(function () {
-            return Promise.all([loadList(), loadPhotos()]);
+            return loadList().then(function () {
+              return loadPhotos();
+            });
           })
           .catch(function () {
             redirectLogin();
