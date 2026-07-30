@@ -4125,6 +4125,13 @@ body.nh-site.social-page-v2 .social-follow-btn {
 
 
 /* —— Annonces + admin login —— */
+.hero-annonces-loading {
+  margin: 0;
+  text-align: center;
+  color: rgba(245, 240, 228, 0.55);
+  font-size: 0.9rem;
+}
+
 .hero-annonces {
   width: min(720px, 100%);
   margin: 10px auto 22px;
