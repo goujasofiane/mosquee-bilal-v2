@@ -4485,3 +4485,70 @@ body.nh-site.social-page-v2 .social-follow-btn {
 }
 .annonce-files { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
 .annonce-download-btn { font-size: 0.75rem; padding: 8px 14px; }
+
+/* —— Admin dashboard v2 + galerie catégories —— */
+.admin-hidden { display: none !important; }
+.admin-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .admin-field-row { grid-template-columns: 1fr; } }
+.admin-field select {
+  width: 100%; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid rgba(201,168,76,0.25); background: rgba(0,0,0,0.45); color: #fff;
+}
+.admin-color-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.admin-color-swatch {
+  width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.25); cursor: pointer;
+}
+.admin-photos-toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.admin-photos-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.admin-masonry-photos { margin-top: 12px; }
+.admin-photo-card { position: relative; }
+.admin-photo-inner { position: relative; }
+.admin-photo-check {
+  position: absolute; top: 12px; left: 12px; z-index: 3;
+  background: rgba(0,0,0,0.55); border-radius: 6px; padding: 4px;
+}
+.admin-photo-controls {
+  position: absolute; right: 10px; bottom: 10px; z-index: 3;
+  display: flex; gap: 6px;
+}
+.admin-icon-btn {
+  width: 36px; height: 36px; border-radius: 10px; border: 1px solid rgba(201,168,76,0.35);
+  background: rgba(0,0,0,0.65); color: #fff; cursor: pointer; font-size: 1rem;
+}
+.admin-icon-btn:hover { background: rgba(201,168,76,0.35); }
+.admin-photo-meta { margin-top: 8px; }
+.admin-photo-meta select {
+  width: 100%; padding: 8px 10px; border-radius: 10px;
+  border: 1px solid rgba(201,168,76,0.25); background: #111; color: #fff;
+}
+.admin-upload-zone {
+  margin-top: 28px; padding: 28px; border: 1px dashed rgba(201,168,76,0.4);
+  border-radius: 18px; text-align: center; background: rgba(12,12,12,0.7);
+}
+.admin-upload-zone input[type=file] { display: none; }
+.admin-upload-label { cursor: pointer; color: #c9a84c; display: inline-flex; gap: 10px; align-items: center; font-weight: 600; }
+.admin-global-save {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  padding: 14px 18px 22px; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.92));
+  display: flex; justify-content: center;
+}
+.admin-inline-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.gallery-category-tabs {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin: 0 auto 28px; max-width: 900px; padding: 0 16px;
+}
+.gallery-tab {
+  background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(201,168,76,0.28); border-radius: 999px;
+  padding: 8px 16px; cursor: pointer; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.8rem;
+}
+.gallery-tab.is-active, .gallery-tab:hover {
+  color: #1b1407; background: linear-gradient(135deg, #c9a84c, #f1dd9c); border-color: transparent;
+}
+.gallery-cat-block { margin-bottom: 40px; }
+.gallery-cat-title {
+  text-align: center; color: #c9a84c; font-family: "Playfair Display", serif;
+  margin: 0 0 18px; font-size: 1.4rem;
+}
+.annonce-files { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.annonce-download-btn { font-size: 0.75rem; padding: 8px 14px; }
