@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { readJsonBody: _unused } = {}; // placeholder removed below
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
