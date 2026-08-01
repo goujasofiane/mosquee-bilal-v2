@@ -10,9 +10,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
       crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
   </head>
   <body class="nh-site">
@@ -51,14 +49,11 @@
           <img src="assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
           <span class="nh-brand-text">Mosquée Bilal</span>
         </a>
-
         <nav class="nh-nav" aria-label="Navigation principale">
-          <button class="nh-nav-toggle" type="button" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
+          <button class="nh-nav-toggle" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
           <ul class="nh-nav-list">
             <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
-            <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
+            <li><a href="mosquee.html" data-i18n="navGallery" aria-current="page">GALERIE</a></li>
             <li><a href="annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
             <li><a href="quran.html" data-i18n="navQuran">CORAN</a></li>
             <li><a href="ai.html" data-i18n="navHadiths">HADITHS</a></li>
@@ -69,7 +64,6 @@
             <li><a href="contact.html" data-i18n="navContact">CONTACT</a></li>
           </ul>
         </nav>
-
         <div class="lang-switch nh-lang-switch">
           <button data-lang="fr" class="active">FR</button>
           <button data-lang="ar">AR</button>
@@ -87,177 +81,16 @@
           </p>
         </header>
 
-        <div class="mosquee-masonry-grid" id="mosqueeMasonryGrid">
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/mosquee-1.png" alt="Mosquée Bilal - Vue 1" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/mosquee-2.png" alt="Mosquée Bilal - Vue 2" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/mosquee-3.png" alt="Mosquée Bilal - Vue 3" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/mosquee-4.png" alt="Mosquée Bilal - Vue 4" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/0f6a9d6c634af4105d3f326479678f5af75ab3ba.jpeg" alt="Mosquée Bilal - Vue 5" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/1.jpeg" alt="Mosquée Bilal - Vue 6" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/3fb9465c945bc8e2378d10fbaa941745d03276a2.jpeg" alt="Mosquée Bilal - Vue 7" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/4be675200f3e16cbaa1b15220c185955a12f19b5.jpeg" alt="Mosquée Bilal - Vue 8" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/76b2829bbaaa6baab6ec2756088350ce11fc8b43.jpg" alt="Mosquée Bilal - Vue 9" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/unnamed.jpg" alt="Mosquée Bilal - Vue 10" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-1.png" alt="Mosquée Bilal - Vue 11" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-2.png" alt="Mosquée Bilal - Vue 12" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-3.png" alt="Mosquée Bilal - Vue 13" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-4.png" alt="Mosquée Bilal - Vue 14" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-5.png" alt="Mosquée Bilal - Vue 15" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-
-          <figure class="mosquee-masonry-item">
-            <div class="mosquee-masonry-inner">
-              <img src="assets/chantier-6.png" alt="Mosquée Bilal - Vue 16" />
-              <div class="mosquee-masonry-overlay">
-                <i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i>
-              </div>
-            </div>
-          </figure>
-        </div>
+        <div id="galleryTabs" class="gallery-category-tabs" role="tablist" aria-label="Catégories"></div>
+        <div id="mosqueeGalleryRoot"></div>
       </section>
 
       <div class="gallery-lightbox" id="gallery-lightbox" aria-hidden="true">
         <div class="gallery-lightbox-backdrop"></div>
         <div class="gallery-lightbox-inner">
-          <button
-            class="gallery-lightbox-close"
-            type="button"
-            aria-label="Fermer l’image"
-          >
-            &#10005;
-          </button>
-          <button
-            class="gallery-lightbox-arrow gallery-lightbox-prev"
-            type="button"
-            aria-label="Image précédente"
-          >
-            &#8592;
-          </button>
-          <button
-            class="gallery-lightbox-arrow gallery-lightbox-next"
-            type="button"
-            aria-label="Image suivante"
-          >
-            &#8594;
-          </button>
+          <button class="gallery-lightbox-close" type="button" aria-label="Fermer">&#10005;</button>
+          <button class="gallery-lightbox-arrow gallery-lightbox-prev" type="button" aria-label="Précédent">&#8592;</button>
+          <button class="gallery-lightbox-arrow gallery-lightbox-next" type="button" aria-label="Suivant">&#8594;</button>
           <img src="" alt="" />
         </div>
       </div>
@@ -280,60 +113,157 @@
 
     <script src="script.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const grid = document.getElementById("mosqueeMasonryGrid");
-        if (!grid) return;
+      (function () {
+        var allPhotos = [];
+        var categories = [];
+        var activeCat = "all";
 
-        (async function () {
-          let data;
-          try {
-            const r = await fetch("/api/photos");
-            data = await r.json();
-          } catch (e) {
+        function escapeHtml(s) {
+          return String(s || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function renderTabs() {
+          var tabs = document.getElementById("galleryTabs");
+          var html =
+            '<button type="button" class="gallery-tab' +
+            (activeCat === "all" ? " is-active" : "") +
+            '" data-cat="all">Tous</button>';
+          categories.forEach(function (c) {
+            html +=
+              '<button type="button" class="gallery-tab' +
+              (activeCat === c.id ? " is-active" : "") +
+              '" data-cat="' +
+              escapeHtml(c.id) +
+              '">' +
+              escapeHtml(c.nom) +
+              "</button>";
+          });
+          tabs.innerHTML = html;
+        }
+
+        function filtered() {
+          if (activeCat === "all") return allPhotos;
+          return allPhotos.filter(function (p) {
+            return p.category_id === activeCat;
+          });
+        }
+
+        function renderGrid() {
+          var root = document.getElementById("mosqueeGalleryRoot");
+          var photos = filtered();
+
+          if (activeCat === "all" && categories.length) {
+            var html = "";
+            categories.forEach(function (c) {
+              var list = allPhotos.filter(function (p) {
+                return p.category_id === c.id;
+              });
+              if (!list.length) return;
+              html +=
+                '<section class="gallery-cat-block">' +
+                '<h2 class="gallery-cat-title">' +
+                escapeHtml(c.nom) +
+                "</h2>" +
+                '<div class="mosquee-masonry-grid">' +
+                list
+                  .map(function (item) {
+                    return (
+                      '<figure class="mosquee-masonry-item">' +
+                      '<div class="mosquee-masonry-inner">' +
+                      '<img src="' +
+                      escapeHtml(item.url) +
+                      '" alt="' +
+                      escapeHtml(c.nom) +
+                      '" loading="lazy" />' +
+                      '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
+                      "</div></figure>"
+                    );
+                  })
+                  .join("") +
+                "</div></section>";
+            });
+            var uncat = allPhotos.filter(function (p) {
+              return !p.category_id;
+            });
+            if (uncat.length) {
+              html +=
+                '<section class="gallery-cat-block"><h2 class="gallery-cat-title">Autres</h2><div class="mosquee-masonry-grid">' +
+                uncat
+                  .map(function (item) {
+                    return (
+                      '<figure class="mosquee-masonry-item"><div class="mosquee-masonry-inner">' +
+                      '<img src="' +
+                      escapeHtml(item.url) +
+                      '" alt="" loading="lazy" />' +
+                      '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
+                      "</div></figure>"
+                    );
+                  })
+                  .join("") +
+                "</div></section>";
+            }
+            root.innerHTML =
+              html ||
+              '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune photo pour le moment.</p>';
             return;
           }
 
-          const items = data && data.items ? data.items : [];
-          if (!items.length) return;
-
-          const fragment = document.createDocumentFragment();
-
-          items.forEach(function (item, index) {
-            const url = item.url;
-            if (!url) return;
-
-            const fig = document.createElement("figure");
-            fig.className = "mosquee-masonry-item reveal is-visible";
-
-            const inner = document.createElement("div");
-            inner.className = "mosquee-masonry-inner";
-
-            const img = document.createElement("img");
-            img.src = url;
-            img.alt = "Mosquée Bilal — photo " + (index + 1);
-            img.loading = "lazy";
-
-            const overlay = document.createElement("div");
-            overlay.className = "mosquee-masonry-overlay";
-            const icon = document.createElement("i");
-            icon.className = "fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon";
-            icon.setAttribute("aria-hidden", "true");
-            overlay.appendChild(icon);
-
-            inner.appendChild(img);
-            inner.appendChild(overlay);
-            fig.appendChild(inner);
-            fragment.appendChild(fig);
-          });
-
-          if (fragment.childNodes.length > 0) {
-            grid.innerHTML = "";
-            grid.appendChild(fragment);
+          if (!photos.length) {
+            root.innerHTML =
+              '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune photo dans cette catégorie.</p>';
+            return;
           }
-        })();
-      });
+          root.innerHTML =
+            '<div class="mosquee-masonry-grid" id="mosqueeMasonryGrid">' +
+            photos
+              .map(function (item) {
+                return (
+                  '<figure class="mosquee-masonry-item"><div class="mosquee-masonry-inner">' +
+                  '<img src="' +
+                  escapeHtml(item.url) +
+                  '" alt="" loading="lazy" />' +
+                  '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
+                  "</div></figure>"
+                );
+              })
+              .join("") +
+            "</div>";
+        }
+
+        document.getElementById("galleryTabs").addEventListener("click", function (e) {
+          var btn = e.target.closest(".gallery-tab");
+          if (!btn) return;
+          activeCat = btn.getAttribute("data-cat") || "all";
+          renderTabs();
+          renderGrid();
+        });
+
+        document.addEventListener("DOMContentLoaded", async function () {
+          try {
+            var [catsRes, photosRes] = await Promise.all([
+              fetch("/api/categories").then(function (r) {
+                return r.json();
+              }),
+              fetch("/api/photos").then(function (r) {
+                return r.json();
+              }),
+            ]);
+            categories = catsRes.items || [];
+            allPhotos = (photosRes.items || []).filter(function (p) {
+              return p.url;
+            });
+            renderTabs();
+            renderGrid();
+          } catch (e) {
+            document.getElementById("mosqueeGalleryRoot").innerHTML =
+              '<p class="nh-text" style="text-align:center;color:#ff9f9f">Impossible de charger la galerie.</p>';
+          }
+        });
+      })();
     </script>
   </body>
 </html>
-
-

@@ -1,9 +1,5 @@
-const {
-  json,
-  readJsonBody,
-  verifyAdminToken,
-  getBearerToken,
-} = require("./_lib/auth");
+const { readJsonBody, verifyAdminToken, getBearerToken } = require("./_lib/auth");
+const { json, preflight, applyCors } = require("./_lib/http");
 const { getSupabaseAdmin } = require("./_lib/supabase");
 
 const BUCKET = "galerie";
@@ -15,21 +11,6 @@ function requireAdmin(req, res) {
     return null;
   }
   return payload;
-}
-
-function isStorageFile(entry) {
-  if (!entry || !entry.name) return false;
-  // Dossiers Supabase : id null / metadata null, souvent sans extension
-  if (entry.id == null && entry.metadata == null) return false;
-  if (String(entry.name).endsWith("/")) return false;
-  // Placeholders internes
-  if (entry.name === ".emptyFolderPlaceholder") return false;
-  return true;
-}
-
-function looksLikeImage(name, contentType) {
-  if (contentType && String(contentType).startsWith("image/")) return true;
-  return /\.(jpe?g|png|gif|webp|avif|bmp|svg|heic|heif)$/i.test(name || "");
 }
 
 function safeObjectName(originalName) {
@@ -48,249 +29,195 @@ function safeObjectName(originalName) {
     .replace(/-+/g, "-")
     .replace(/^-+|-+$/g, "");
   if (!s) s = "image";
-  if (s.length > 100) s = s.slice(0, 100).replace(/-+$/g, "") || "image";
+  if (s.length > 80) s = s.slice(0, 80);
   const ext = lastDot > 0 ? name.slice(lastDot + 1).toLowerCase() : "jpg";
-  const map = {
-    jpg: "jpg",
-    jpeg: "jpg",
-    png: "png",
-    gif: "gif",
-    webp: "webp",
-    avif: "avif",
-    bmp: "bmp",
-    svg: "svg",
-    heic: "heic",
-    heif: "heif",
-  };
+  const map = { jpg: "jpg", jpeg: "jpg", png: "png", gif: "gif", webp: "webp", avif: "avif", bmp: "bmp", svg: "svg" };
   return Date.now() + "-" + s + "." + (map[ext] || "jpg");
 }
 
-function readRawBody(req) {
-  return new Promise(function (resolve, reject) {
-    if (req.body != null) {
-      if (Buffer.isBuffer(req.body)) {
-        resolve(req.body);
-        return;
-      }
-      if (typeof req.body === "string") {
-        resolve(Buffer.from(req.body, "utf8"));
-        return;
-      }
-    }
-    const chunks = [];
-    req.on("data", function (c) {
-      chunks.push(c);
-    });
-    req.on("end", function () {
-      resolve(Buffer.concat(chunks));
-    });
-    req.on("error", reject);
-  });
-}
-
-function parseMultipart(buffer, contentType) {
-  const m = /boundary=(?:"([^"]+)"|([^;]+))/i.exec(contentType || "");
-  if (!m) return null;
-  const boundary = (m[1] || m[2] || "").trim();
-  if (!boundary) return null;
-  const parts = buffer.toString("binary").split("--" + boundary);
-  for (let i = 0; i < parts.length; i++) {
-    const part = parts[i];
-    if (!part || part === "--\r\n" || part === "--" || part === "\r\n") continue;
-    const sep = part.indexOf("\r\n\r\n");
-    if (sep < 0) continue;
-    const headers = part.slice(0, sep);
-    let body = part.slice(sep + 4);
-    if (body.endsWith("\r\n")) body = body.slice(0, -2);
-    const nameMatch = /name="([^"]+)"/i.exec(headers);
-    const fileMatch = /filename="([^"]*)"/i.exec(headers);
-    if (!nameMatch || nameMatch[1] !== "file") continue;
-    if (!fileMatch) continue;
-    const filename = fileMatch[1] || "image.jpg";
-    const typeMatch = /Content-Type:\s*([^\r\n]+)/i.exec(headers);
-    const type = typeMatch ? typeMatch[1].trim() : "application/octet-stream";
-    return {
-      filename: filename,
-      type: type,
-      buffer: Buffer.from(body, "binary"),
-    };
-  }
-  return null;
-}
-
 async function resolveUrl(db, path) {
-  const pub = db.storage.from(BUCKET).getPublicUrl(path);
-  const publicUrl = pub && pub.data && pub.data.publicUrl ? pub.data.publicUrl : "";
-
-  // URL signée : marche même si le bucket n’est pas public
   const signed = await db.storage.from(BUCKET).createSignedUrl(path, 60 * 60 * 24);
-  if (!signed.error && signed.data && signed.data.signedUrl) {
-    return signed.data.signedUrl;
-  }
-  return publicUrl;
+  if (!signed.error && signed.data && signed.data.signedUrl) return signed.data.signedUrl;
+  const pub = db.storage.from(BUCKET).getPublicUrl(path);
+  return (pub.data && pub.data.publicUrl) || "";
 }
 
-async function listGalleryFiles(db) {
-  const { data, error } = await db.storage.from(BUCKET).list("", {
-    limit: 200,
-    offset: 0,
-    sortBy: { column: "created_at", order: "desc" },
-  });
-
-  if (error) {
-    // Fallback si created_at non supporté sur certains projets
-    const retry = await db.storage.from(BUCKET).list("", {
-      limit: 200,
-      sortBy: { column: "name", order: "desc" },
-    });
-    if (retry.error) {
-      return { error: error.message || retry.error.message, files: [] };
-    }
-    return { error: null, files: retry.data || [] };
+async function ensureMeta(db, name, categoryId) {
+  const { data: existing } = await db.from("galerie_photos").select("name").eq("name", name).maybeSingle();
+  if (existing) return;
+  const { data: maxRow } = await db
+    .from("galerie_photos")
+    .select("position")
+    .order("position", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  const position = (maxRow && maxRow.position != null ? maxRow.position : -1) + 1;
+  let cat = categoryId || null;
+  if (!cat) {
+    const { data: firstCat } = await db
+      .from("categories")
+      .select("id")
+      .order("ordre", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+    cat = firstCat ? firstCat.id : null;
   }
-  return { error: null, files: data || [] };
+  await db.from("galerie_photos").insert([{ name, category_id: cat, position }]);
+}
+
+async function syncStorageToMeta(db) {
+  const { data: files } = await db.storage.from(BUCKET).list("", { limit: 200 });
+  const names = (files || [])
+    .filter((f) => f && f.name && f.metadata != null)
+    .filter((f) => /\.(jpe?g|png|gif|webp|avif|bmp|svg)$/i.test(f.name))
+    .map((f) => f.name);
+  for (const n of names) {
+    await ensureMeta(db, n, null);
+  }
 }
 
 module.exports = async function handler(req, res) {
+  if (preflight(req, res)) return;
+  if (!applyCors(req, res) && req.headers.origin) {
+    return json(res, 403, { error: "CORS" });
+  }
+
   const db = getSupabaseAdmin();
   if (!db) {
-    return json(res, 503, {
-      error: "Supabase non configuré (SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY).",
-      items: [],
-    });
+    return json(res, 503, { error: "Supabase non configuré.", items: [] });
   }
 
   if (req.method === "GET") {
-    const listed = await listGalleryFiles(db);
-    if (listed.error) {
-      return json(res, 500, { error: listed.error, items: [] });
-    }
+    await syncStorageToMeta(db);
+    const { data: rows, error } = await db
+      .from("galerie_photos")
+      .select("name, category_id, position, created_at")
+      .order("position", { ascending: true });
+    if (error) return json(res, 500, { error: error.message, items: [] });
 
-    const files = listed.files.filter(isStorageFile).filter(function (f) {
-      const ct = f.metadata && (f.metadata.mimetype || f.metadata.contentType);
-      if (looksLikeImage(f.name, ct)) return true;
-      // Fichier réel avec taille (au cas où l’extension manque)
-      if (f.metadata && f.metadata.size != null) return true;
-      return false;
+    const { data: cats } = await db.from("categories").select("id, nom, ordre");
+    const catMap = {};
+    (cats || []).forEach(function (c) {
+      catMap[c.id] = c;
     });
 
     const items = [];
-    for (let i = 0; i < files.length; i++) {
-      const f = files[i];
-      const url = await resolveUrl(db, f.name);
+    for (const row of rows || []) {
+      const url = await resolveUrl(db, row.name);
       items.push({
-        name: f.name,
-        url: url,
-        updatedAt: f.updated_at || f.created_at || null,
+        name: row.name,
+        url,
+        category_id: row.category_id,
+        category: row.category_id ? catMap[row.category_id] || null : null,
+        position: row.position,
+        createdAt: row.created_at,
       });
     }
-
-    // Tri récent d’abord
-    items.sort(function (a, b) {
-      return String(b.name).localeCompare(String(a.name));
-    });
-
-    return json(res, 200, { items: items });
+    return json(res, 200, { items });
   }
 
+  if (!requireAdmin(req, res)) return;
+
   if (req.method === "POST") {
-    if (!requireAdmin(req, res)) return;
+    let body = {};
+    try {
+      body = await readJsonBody(req);
+    } catch (e) {
+      return json(res, 400, { error: "JSON invalide." });
+    }
 
-    const ct = String(req.headers["content-type"] || "");
-    let filePart = null;
+    // Réordonner
+    if (body.action === "reorder" && Array.isArray(body.order)) {
+      for (let i = 0; i < body.order.length; i++) {
+        const name = body.order[i];
+        if (typeof name !== "string") continue;
+        await db.from("galerie_photos").update({ position: i }).eq("name", name);
+      }
+      return json(res, 200, { ok: true });
+    }
 
-    // 1) JSON base64 (plus fiable sur Vercel Node)
-    if (ct.includes("application/json")) {
-      let body;
-      try {
-        body = await readJsonBody(req);
-      } catch (e) {
-        return json(res, 400, { error: "JSON invalide." });
+    // Changer catégorie
+    if (body.action === "setCategory" && body.name) {
+      const { error } = await db
+        .from("galerie_photos")
+        .update({ category_id: body.category_id || null })
+        .eq("name", body.name);
+      if (error) return json(res, 500, { error: error.message });
+      return json(res, 200, { ok: true });
+    }
+
+    // Batch set categories / order (save global)
+    if (body.action === "saveAll") {
+      if (Array.isArray(body.order)) {
+        for (let i = 0; i < body.order.length; i++) {
+          await db.from("galerie_photos").update({ position: i }).eq("name", body.order[i]);
+        }
       }
-      const filename = typeof body.filename === "string" ? body.filename : "image.jpg";
-      const contentType =
-        typeof body.contentType === "string" ? body.contentType : "application/octet-stream";
-      const b64 = typeof body.data === "string" ? body.data : "";
-      if (!b64) {
-        return json(res, 400, { error: "Données image manquantes (data base64)." });
+      if (Array.isArray(body.assignments)) {
+        for (const a of body.assignments) {
+          if (!a || !a.name) continue;
+          await db
+            .from("galerie_photos")
+            .update({ category_id: a.category_id || null })
+            .eq("name", a.name);
+        }
       }
-      const raw = b64.replace(/^data:[^;]+;base64,/, "");
-      try {
-        filePart = {
-          filename: filename,
-          type: contentType,
-          buffer: Buffer.from(raw, "base64"),
-        };
-      } catch (e) {
-        return json(res, 400, { error: "Base64 invalide." });
+      return json(res, 200, { ok: true });
+    }
+
+    // Suppression multiple
+    if (body.action === "deleteMany" && Array.isArray(body.names)) {
+      const names = body.names.filter((n) => typeof n === "string" && n && !n.includes(".."));
+      if (names.length) {
+        await db.storage.from(BUCKET).remove(names);
+        await db.from("galerie_photos").delete().in("name", names);
       }
-    } else if (ct.includes("multipart/form-data")) {
-      try {
-        const raw = await readRawBody(req);
-        filePart = parseMultipart(raw, ct);
-      } catch (e) {
-        return json(res, 400, { error: "Formulaire invalide." });
-      }
-    } else {
-      return json(res, 415, {
-        error: "Content-Type non supporté (JSON base64 ou multipart).",
+      return json(res, 200, { ok: true });
+    }
+
+    // Upload (base64) — un ou plusieurs
+    const files = Array.isArray(body.files) ? body.files : body.data ? [body] : [];
+    if (!files.length) return json(res, 400, { error: "Fichier(s) manquant(s)." });
+
+    const uploaded = [];
+    for (const f of files) {
+      const filename = typeof f.filename === "string" ? f.filename : "image.jpg";
+      const contentType = typeof f.contentType === "string" ? f.contentType : "image/jpeg";
+      const b64 = typeof f.data === "string" ? f.data.replace(/^data:[^;]+;base64,/, "") : "";
+      if (!b64) continue;
+      const buffer = Buffer.from(b64, "base64");
+      const path = safeObjectName(filename);
+      const { error } = await db.storage.from(BUCKET).upload(path, buffer, {
+        contentType,
+        upsert: false,
+        cacheControl: "3600",
       });
+      if (error) continue;
+      await ensureMeta(db, path, f.category_id || body.category_id || null);
+      const url = await resolveUrl(db, path);
+      uploaded.push({ name: path, url });
     }
-
-    if (!filePart || !filePart.buffer || !filePart.buffer.length) {
-      return json(res, 400, { error: "Fichier manquant." });
-    }
-
-    const path = safeObjectName(filePart.filename);
-    const { error } = await db.storage.from(BUCKET).upload(path, filePart.buffer, {
-      contentType: filePart.type || "image/jpeg",
-      upsert: false,
-      cacheControl: "3600",
-    });
-    if (error) {
-      return json(res, 500, { error: error.message });
-    }
-
-    const url = await resolveUrl(db, path);
-    return json(res, 201, {
-      ok: true,
-      item: { name: path, url: url },
-    });
+    return json(res, 201, { ok: true, items: uploaded });
   }
 
   if (req.method === "DELETE") {
-    if (!requireAdmin(req, res)) return;
-
-    let name = req.query && req.query.name;
-    if (!name) {
+    let names = [];
+    if (req.query && req.query.name) names = [req.query.name];
+    else {
       try {
         const body = await readJsonBody(req);
-        name = body && body.name;
+        if (body && body.name) names = [body.name];
+        if (body && Array.isArray(body.names)) names = body.names;
       } catch (e) {
-        name = null;
+        /* */
       }
     }
-    if (!name || typeof name !== "string") {
-      return json(res, 400, { error: "Nom de fichier manquant." });
-    }
-
-    // Empêcher les chemins bizarres
-    name = name.replace(/^\/+/, "");
-    if (!name || name.includes("..")) {
-      return json(res, 400, { error: "Nom de fichier invalide." });
-    }
-
-    const { error } = await db.storage.from(BUCKET).remove([name]);
-    if (error) {
-      return json(res, 500, { error: error.message });
-    }
+    names = names.filter((n) => typeof n === "string" && n && !n.includes(".."));
+    if (!names.length) return json(res, 400, { error: "Nom manquant." });
+    await db.storage.from(BUCKET).remove(names);
+    await db.from("galerie_photos").delete().in("name", names);
     return json(res, 200, { ok: true });
   }
 
   return json(res, 405, { error: "Méthode non autorisée" });
-};
-
-module.exports.config = {
-  runtime: "nodejs",
-  api: { bodyParser: false },
 };

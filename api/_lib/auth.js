@@ -1,17 +1,11 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
-function json(res, status, body) {
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "no-store");
-  res.end(JSON.stringify(body));
-}
+const { readJsonBody: _unused } = {}; // placeholder removed below
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
     if (req.body != null) {
-      if (typeof req.body === "object") {
+      if (typeof req.body === "object" && !Buffer.isBuffer(req.body)) {
         resolve(req.body);
         return;
       }
@@ -47,10 +41,8 @@ function getJwtSecret() {
 
 function signAdminToken(email) {
   const secret = getJwtSecret();
-  if (!secret) {
-    throw new Error("JWT_SECRET manquant");
-  }
-  return jwt.sign({ role: "admin", email }, secret, { expiresIn: "8h" });
+  if (!secret) throw new Error("JWT_SECRET manquant");
+  return jwt.sign({ role: "admin", email }, secret, { expiresIn: "2h" });
 }
 
 function verifyAdminToken(token) {
@@ -86,7 +78,6 @@ async function verifyAdminPassword(email, password) {
 }
 
 module.exports = {
-  json,
   readJsonBody,
   signAdminToken,
   verifyAdminToken,

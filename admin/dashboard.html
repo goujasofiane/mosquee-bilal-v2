@@ -4,383 +4,131 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="../assets/logo1.png" />
-    <link rel="apple-touch-icon" href="../assets/logo1.png" />
     <title>Dashboard — Mosquée Bilal</title>
     <link rel="stylesheet" href="../styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
   </head>
   <body class="nh-site admin-dashboard-page">
     <div class="nh-bg" aria-hidden="true"></div>
 
     <header class="nh-header">
       <div class="nh-header-inner">
-        <a class="nh-brand" href="../index.html" aria-label="Mosquée Bilal">
-          <img src="../assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
+        <a class="nh-brand" href="../index.html">
+          <img src="../assets/logo1.png" class="nh-brand-logo" alt="" />
           <span class="nh-brand-text">Mosquée Bilal</span>
         </a>
-        <nav class="nh-nav" aria-label="Navigation">
-          <button class="nh-nav-toggle" type="button" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
+        <nav class="nh-nav" aria-label="Admin">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
           <ul class="nh-nav-list">
-            <li><a href="../index.html" data-i18n="navHome">ACCUEIL</a></li>
-            <li><a href="../mosquee.html" data-i18n="navGallery">GALERIE</a></li>
-            <li><a href="../annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
-            <li><button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding: 8px 14px">Déconnexion</button></li>
+            <li><a href="#section-annonces" data-i18n-admin="navAnnonces">ANNONCES</a></li>
+            <li><a href="#section-photos" data-i18n-admin="navGalerie">GALERIE</a></li>
+            <li><a href="#section-categories" data-i18n-admin="navCategories">CATÉGORIES</a></li>
+            <li><button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding:8px 14px" data-i18n-admin="logout">Déconnexion</button></li>
           </ul>
         </nav>
+        <div class="lang-switch nh-lang-switch" id="adminLangSwitch">
+          <button type="button" data-lang="fr" class="active">FR</button>
+          <button type="button" data-lang="ar">AR</button>
+        </div>
       </div>
     </header>
 
     <main class="nh-main">
       <section class="nh-section annonces-admin-section">
-        <div class="nh-container" style="max-width: 900px">
-          <h1 class="nh-title" style="color: #c9a84c; margin-bottom: 8px">Dashboard admin</h1>
-          <p class="nh-text" style="margin-bottom: 28px; color: rgba(245, 240, 228, 0.65)">
-            Gérez les annonces et les photos de la galerie.
-          </p>
+        <div class="nh-container" style="max-width:1100px;padding-bottom:100px">
+          <h1 class="nh-title" style="color:#c9a84c;margin-bottom:8px" data-i18n-admin="title">Dashboard admin</h1>
+          <p class="nh-text" style="margin-bottom:28px;color:rgba(245,240,228,0.65)" data-i18n-admin="subtitle">Gérez les annonces, les photos et les catégories.</p>
 
-          <h2 class="nh-kicker" style="margin: 0 0 16px">Annonces</h2>
-          <form id="annonceForm" class="annonce-admin-form">
-            <div class="admin-field">
-              <label for="titre">Titre</label>
-              <input id="titre" type="text" maxlength="200" required />
-            </div>
-            <div class="admin-field">
-              <label for="texte">Texte</label>
-              <textarea id="texte" rows="4" maxlength="4000" required></textarea>
-            </div>
-            <button class="nh-btn nh-btn-gold" type="submit">Ajouter l’annonce</button>
-            <p id="formStatus" class="admin-status-inline" style="margin-top: 12px"></p>
-          </form>
-
-          <h3 class="nh-kicker" style="margin: 32px 0 16px">Annonces existantes</h3>
-          <div id="annoncesList" class="annonces-admin-list"></div>
+          <!-- ANNONCES -->
+          <section id="section-annonces">
+            <h2 class="nh-kicker" style="margin:0 0 16px" data-i18n-admin="annoncesTitle">Annonces</h2>
+            <form id="annonceForm" class="annonce-admin-form">
+              <div class="admin-field">
+                <label for="titre" data-i18n-admin="labelTitre">Titre</label>
+                <input id="titre" type="text" maxlength="200" required />
+              </div>
+              <div class="admin-field">
+                <label for="texte" data-i18n-admin="labelTexte">Texte</label>
+                <textarea id="texte" rows="4" maxlength="4000" required></textarea>
+              </div>
+              <div class="admin-field-row">
+                <div class="admin-field">
+                  <label for="police" data-i18n-admin="labelPolice">Police</label>
+                  <select id="police">
+                    <option value="Cairo">Cairo</option>
+                    <option value="Playfair Display">Playfair Display</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                  </select>
+                </div>
+                <div class="admin-field">
+                  <label data-i18n-admin="labelCouleur">Couleur du texte</label>
+                  <div class="admin-color-row" id="colorPalette"></div>
+                  <input id="couleur" type="color" value="#f5f0e1" style="margin-top:8px;width:100%;height:40px;border:none;background:transparent" />
+                </div>
+              </div>
+              <div class="admin-field">
+                <label for="annonceFiles" data-i18n-admin="labelFichiers">Pièces jointes (PDF, images)</label>
+                <input id="annonceFiles" type="file" accept="image/*,.pdf,application/pdf" multiple />
+              </div>
+              <button class="nh-btn nh-btn-gold" type="submit" data-i18n-admin="btnAddAnnonce">Ajouter l’annonce</button>
+              <p id="formStatus" class="admin-status-inline" style="margin-top:12px"></p>
+            </form>
+            <h3 class="nh-kicker" style="margin:32px 0 16px" data-i18n-admin="annoncesList">Annonces existantes</h3>
+            <div id="annoncesList" class="annonces-admin-list"></div>
+          </section>
 
           <hr class="admin-section-divider" />
 
-          <h2 class="nh-kicker" style="margin: 0 0 8px">Gestion des photos</h2>
-          <p class="nh-text" style="margin-bottom: 18px; color: rgba(245, 240, 228, 0.55)">
-            Upload vers le bucket Supabase <code style="color:#c9a84c">galerie</code>. Les photos apparaissent sur le site public.
-          </p>
+          <!-- CATÉGORIES -->
+          <section id="section-categories">
+            <h2 class="nh-kicker" style="margin:0 0 16px" data-i18n-admin="categoriesTitle">Catégories</h2>
+            <form id="catForm" class="annonce-admin-form" style="margin-bottom:16px">
+              <div class="admin-field">
+                <label for="catNom" data-i18n-admin="labelCatNom">Nom de la catégorie</label>
+                <input id="catNom" type="text" maxlength="80" required />
+              </div>
+              <button class="nh-btn nh-btn-gold" type="submit" data-i18n-admin="btnAddCat">Ajouter</button>
+            </form>
+            <div id="categoriesList" class="annonces-admin-list"></div>
+          </section>
 
-          <div class="annonce-admin-form">
-            <div class="admin-field">
-              <label for="photoInput">Ajouter une photo</label>
-              <input id="photoInput" type="file" accept="image/*" />
+          <hr class="admin-section-divider" />
+
+          <!-- PHOTOS -->
+          <section id="section-photos">
+            <div class="admin-photos-toolbar">
+              <h2 class="nh-kicker" style="margin:0" data-i18n-admin="photosTitle">Gestion des photos</h2>
+              <div class="admin-photos-actions">
+                <button type="button" id="btnDeleteSelected" class="nh-btn nh-btn-outline admin-hidden" data-i18n-admin="btnDeleteSelected">Supprimer la sélection</button>
+                <button type="button" id="btnSaveOrder" class="nh-btn nh-btn-gold admin-hidden" data-i18n-admin="btnSaveOrder">Enregistrer l’ordre</button>
+              </div>
             </div>
-            <p id="photoStatus" class="admin-status-inline"></p>
-          </div>
-
-          <h3 class="nh-kicker" style="margin: 28px 0 16px">Photos existantes</h3>
-          <div id="photosGrid" class="admin-photos-grid"></div>
+            <p class="nh-text" style="margin:12px 0 18px;color:rgba(245,240,228,0.55)" data-i18n-admin="photosHint">
+              Grille comme la galerie publique. Réordonnez, changez la catégorie, puis enregistrez.
+            </p>
+            <div id="photosGrid" class="mosquee-masonry-grid admin-masonry-photos"></div>
+            <div class="admin-upload-zone">
+              <label for="photoInput" class="admin-upload-label">
+                <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
+                <span data-i18n-admin="uploadHint">Ajouter des photos (sélection multiple)</span>
+              </label>
+              <input id="photoInput" type="file" accept="image/*" multiple />
+              <p id="photoStatus" class="admin-status-inline"></p>
+            </div>
+          </section>
         </div>
       </section>
     </main>
 
+    <div id="globalSaveBar" class="admin-global-save admin-hidden">
+      <button type="button" id="btnGlobalSave" class="nh-btn nh-btn-gold">
+        <span data-i18n-admin="btnGlobalSave">💾 Enregistrer les modifications</span>
+      </button>
+    </div>
+
     <script src="../script.js"></script>
-    <script>
-      (function () {
-        var TOKEN_KEY = "mosquee_admin_jwt";
-        var token = sessionStorage.getItem(TOKEN_KEY);
-        var listEl = document.getElementById("annoncesList");
-        var form = document.getElementById("annonceForm");
-        var formStatus = document.getElementById("formStatus");
-        var photoInput = document.getElementById("photoInput");
-        var photoStatus = document.getElementById("photoStatus");
-        var photosGrid = document.getElementById("photosGrid");
-
-        function setStatus(el, text, isError) {
-          el.textContent = text || "";
-          el.classList.toggle("is-error", !!isError);
-        }
-
-        function redirectLogin() {
-          sessionStorage.removeItem(TOKEN_KEY);
-          window.location.replace("/admin.html");
-        }
-
-        if (!token) {
-          redirectLogin();
-          return;
-        }
-
-        async function api(path, options) {
-          options = options || {};
-          var headers = Object.assign({}, options.headers || {});
-          headers.Authorization = "Bearer " + token;
-          if (options.jsonBody) {
-            headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(options.jsonBody);
-          }
-          var r = await fetch(path, {
-            method: options.method || "GET",
-            headers: headers,
-            body: options.body,
-          });
-          var data = await r.json().catch(function () {
-            return {};
-          });
-          if (r.status === 401) {
-            redirectLogin();
-            throw new Error("unauthorized");
-          }
-          return { ok: r.ok, status: r.status, data: data };
-        }
-
-        function formatDate(iso) {
-          try {
-            return new Date(iso).toLocaleDateString("fr-FR", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            });
-          } catch (e) {
-            return "";
-          }
-        }
-
-        function escapeHtml(s) {
-          return String(s || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
-        }
-
-        async function verifySession() {
-          var res = await api("/api/annonces", {
-            method: "POST",
-            jsonBody: { action: "verify" },
-          });
-          if (!res.ok) redirectLogin();
-        }
-
-        async function loadList() {
-          listEl.innerHTML = '<p class="nh-text">Chargement…</p>';
-          var res = await api("/api/annonces");
-          if (!res.ok) {
-            listEl.innerHTML =
-              '<p class="admin-status-inline is-error">Impossible de charger les annonces.</p>';
-            return;
-          }
-          var items = res.data.items || [];
-          if (!items.length) {
-            listEl.innerHTML =
-              '<p class="nh-text" style="color:rgba(245,240,228,0.55)">Aucune annonce.</p>';
-            return;
-          }
-          listEl.innerHTML = items
-            .map(function (item) {
-              return (
-                '<article class="annonce-admin-item" data-id="' +
-                escapeHtml(item.id) +
-                '">' +
-                "<div>" +
-                '<h3 class="annonce-card-title">' +
-                escapeHtml(item.titre) +
-                "</h3>" +
-                '<p class="annonce-card-date">' +
-                escapeHtml(formatDate(item.date)) +
-                "</p>" +
-                '<p class="annonce-card-text">' +
-                escapeHtml(item.texte) +
-                "</p>" +
-                "</div>" +
-                '<button type="button" class="admin-btn-delete annonce-delete-btn" data-id="' +
-                escapeHtml(item.id) +
-                '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
-                "</article>"
-              );
-            })
-            .join("");
-        }
-
-        async function loadPhotos() {
-          if (!photosGrid) return;
-          photosGrid.innerHTML = '<p class="nh-text">Chargement des photos…</p>';
-          try {
-            var res = await api("/api/photos");
-            if (!res.ok) {
-              photosGrid.innerHTML =
-                '<p class="admin-status-inline is-error">' +
-                escapeHtml((res.data && res.data.error) || "Impossible de charger les photos.") +
-                "</p>";
-              setStatus(
-                photoStatus,
-                (res.data && res.data.error) || "Erreur de chargement des photos.",
-                true
-              );
-              return;
-            }
-            var items = Array.isArray(res.data.items) ? res.data.items : [];
-            if (!items.length) {
-              photosGrid.innerHTML =
-                '<p class="nh-text admin-photos-empty" style="color:rgba(245,240,228,0.55)">Aucune photo</p>';
-              return;
-            }
-            photosGrid.innerHTML = items
-              .map(function (item) {
-                var name = escapeHtml(item.name || "");
-                var url = escapeHtml(item.url || "");
-                var encName = encodeURIComponent(item.name || "");
-                return (
-                  '<figure class="admin-photo-tile">' +
-                  (url
-                    ? '<img src="' + url + '" alt="' + name + '" loading="lazy" />'
-                    : '<div class="admin-photo-missing">Aperçu indisponible</div>') +
-                  '<figcaption class="admin-photo-caption">' +
-                  name +
-                  "</figcaption>" +
-                  '<button type="button" class="admin-btn-delete photo-delete-btn" data-name="' +
-                  encName +
-                  '"><i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer</button>' +
-                  "</figure>"
-                );
-              })
-              .join("");
-          } catch (err) {
-            if (err.message === "unauthorized") return;
-            photosGrid.innerHTML =
-              '<p class="admin-status-inline is-error">Impossible de charger les photos.</p>';
-            setStatus(photoStatus, "Erreur réseau lors du chargement.", true);
-          }
-        }
-
-        function fileToBase64Payload(file) {
-          return new Promise(function (resolve, reject) {
-            var reader = new FileReader();
-            reader.onload = function () {
-              resolve({
-                filename: file.name || "image.jpg",
-                contentType: file.type || "application/octet-stream",
-                data: String(reader.result || ""),
-              });
-            };
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-          });
-        }
-
-        form.addEventListener("submit", async function (e) {
-          e.preventDefault();
-          var titre = document.getElementById("titre").value.trim();
-          var texte = document.getElementById("texte").value.trim();
-          setStatus(formStatus, "Enregistrement…");
-          try {
-            var res = await api("/api/annonces", {
-              method: "POST",
-              jsonBody: { titre: titre, texte: texte },
-            });
-            if (!res.ok) {
-              setStatus(formStatus, res.data.error || "Erreur à l’enregistrement.", true);
-              return;
-            }
-            form.reset();
-            setStatus(formStatus, "Annonce ajoutée.");
-            await loadList();
-          } catch (err) {
-            if (err.message !== "unauthorized") setStatus(formStatus, "Erreur réseau.", true);
-          }
-        });
-
-        listEl.addEventListener("click", async function (e) {
-          var btn = e.target.closest(".annonce-delete-btn");
-          if (!btn) return;
-          var id = btn.getAttribute("data-id");
-          if (!id || !window.confirm("Supprimer cette annonce ?")) return;
-          setStatus(formStatus, "Suppression…");
-          try {
-            var res = await api("/api/annonces?id=" + encodeURIComponent(id), { method: "DELETE" });
-            if (!res.ok) {
-              setStatus(formStatus, res.data.error || "Suppression impossible.", true);
-              return;
-            }
-            setStatus(formStatus, "Annonce supprimée.");
-            await loadList();
-          } catch (err) {
-            if (err.message !== "unauthorized") setStatus(formStatus, "Erreur réseau.", true);
-          }
-        });
-
-        photoInput.addEventListener("change", async function () {
-          var file = photoInput.files && photoInput.files[0];
-          if (!file) return;
-          setStatus(photoStatus, "Envoi de la photo…");
-          try {
-            var payload = await fileToBase64Payload(file);
-            var res = await api("/api/photos", {
-              method: "POST",
-              jsonBody: payload,
-            });
-            if (!res.ok) {
-              setStatus(photoStatus, res.data.error || "Erreur d’envoi.", true);
-              return;
-            }
-            photoInput.value = "";
-            setStatus(photoStatus, "Photo ajoutée.");
-            await loadPhotos();
-          } catch (err) {
-            if (err.message !== "unauthorized") {
-              setStatus(photoStatus, "Erreur réseau.", true);
-            }
-          }
-        });
-
-        photosGrid.addEventListener("click", async function (e) {
-          var btn = e.target.closest(".photo-delete-btn");
-          if (!btn) return;
-          var name = btn.getAttribute("data-name");
-          if (!name) return;
-          try {
-            name = decodeURIComponent(name);
-          } catch (err) {
-            return;
-          }
-          if (!window.confirm("Supprimer cette photo du bucket ?")) return;
-          setStatus(photoStatus, "Suppression…");
-          try {
-            var res = await api("/api/photos?name=" + encodeURIComponent(name), {
-              method: "DELETE",
-            });
-            if (!res.ok) {
-              setStatus(photoStatus, res.data.error || "Suppression impossible.", true);
-              return;
-            }
-            setStatus(photoStatus, "Photo supprimée.");
-            await loadPhotos();
-          } catch (err) {
-            if (err.message !== "unauthorized") setStatus(photoStatus, "Erreur réseau.", true);
-          }
-        });
-
-        document.getElementById("logoutBtn").addEventListener("click", function () {
-          sessionStorage.removeItem(TOKEN_KEY);
-          window.location.href = "/admin.html";
-        });
-
-        verifySession()
-          .then(function () {
-            return loadList().then(function () {
-              return loadPhotos();
-            });
-          })
-          .catch(function () {
-            redirectLogin();
-          });
-      })();
-    </script>
+    <script src="dashboard.js"></script>
   </body>
 </html>

@@ -134,7 +134,7 @@
           var root = document.getElementById("annoncesList");
           if (!root) return;
           try {
-            var r = await fetch("/api/annonces");
+            var r = await fetch("/api/annonces?files=1");
             var data = await r.json();
             var items = (data && data.items) || [];
             if (!items.length) {
@@ -144,17 +144,45 @@
             }
             root.innerHTML = items
               .map(function (item) {
+                var style =
+                  "font-family:" +
+                  escapeHtml(item.police || "Cairo") +
+                  ",sans-serif;color:" +
+                  escapeHtml(item.couleur || "#f5f0e1");
+                var files = item.fichiers || [];
+                var filesHtml = files.length
+                  ? '<div class="annonce-files">' +
+                    files
+                      .map(function (f) {
+                        return (
+                          '<a class="nh-btn nh-btn-outline annonce-download-btn" href="' +
+                          escapeHtml(f.url) +
+                          '" target="_blank" rel="noopener" download="' +
+                          escapeHtml(f.nom_original || "fichier") +
+                          '">Télécharger — ' +
+                          escapeHtml(f.nom_original || "fichier") +
+                          "</a>"
+                        );
+                      })
+                      .join("") +
+                    "</div>"
+                  : "";
                 return (
                   '<article class="annonce-card">' +
-                  '<h2 class="annonce-card-title">' +
+                  '<h2 class="annonce-card-title" style="' +
+                  style +
+                  '">' +
                   escapeHtml(item.titre) +
                   "</h2>" +
                   '<p class="annonce-card-date">' +
                   escapeHtml(formatDate(item.date)) +
                   "</p>" +
-                  '<p class="annonce-card-text">' +
+                  '<p class="annonce-card-text" style="' +
+                  style +
+                  '">' +
                   escapeHtml(item.texte) +
                   "</p>" +
+                  filesHtml +
                   "</article>"
                 );
               })
