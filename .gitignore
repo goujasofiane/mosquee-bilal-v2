@@ -1,6 +1,28 @@
 .vercel
 node_modules/
+.DS_Store
+Thumbs.db
 
-# Installateurs locaux (limite GitHub 100 Mo)
+# Projets sans lien avec le site, presents localement
+SalahStreak/
+assets/quran-app/
+
+# Installateurs et archives : ne doivent jamais etre publies sur le site
 *.exe
-assets/*.exe
+*.msix
+*.msi
+*.dmg
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# Documents personnels : ne doivent jamais etre publies sur le site
+*.pdf
+*.pptx
+*.docx
+*.xlsx
+
+# Exception : presentation officielle de la mosquee, deja suivie
+!assets/MosqueeBilal_Presentation.pptx
