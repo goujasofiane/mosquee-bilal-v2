@@ -1,11 +1,8 @@
 const { verifyAdminToken, getBearerToken, signAdminToken } = require("./_lib/auth");
-const { json, preflight, applyCors } = require("./_lib/http");
+const { json, preflight } = require("./_lib/http");
 
 module.exports = async function handler(req, res) {
   if (preflight(req, res)) return;
-  if (!applyCors(req, res) && req.headers.origin) {
-    return json(res, 403, { error: "CORS" });
-  }
 
   if (req.method !== "POST") {
     return json(res, 405, { error: "Méthode non autorisée" });

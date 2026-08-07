@@ -1,5 +1,5 @@
 const { readJsonBody, verifyAdminToken, getBearerToken } = require("./_lib/auth");
-const { json, preflight, applyCors } = require("./_lib/http");
+const { json, preflight } = require("./_lib/http");
 const { getSupabaseAdmin } = require("./_lib/supabase");
 
 function requireAdmin(req, res) {
@@ -13,9 +13,6 @@ function requireAdmin(req, res) {
 
 module.exports = async function handler(req, res) {
   if (preflight(req, res)) return;
-  if (!applyCors(req, res) && req.headers.origin) {
-    return json(res, 403, { error: "CORS" });
-  }
 
   const db = getSupabaseAdmin();
   if (!db) return json(res, 503, { error: "Supabase non configuré." });
@@ -33,13 +30,13 @@ module.exports = async function handler(req, res) {
 
   let body = {};
   try {
-    body = await readJsonBody(req);
+    body = await readJsonBody(req, 32 * 1024);
   } catch (e) {
     return json(res, 400, { error: "JSON invalide." });
   }
 
   if (req.method === "POST") {
-    const nom = typeof body.nom === "string" ? body.nom.trim() : "";
+    const nom = typeof body.nom === "string" ? body.nom.trim().slice(0, 80) : "";
     if (!nom) return json(res, 400, { error: "Nom requis." });
     const { data: maxRow } = await db
       .from("categories")

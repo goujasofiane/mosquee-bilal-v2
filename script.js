@@ -112,19 +112,15 @@ const translations = {
     socialInstagramName: "Instagram",
     socialInstagramDesc:
       "Stories, rappels et coulisses de la vie de la mosquée.",
-    socialInstagramStats: "12 345 abonnés",
     socialFacebookName: "Facebook",
     socialFacebookDesc:
       "Annonces officielles, événements et informations pratiques.",
-    socialFacebookStats: "8 920 abonnés",
     socialTiktokName: "TikTok",
     socialTiktokDesc:
       "Vidéos courtes, rappels spirituels et extraits inspirants.",
-    socialTiktokStats: "5 430 abonnés",
     socialYoutubeName: "YouTube",
     socialYoutubeDesc:
       "Khutbas, cours et conférences en vidéo, à revoir librement.",
-    socialYoutubeStats: "3 210 abonnés",
     socialFollowLabel: "Suivre",
     footerBrand: "MOSQUÉE BILAL",
     footerLocation: "Clichy-sous-Bois",
@@ -135,6 +131,11 @@ const translations = {
     dateHijri: "Date islamique",
     dateGregorian: "Date grégorienne",
     loadingPrayers: "Chargement des horaires…",
+    basmalaTranslit: "Au nom d’Allah, le Tout Miséricordieux, le Très Miséricordieux",
+    notFoundTitle: "Cette page est introuvable",
+    notFoundText:
+      "Le lien que vous avez suivi n’existe plus ou comporte une erreur. Voici les pages les plus consultées.",
+    notFoundHome: "Retour à l’accueil",
     prayerFajr: "Fajr",
     prayerDhuhr: "Dhuhr",
     prayerAsr: "Asr",
@@ -254,25 +255,26 @@ const translations = {
     socialInstagramName: "إنستغرام",
     socialInstagramDesc:
       "قصص يومية، تذكيرات، وكواليس من حياة المسجد.",
-    socialInstagramStats: "١٢٬٣٤٥ متابعًا",
     socialFacebookName: "فيسبوك",
     socialFacebookDesc:
       "إعلانات رسمية، فعاليات، ومعلومات عملية للمصلّين.",
-    socialFacebookStats: "٨٬٩٢٠ متابعًا",
     socialTiktokName: "تيك توك",
     socialTiktokDesc:
       "مقاطع قصيرة، تذكيرات إيمانية ومقتطفات ملهمة.",
-    socialTiktokStats: "٥٬٤٣٠ متابعًا",
     socialYoutubeName: "يوتيوب",
     socialYoutubeDesc:
       "خطب الجمعة، دروس ومحاضرات مصورة يمكنكم مشاهدتها في أي وقت.",
-    socialYoutubeStats: "٣٬٢١٠ مشتركين",
     socialFollowLabel: "متابعة",
     footerBrand: "مسجد بلال",
     footerLocation: "كليشي-سوس-بوا",
     footerText: "© {year} مسجد بلال",
     annoncesPageTitle: "إعلانات",
     annoncesPageSubtitle: "آخر أخبار مسجد بلال.",
+    basmalaTranslit: "بسم الله الرحمن الرحيم",
+    notFoundTitle: "الصفحة غير موجودة",
+    notFoundText:
+      "الرابط الذي اتبعته لم يعد موجودًا أو يحتوي على خطأ. إليك الصفحات الأكثر زيارة.",
+    notFoundHome: "العودة إلى الرئيسية",
   },
 };
 
@@ -312,7 +314,12 @@ function applyTranslations(lang) {
       }
     });
 
-  document.documentElement.lang = lang === "ar" ? "ar" : "fr";
+  // La direction doit suivre la langue, sinon l'arabe reste affiche de
+  // gauche a droite sur tout le site public.
+  const isRtl = lang === "ar";
+  document.documentElement.lang = isRtl ? "ar" : "fr";
+  document.documentElement.dir = isRtl ? "rtl" : "ltr";
+  document.body.classList.toggle("is-rtl", isRtl);
 
   // Exigences RTL: forcer placement switch FR/AR à droite et logo à gauche.
   const langSwitch = document.querySelector(".lang-switch");
@@ -340,6 +347,7 @@ function initLanguageSwitch() {
 
         // Exigence: mise à jour explicite lang/dir côté document.
         document.documentElement.lang = isAr ? "ar" : "fr";
+        document.documentElement.dir = isAr ? "rtl" : "ltr";
 
         // Exigence: persistance sous la clé 'lang'.
         try {
@@ -647,3 +655,118 @@ document.addEventListener("DOMContentLoaded", () => {
   initYear();
 });
 
+
+
+/* =====================================================================
+   Refonte 2026 — comportements ajoutés
+   ===================================================================== */
+
+/**
+ * Les liens sociaux non encore fournis portent un marqueur du type
+ * [LIEN_INSTAGRAM]. Tel quel, le navigateur les traiterait comme une URL
+ * relative et afficherait une 404. On neutralise le clic et on indique
+ * clairement qu'il reste à renseigner.
+ */
+function initPlaceholderLinks() {
+  const PLACEHOLDER = /^\s*(\[[A-Z_]+\]|tel:\[[A-Z_]+\])\s*$/;
+
+  document.querySelectorAll("a[href]").forEach((a) => {
+    const raw = a.getAttribute("href") || "";
+    if (!PLACEHOLDER.test(raw)) return;
+
+    a.classList.add("is-placeholder-link");
+    a.setAttribute("aria-disabled", "true");
+    const label = a.getAttribute("data-placeholder-link") || a.getAttribute("aria-label") || "Ce lien";
+    a.setAttribute("title", label + " — lien à renseigner");
+
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      const message =
+        currentLang === "ar"
+          ? "لم يتم إدخال هذا الرابط بعد."
+          : "Ce lien n’a pas encore été renseigné.";
+      showSiteToast(message);
+    });
+  });
+}
+
+/** Notification discrète, réutilisée par plusieurs interactions. */
+let siteToastTimer = null;
+function showSiteToast(message) {
+  let el = document.getElementById("mbSiteToast");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "mbSiteToast";
+    el.className = "admin-toast";
+    el.setAttribute("role", "status");
+    el.setAttribute("aria-live", "polite");
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  el.classList.add("is-visible");
+  if (siteToastTimer) clearTimeout(siteToastTimer);
+  siteToastTimer = setTimeout(() => el.classList.remove("is-visible"), 3200);
+}
+
+/** Cascade sur les grilles : les éléments voisins apparaissent en décalé. */
+function initRevealDelays() {
+  document
+    .querySelectorAll(".nh-gallery-quad, .nh-social-icons, .social-grid, .nh-stats")
+    .forEach((group) => {
+      Array.from(group.children).forEach((child, i) => {
+        child.classList.add("reveal");
+        child.setAttribute("data-reveal-delay", String(Math.min(i + 1, 4)));
+      });
+    });
+}
+
+/** Le bouton hamburger doit annoncer son état aux lecteurs d'écran. */
+function initNavAria() {
+  const toggle = document.querySelector(".nh-nav-toggle");
+  const navList = document.querySelector(".nh-nav-list");
+  if (!toggle || !navList) return;
+  toggle.addEventListener("click", () => {
+    toggle.setAttribute("aria-expanded", navList.classList.contains("open") ? "true" : "false");
+  });
+  // Fermeture au clavier, sinon le menu reste ouvert derrière le contenu.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navList.classList.contains("open")) {
+      navList.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
+    }
+  });
+}
+
+/**
+ * Ancre la barre de navigation dès que la page défile, pour garder les accès
+ * horaires et don à portée sur mobile.
+ */
+function initStickyHeader() {
+  const header = document.querySelector(".nh-header");
+  if (!header) return;
+  const onScroll = () => {
+    header.classList.toggle("is-stuck", window.scrollY > 40);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+/** Enregistrement du service worker : installation sur mobile et hors-ligne. */
+function initServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  if (location.protocol !== "https:" && location.hostname !== "localhost") return;
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      /* l'absence de service worker ne doit jamais casser la page */
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initPlaceholderLinks();
+  initRevealDelays();
+  initNavAria();
+  initStickyHeader();
+  initServiceWorker();
+});

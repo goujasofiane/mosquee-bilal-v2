@@ -3,11 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/png" href="../assets/logo1.png" />
-    <title>Dashboard — Mosquée Bilal</title>
+    <title>Annonces — Administration Mosquée Bilal</title>
     <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="nh-site admin-dashboard-page">
     <div class="nh-bg" aria-hidden="true"></div>
@@ -15,16 +26,21 @@
     <header class="nh-header">
       <div class="nh-header-inner">
         <a class="nh-brand" href="../index.html">
-          <img src="../assets/logo1.png" class="nh-brand-logo" alt="" />
+          <img src="../assets/logo1.png" class="nh-brand-logo" alt="" width="44" height="44" />
           <span class="nh-brand-text">Mosquée Bilal</span>
         </a>
-        <nav class="nh-nav" aria-label="Admin">
-          <button class="nh-nav-toggle" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
+        <nav class="nh-nav" aria-label="Administration">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
           <ul class="nh-nav-list">
-            <li><a href="#section-annonces" data-i18n-admin="navAnnonces">ANNONCES</a></li>
-            <li><a href="#section-photos" data-i18n-admin="navGalerie">GALERIE</a></li>
-            <li><a href="#section-categories" data-i18n-admin="navCategories">CATÉGORIES</a></li>
-            <li><button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding:8px 14px" data-i18n-admin="logout">Déconnexion</button></li>
+            <li><a href="dashboard.html" aria-current="page" data-i18n-admin="navAnnonces">ANNONCES</a></li>
+            <li><a href="photos.html" data-i18n-admin="navGalerie">GALERIE</a></li>
+            <li>
+              <button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding: 8px 14px" data-i18n-admin="logout">
+                Déconnexion
+              </button>
+            </li>
           </ul>
         </nav>
         <div class="lang-switch nh-lang-switch" id="adminLangSwitch">
@@ -35,23 +51,37 @@
     </header>
 
     <main class="nh-main">
-      <section class="nh-section annonces-admin-section">
-        <div class="nh-container" style="max-width:1100px;padding-bottom:100px">
-          <h1 class="nh-title" style="color:#c9a84c;margin-bottom:8px" data-i18n-admin="title">Dashboard admin</h1>
-          <p class="nh-text" style="margin-bottom:28px;color:rgba(245,240,228,0.65)" data-i18n-admin="subtitle">Gérez les annonces, les photos et les catégories.</p>
+      <section class="nh-section">
+        <div class="nh-container admin-photos-container">
+          <div class="admin-page-head">
+            <div>
+              <h1 class="nh-title admin-page-title" data-i18n-admin="pageTitle">Annonces</h1>
+              <p class="nh-text admin-page-sub" data-i18n-admin="pageSubtitle">
+                Publiez les informations affichées sur l’accueil et la page Annonces.
+              </p>
+            </div>
+            <a class="nh-btn nh-btn-outline" href="photos.html">
+              <i class="fa-solid fa-images" aria-hidden="true"></i>
+              <span data-i18n-admin="goGallery">Gérer la galerie</span>
+            </a>
+          </div>
 
-          <!-- ANNONCES -->
-          <section id="section-annonces">
-            <h2 class="nh-kicker" style="margin:0 0 16px" data-i18n-admin="annoncesTitle">Annonces</h2>
+          <!-- ===== Nouvelle annonce ===== -->
+          <section class="admin-block" aria-labelledby="formHeading">
+            <h2 class="nh-kicker" id="formHeading" data-i18n-admin="newAnnonce">Nouvelle annonce</h2>
+
             <form id="annonceForm" class="annonce-admin-form">
               <div class="admin-field">
                 <label for="titre" data-i18n-admin="labelTitre">Titre</label>
-                <input id="titre" type="text" maxlength="200" required />
+                <input id="titre" type="text" maxlength="200" required autocomplete="off" />
               </div>
+
               <div class="admin-field">
                 <label for="texte" data-i18n-admin="labelTexte">Texte</label>
-                <textarea id="texte" rows="4" maxlength="4000" required></textarea>
+                <textarea id="texte" rows="5" maxlength="4000" required></textarea>
+                <p class="admin-field-hint"><span id="texteCount">0</span> / 4000</p>
               </div>
+
               <div class="admin-field-row">
                 <div class="admin-field">
                   <label for="police" data-i18n-admin="labelPolice">Police</label>
@@ -63,70 +93,52 @@
                   </select>
                 </div>
                 <div class="admin-field">
-                  <label data-i18n-admin="labelCouleur">Couleur du texte</label>
+                  <label for="couleur" data-i18n-admin="labelCouleur">Couleur du texte</label>
                   <div class="admin-color-row" id="colorPalette"></div>
-                  <input id="couleur" type="color" value="#f5f0e1" style="margin-top:8px;width:100%;height:40px;border:none;background:transparent" />
+                  <input id="couleur" type="color" value="#f5f0e1" class="admin-color-input" />
                 </div>
               </div>
+
               <div class="admin-field">
                 <label for="annonceFiles" data-i18n-admin="labelFichiers">Pièces jointes (PDF, images)</label>
-                <input id="annonceFiles" type="file" accept="image/*,.pdf,application/pdf" multiple />
+                <input id="annonceFiles" type="file" accept="image/jpeg,image/png,image/gif,image/webp,application/pdf" multiple />
+                <p class="admin-field-hint" data-i18n-admin="filesHint">
+                  PDF, JPEG, PNG, GIF ou WebP — 10 Mo par fichier, 10 fichiers maximum.
+                </p>
               </div>
-              <button class="nh-btn nh-btn-gold" type="submit" data-i18n-admin="btnAddAnnonce">Ajouter l’annonce</button>
-              <p id="formStatus" class="admin-status-inline" style="margin-top:12px"></p>
-            </form>
-            <h3 class="nh-kicker" style="margin:32px 0 16px" data-i18n-admin="annoncesList">Annonces existantes</h3>
-            <div id="annoncesList" class="annonces-admin-list"></div>
-          </section>
 
-          <hr class="admin-section-divider" />
-
-          <!-- CATÉGORIES -->
-          <section id="section-categories">
-            <h2 class="nh-kicker" style="margin:0 0 16px" data-i18n-admin="categoriesTitle">Catégories</h2>
-            <form id="catForm" class="annonce-admin-form" style="margin-bottom:16px">
+              <!-- Apercu en direct : ce que verront les fideles -->
               <div class="admin-field">
-                <label for="catNom" data-i18n-admin="labelCatNom">Nom de la catégorie</label>
-                <input id="catNom" type="text" maxlength="80" required />
+                <span class="admin-field-label" data-i18n-admin="preview">Aperçu</span>
+                <article class="annonce-card admin-preview-card">
+                  <h3 class="annonce-card-title" id="previewTitle" data-i18n-admin="previewTitle">Titre de l’annonce</h3>
+                  <p class="annonce-card-date" id="previewDate"></p>
+                  <p class="annonce-card-text" id="previewText" data-i18n-admin="previewText">
+                    Le texte de votre annonce apparaîtra ici.
+                  </p>
+                </article>
               </div>
-              <button class="nh-btn nh-btn-gold" type="submit" data-i18n-admin="btnAddCat">Ajouter</button>
+
+              <button class="nh-btn nh-btn-gold" type="submit" id="submitBtn" data-i18n-admin="btnAddAnnonce">
+                Publier l’annonce
+              </button>
+              <p id="formStatus" class="admin-status-inline" role="status"></p>
             </form>
-            <div id="categoriesList" class="annonces-admin-list"></div>
           </section>
 
-          <hr class="admin-section-divider" />
-
-          <!-- PHOTOS -->
-          <section id="section-photos">
-            <div class="admin-photos-toolbar">
-              <h2 class="nh-kicker" style="margin:0" data-i18n-admin="photosTitle">Gestion des photos</h2>
-              <div class="admin-photos-actions">
-                <button type="button" id="btnDeleteSelected" class="nh-btn nh-btn-outline admin-hidden" data-i18n-admin="btnDeleteSelected">Supprimer la sélection</button>
-                <button type="button" id="btnSaveOrder" class="nh-btn nh-btn-gold admin-hidden" data-i18n-admin="btnSaveOrder">Enregistrer l’ordre</button>
-              </div>
+          <!-- ===== Annonces publiées ===== -->
+          <section class="admin-block" aria-labelledby="listHeading">
+            <div class="admin-block-head">
+              <h2 class="nh-kicker" id="listHeading" data-i18n-admin="annoncesList">Annonces publiées</h2>
+              <p class="admin-count" id="annonceCount" role="status"></p>
             </div>
-            <p class="nh-text" style="margin:12px 0 18px;color:rgba(245,240,228,0.55)" data-i18n-admin="photosHint">
-              Grille comme la galerie publique. Réordonnez, changez la catégorie, puis enregistrez.
-            </p>
-            <div id="photosGrid" class="mosquee-masonry-grid admin-masonry-photos"></div>
-            <div class="admin-upload-zone">
-              <label for="photoInput" class="admin-upload-label">
-                <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i>
-                <span data-i18n-admin="uploadHint">Ajouter des photos (sélection multiple)</span>
-              </label>
-              <input id="photoInput" type="file" accept="image/*" multiple />
-              <p id="photoStatus" class="admin-status-inline"></p>
-            </div>
+            <div id="annoncesList" class="annonces-admin-list" aria-live="polite"></div>
           </section>
         </div>
       </section>
     </main>
 
-    <div id="globalSaveBar" class="admin-global-save admin-hidden">
-      <button type="button" id="btnGlobalSave" class="nh-btn nh-btn-gold">
-        <span data-i18n-admin="btnGlobalSave">💾 Enregistrer les modifications</span>
-      </button>
-    </div>
+    <div id="toast" class="admin-toast" role="status" aria-live="polite"></div>
 
     <script src="../script.js"></script>
     <script src="dashboard.js"></script>

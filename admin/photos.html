@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" href="../assets/logo1.png" />
+    <title>Galerie — Administration Mosquée Bilal</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="nh-site admin-dashboard-page">
+    <div class="nh-bg" aria-hidden="true"></div>
+
+    <header class="nh-header">
+      <div class="nh-header-inner">
+        <a class="nh-brand" href="../index.html">
+          <img src="../assets/logo1.png" class="nh-brand-logo" alt="" width="44" height="44" />
+          <span class="nh-brand-text">Mosquée Bilal</span>
+        </a>
+        <nav class="nh-nav" aria-label="Administration">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nh-nav-list">
+            <li><a href="dashboard.html" data-i18n-admin="navAnnonces">ANNONCES</a></li>
+            <li><a href="photos.html" aria-current="page" data-i18n-admin="navGalerie">GALERIE</a></li>
+            <li>
+              <button type="button" id="logoutBtn" class="nh-btn nh-btn-outline" style="padding: 8px 14px" data-i18n-admin="logout">
+                Déconnexion
+              </button>
+            </li>
+          </ul>
+        </nav>
+        <div class="lang-switch nh-lang-switch" id="adminLangSwitch">
+          <button type="button" data-lang="fr" class="active">FR</button>
+          <button type="button" data-lang="ar">AR</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="nh-main">
+      <section class="nh-section">
+        <div class="nh-container admin-photos-container">
+          <div class="admin-page-head">
+            <div>
+              <h1 class="nh-title admin-page-title" data-i18n-admin="pageTitle">Galerie</h1>
+              <p class="nh-text admin-page-sub" data-i18n-admin="pageSubtitle">
+                Organisez les photos affichées sur la page publique de la mosquée.
+              </p>
+            </div>
+            <a class="nh-btn nh-btn-outline" href="../mosquee.html" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              <span data-i18n-admin="viewPublic">Voir la galerie publique</span>
+            </a>
+          </div>
+
+          <!-- ===== Catégories ===== -->
+          <section class="admin-block" aria-labelledby="catHeading">
+            <div class="admin-block-head">
+              <h2 class="nh-kicker" id="catHeading" data-i18n-admin="categoriesTitle">Catégories</h2>
+              <button type="button" class="admin-link-btn" id="btnToggleCats" aria-expanded="false" aria-controls="catPanel">
+                <span data-i18n-admin="manage">Gérer</span>
+              </button>
+            </div>
+            <div id="catPanel" class="admin-cat-panel" hidden>
+              <form id="catForm" class="admin-cat-form">
+                <label class="sr-only" for="catNom" data-i18n-admin="labelCatNom">Nom de la catégorie</label>
+                <input id="catNom" type="text" maxlength="80" required placeholder="Nouvelle catégorie" data-i18n-admin-ph="catPlaceholder" />
+                <button class="nh-btn nh-btn-gold" type="submit" data-i18n-admin="btnAddCat">Ajouter</button>
+              </form>
+              <ul id="categoriesList" class="admin-cat-list"></ul>
+              <p id="catStatus" class="admin-status-inline" role="status"></p>
+            </div>
+          </section>
+
+          <!-- ===== Onglets ===== -->
+          <div id="photoTabs" class="gallery-category-tabs" role="tablist" aria-label="Catégories de photos"></div>
+
+          <!-- ===== Barre d'actions ===== -->
+          <div class="admin-photos-toolbar">
+            <p class="admin-count" id="photoCount" role="status"></p>
+            <div class="admin-photos-actions">
+              <button type="button" id="btnSelectAll" class="admin-link-btn" data-i18n-admin="selectAll">Tout sélectionner</button>
+              <button type="button" id="btnDeleteSelected" class="nh-btn nh-btn-danger admin-hidden" data-i18n-admin="btnDeleteSelected">
+                Supprimer la sélection
+              </button>
+              <button type="button" id="btnSaveOrder" class="nh-btn nh-btn-gold admin-hidden" data-i18n-admin="btnSaveOrder">
+                💾 Enregistrer l’ordre
+              </button>
+            </div>
+          </div>
+
+          <!-- ===== Grille ===== -->
+          <div id="photosGrid" class="mosquee-masonry-grid admin-masonry-photos" aria-live="polite"></div>
+
+          <!-- ===== Zone d'upload ===== -->
+          <section class="admin-upload-zone" id="dropZone" aria-labelledby="uploadHeading">
+            <h2 class="sr-only" id="uploadHeading" data-i18n-admin="uploadTitle">Ajouter des photos</h2>
+            <label for="photoInput" class="admin-upload-label">
+              <i class="fa-solid fa-cloud-arrow-up admin-upload-icon" aria-hidden="true"></i>
+              <span class="admin-upload-main" data-i18n-admin="uploadHint">Glissez vos photos ici ou cliquez pour les choisir</span>
+              <span class="admin-upload-sub" data-i18n-admin="uploadFormats">JPEG, PNG, WebP, AVIF ou GIF — 8 Mo par image</span>
+            </label>
+            <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp,image/avif,image/gif" multiple />
+            <div class="admin-upload-target" id="uploadTargetWrap">
+              <label for="uploadCategory" data-i18n-admin="uploadInto">Ajouter dans</label>
+              <select id="uploadCategory"></select>
+            </div>
+            <div class="admin-progress admin-hidden" id="uploadProgress">
+              <div class="admin-progress-bar" id="uploadProgressBar"></div>
+            </div>
+            <p id="photoStatus" class="admin-status-inline" role="status"></p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <div id="globalSaveBar" class="admin-global-save admin-hidden">
+      <p class="admin-global-save-text" data-i18n-admin="unsaved">Modifications non enregistrées</p>
+      <button type="button" id="btnGlobalSave" class="nh-btn nh-btn-gold" data-i18n-admin="btnGlobalSave">
+        💾 Enregistrer les modifications
+      </button>
+    </div>
+
+    <div id="toast" class="admin-toast" role="status" aria-live="polite"></div>
+
+    <script src="../script.js"></script>
+    <script src="photos.js"></script>
+  </body>
+</html>

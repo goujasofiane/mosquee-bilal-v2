@@ -1,8 +1,33 @@
-const { readJsonBody, verifyAdminToken, getBearerToken } = require("./_lib/auth");
-const { json, preflight, applyCors } = require("./_lib/http");
+const {
+  readJsonBody,
+  verifyAdminToken,
+  getBearerToken,
+  PayloadTooLargeError,
+} = require("./_lib/auth");
+const { json, preflight } = require("./_lib/http");
 const { getSupabaseAdmin } = require("./_lib/supabase");
 
 const FILES_BUCKET = "annonces-fichiers";
+
+/** 10 Mo par piece jointe. */
+const MAX_FILE_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Pieces jointes autorisees : PDF et images courantes, reconnues a leur
+ * signature binaire. Refuse notamment les fichiers HTML ou SVG, qui seraient
+ * servis depuis le domaine du bucket et pourraient executer du script.
+ */
+function sniffAttachmentType(buffer) {
+  if (buffer.length < 12) return null;
+  if (buffer.toString("ascii", 0, 5) === "%PDF-") return "application/pdf";
+  if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return "image/jpeg";
+  if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47)
+    return "image/png";
+  if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46) return "image/gif";
+  if (buffer.toString("ascii", 0, 4) === "RIFF" && buffer.toString("ascii", 8, 12) === "WEBP")
+    return "image/webp";
+  return null;
+}
 
 function requireAdmin(req, res) {
   const payload = verifyAdminToken(getBearerToken(req));
@@ -59,9 +84,6 @@ async function attachFiles(db, annonceId, includeUrls) {
 
 module.exports = async function handler(req, res) {
   if (preflight(req, res)) return;
-  if (!applyCors(req, res) && req.headers.origin) {
-    return json(res, 403, { error: "CORS" });
-  }
 
   const db = getSupabaseAdmin();
   if (!db) return json(res, 503, { error: "Supabase non configuré." });
@@ -101,8 +123,11 @@ module.exports = async function handler(req, res) {
     if (!requireAdmin(req, res)) return;
     let body;
     try {
-      body = await readJsonBody(req);
+      body = await readJsonBody(req, 30 * 1024 * 1024);
     } catch (e) {
+      if (e instanceof PayloadTooLargeError) {
+        return json(res, 413, { error: "Pièces jointes trop volumineuses (30 Mo maximum)." });
+      }
       return json(res, 400, { error: "Requête invalide." });
     }
 
@@ -110,12 +135,18 @@ module.exports = async function handler(req, res) {
       return json(res, 200, { ok: true });
     }
 
-    const titre = typeof body.titre === "string" ? body.titre.trim() : "";
-    const texte = typeof body.texte === "string" ? body.texte.trim() : "";
+    const titre = typeof body.titre === "string" ? body.titre.trim().slice(0, 200) : "";
+    const texte = typeof body.texte === "string" ? body.texte.trim().slice(0, 4000) : "";
     if (!titre || !texte) return json(res, 400, { error: "Titre et texte requis." });
 
-    const police = typeof body.police === "string" ? body.police : "Cairo";
-    const couleur = typeof body.couleur === "string" ? body.couleur : "#f5f0e1";
+    // Liste fermee : la police et la couleur sont injectees dans un attribut
+    // style cote client, on ne laisse pas passer de valeur arbitraire.
+    const POLICES = ["Cairo", "Playfair Display", "Arial", "Georgia"];
+    const police = POLICES.includes(body.police) ? body.police : "Cairo";
+    const couleur =
+      typeof body.couleur === "string" && /^#[0-9a-fA-F]{6}$/.test(body.couleur)
+        ? body.couleur
+        : "#f5f0e1";
 
     const { data, error } = await db
       .from("annonces")
@@ -124,14 +155,20 @@ module.exports = async function handler(req, res) {
       .single();
     if (error) return json(res, 500, { error: error.message });
 
-    const fichiersIn = Array.isArray(body.fichiers) ? body.fichiers : [];
+    const fichiersIn = Array.isArray(body.fichiers) ? body.fichiers.slice(0, 10) : [];
     for (const f of fichiersIn) {
       const raw = typeof f.data === "string" ? f.data.replace(/^data:[^;]+;base64,/, "") : "";
       if (!raw) continue;
-      const path = safeName(f.filename || "fichier");
       const buffer = Buffer.from(raw, "base64");
+      if (buffer.length > MAX_FILE_BYTES) continue;
+
+      // On se fie a la signature binaire, pas au content-type annonce.
+      const realType = sniffAttachmentType(buffer);
+      if (!realType) continue;
+
+      const path = safeName(f.filename || "fichier");
       const { error: upErr } = await db.storage.from(FILES_BUCKET).upload(path, buffer, {
-        contentType: f.contentType || "application/octet-stream",
+        contentType: realType,
         upsert: false,
       });
       if (upErr) continue;

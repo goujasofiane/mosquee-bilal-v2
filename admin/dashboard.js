@@ -1,4 +1,10 @@
+/**
+ * Tableau de bord admin — annonces.
+ * La gestion de la galerie vit desormais dans admin/photos.html.
+ */
 (function () {
+  "use strict";
+
   var TOKEN_KEY = "mosquee_admin_jwt";
   var LANG_KEY = "mosquee_admin_lang";
   var token = sessionStorage.getItem(TOKEN_KEY);
@@ -7,113 +13,93 @@
     fr: {
       navAnnonces: "ANNONCES",
       navGalerie: "GALERIE",
-      navCategories: "CATÉGORIES",
       logout: "Déconnexion",
-      title: "Dashboard admin",
-      subtitle: "Gérez les annonces, les photos et les catégories.",
-      annoncesTitle: "Annonces",
+      pageTitle: "Annonces",
+      pageSubtitle: "Publiez les informations affichées sur l’accueil et la page Annonces.",
+      goGallery: "Gérer la galerie",
+      newAnnonce: "Nouvelle annonce",
       labelTitre: "Titre",
       labelTexte: "Texte",
       labelPolice: "Police",
       labelCouleur: "Couleur du texte",
       labelFichiers: "Pièces jointes (PDF, images)",
-      btnAddAnnonce: "Ajouter l’annonce",
-      annoncesList: "Annonces existantes",
-      categoriesTitle: "Catégories",
-      labelCatNom: "Nom de la catégorie",
-      btnAddCat: "Ajouter",
-      photosTitle: "Gestion des photos",
-      photosHint: "Grille comme la galerie publique. Réordonnez, changez la catégorie, puis enregistrez.",
-      btnDeleteSelected: "Supprimer la sélection",
-      btnSaveOrder: "Enregistrer l’ordre",
-      uploadHint: "Ajouter des photos (sélection multiple)",
-      btnGlobalSave: "💾 Enregistrer les modifications",
-      noneAnnonce: "Aucune annonce.",
-      nonePhoto: "Aucune photo",
-      delete: "Supprimer",
-      rename: "Renommer",
-      confirmDelete: "Confirmer la suppression ?",
-      saved: "Modifications enregistrées.",
+      filesHint: "PDF, JPEG, PNG, GIF ou WebP — 10 Mo par fichier, 10 fichiers maximum.",
+      preview: "Aperçu",
+      previewTitle: "Titre de l’annonce",
+      previewText: "Le texte de votre annonce apparaîtra ici.",
+      btnAddAnnonce: "Publier l’annonce",
+      annoncesList: "Annonces publiées",
+      annoncesCount: "{n} annonce(s)",
+      noneAnnonce: "Aucune annonce publiée pour le moment.",
+      del: "Supprimer",
+      files: "{n} pièce(s) jointe(s)",
+      confirmDelete: "Supprimer définitivement cette annonce ?",
       loading: "Chargement…",
+      publishing: "Publication…",
+      published: "Annonce publiée.",
+      deleted: "Annonce supprimée.",
+      errGeneric: "Une erreur est survenue.",
+      errNetwork: "Erreur réseau. Réessayez.",
     },
     ar: {
       navAnnonces: "إعلانات",
       navGalerie: "المعرض",
-      navCategories: "التصنيفات",
       logout: "تسجيل الخروج",
-      title: "لوحة الإدارة",
-      subtitle: "إدارة الإعلانات والصور والتصنيفات.",
-      annoncesTitle: "الإعلانات",
+      pageTitle: "الإعلانات",
+      pageSubtitle: "انشر المعلومات المعروضة في الصفحة الرئيسية وصفحة الإعلانات.",
+      goGallery: "إدارة المعرض",
+      newAnnonce: "إعلان جديد",
       labelTitre: "العنوان",
       labelTexte: "النص",
       labelPolice: "الخط",
       labelCouleur: "لون النص",
       labelFichiers: "مرفقات (PDF، صور)",
-      btnAddAnnonce: "إضافة إعلان",
-      annoncesList: "الإعلانات الحالية",
-      categoriesTitle: "التصنيفات",
-      labelCatNom: "اسم التصنيف",
-      btnAddCat: "إضافة",
-      photosTitle: "إدارة الصور",
-      photosHint: "شبكة كالمعرض العام. أعد الترتيب أو غيّر التصنيف ثم احفظ.",
-      btnDeleteSelected: "حذف المحدد",
-      btnSaveOrder: "حفظ الترتيب",
-      uploadHint: "إضافة صور (اختيار متعدد)",
-      btnGlobalSave: "💾 حفظ التعديلات",
-      noneAnnonce: "لا توجد إعلانات.",
-      nonePhoto: "لا توجد صور",
-      delete: "حذف",
-      rename: "إعادة تسمية",
-      confirmDelete: "تأكيد الحذف؟",
-      saved: "تم حفظ التعديلات.",
+      filesHint: "PDF أو JPEG أو PNG أو GIF أو WebP — ١٠ ميغابايت للملف، ١٠ ملفات كحد أقصى.",
+      preview: "معاينة",
+      previewTitle: "عنوان الإعلان",
+      previewText: "سيظهر نص إعلانك هنا.",
+      btnAddAnnonce: "نشر الإعلان",
+      annoncesList: "الإعلانات المنشورة",
+      annoncesCount: "{n} إعلان",
+      noneAnnonce: "لا توجد إعلانات منشورة حاليًا.",
+      del: "حذف",
+      files: "{n} مرفق",
+      confirmDelete: "حذف هذا الإعلان نهائيًا؟",
       loading: "جاري التحميل…",
+      publishing: "جاري النشر…",
+      published: "تم نشر الإعلان.",
+      deleted: "تم حذف الإعلان.",
+      errGeneric: "حدث خطأ.",
+      errNetwork: "خطأ في الشبكة. حاول مرة أخرى.",
     },
   };
 
-  var state = {
-    lang: "fr",
-    photos: [],
-    categories: [],
-    orderDirty: false,
-    categoryDirty: false,
-    selected: {},
-  };
+  var state = { lang: "fr", annonces: [] };
 
-  var COLORS = ["#f5f0e1", "#c9a84c", "#ffffff", "#2d6a4f", "#e8d5a3", "#ff9f9f", "#93f4ce", "#7eb6ff"];
+  var COLORS = ["#f5f0e1", "#c9a84c", "#ffffff", "#e8d5a3", "#93f4ce", "#7eb6ff", "#ff9f9f", "#2d6a4f"];
 
-  function t(key) {
-    return (i18n[state.lang] && i18n[state.lang][key]) || i18n.fr[key] || key;
+  function t(key, vars) {
+    var dict = i18n[state.lang] || i18n.fr;
+    var s = dict[key] || i18n.fr[key] || key;
+    if (vars) {
+      Object.keys(vars).forEach(function (k) {
+        s = s.replace("{" + k + "}", vars[k]);
+      });
+    }
+    return s;
   }
 
-  function applyAdminI18n() {
-    document.documentElement.lang = state.lang;
-    document.documentElement.dir = state.lang === "ar" ? "rtl" : "ltr";
-    document.querySelectorAll("[data-i18n-admin]").forEach(function (el) {
-      var k = el.getAttribute("data-i18n-admin");
-      if (k) el.textContent = t(k);
-    });
-    document.querySelectorAll("#adminLangSwitch button").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-lang") === state.lang);
-    });
+  function $(id) {
+    return document.getElementById(id);
   }
 
-  function markDirty() {
-    document.getElementById("globalSaveBar").classList.remove("admin-hidden");
-    if (state.orderDirty) document.getElementById("btnSaveOrder").classList.remove("admin-hidden");
-  }
-
-  function clearDirty() {
-    state.orderDirty = false;
-    state.categoryDirty = false;
-    document.getElementById("globalSaveBar").classList.add("admin-hidden");
-    document.getElementById("btnSaveOrder").classList.add("admin-hidden");
-  }
-
-  function updateSelectionUi() {
-    var n = Object.keys(state.selected).filter(function (k) {
-      return state.selected[k];
-    }).length;
-    document.getElementById("btnDeleteSelected").classList.toggle("admin-hidden", n === 0);
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
 
   function redirectLogin() {
@@ -130,15 +116,12 @@
     options = options || {};
     var headers = Object.assign({}, options.headers || {});
     headers.Authorization = "Bearer " + token;
+    var body = options.body;
     if (options.jsonBody) {
       headers["Content-Type"] = "application/json";
-      options.body = JSON.stringify(options.jsonBody);
+      body = JSON.stringify(options.jsonBody);
     }
-    var r = await fetch(path, {
-      method: options.method || "GET",
-      headers: headers,
-      body: options.body,
-    });
+    var r = await fetch(path, { method: options.method || "GET", headers: headers, body: body });
     var data = await r.json().catch(function () {
       return {};
     });
@@ -157,33 +140,21 @@
         sessionStorage.setItem(TOKEN_KEY, token);
       }
     } catch (e) {
-      /* */
+      /* la session sera reevaluee au prochain appel */
     }
   }
+  setInterval(refreshToken, 25 * 60 * 1000);
 
-  setInterval(refreshToken, 20 * 60 * 1000);
-  ["click", "keydown", "scroll"].forEach(function (ev) {
-    window.addEventListener(
-      ev,
-      function () {
-        if (!window.__mosqueeRefreshScheduled) {
-          window.__mosqueeRefreshScheduled = true;
-          setTimeout(function () {
-            window.__mosqueeRefreshScheduled = false;
-            refreshToken();
-          }, 60000);
-        }
-      },
-      { passive: true }
-    );
-  });
-
-  function escapeHtml(s) {
-    return String(s || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+  var toastTimer = null;
+  function toast(message, isError) {
+    var el = $("toast");
+    el.textContent = message;
+    el.classList.toggle("is-error", !!isError);
+    el.classList.add("is-visible");
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      el.classList.remove("is-visible");
+    }, 3600);
   }
 
   function setStatus(el, text, isError) {
@@ -192,12 +163,133 @@
     el.classList.toggle("is-error", !!isError);
   }
 
+  function applyAdminI18n() {
+    document.documentElement.lang = state.lang;
+    document.documentElement.dir = state.lang === "ar" ? "rtl" : "ltr";
+    document.querySelectorAll("[data-i18n-admin]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-admin");
+      if (k) el.textContent = t(k);
+    });
+    document.querySelectorAll("#adminLangSwitch button").forEach(function (b) {
+      b.classList.toggle("active", b.getAttribute("data-lang") === state.lang);
+    });
+  }
+
+  function formatDate(iso) {
+    try {
+      return new Date(iso).toLocaleDateString(state.lang === "ar" ? "ar" : "fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+    } catch (e) {
+      return "";
+    }
+  }
+
+  /* ---------- Apercu en direct ---------- */
+
+  function updatePreview() {
+    var titre = $("titre").value.trim();
+    var texte = $("texte").value.trim();
+    var police = $("police").value;
+    var couleur = $("couleur").value;
+
+    var pt = $("previewTitle");
+    var px = $("previewText");
+    pt.textContent = titre || t("previewTitle");
+    px.textContent = texte || t("previewText");
+    // On applique le style via la propriete DOM, jamais par concatenation HTML.
+    pt.style.fontFamily = police;
+    px.style.fontFamily = police;
+    pt.style.color = couleur;
+    px.style.color = couleur;
+    $("previewDate").textContent = formatDate(new Date().toISOString());
+    $("texteCount").textContent = String(texte.length);
+  }
+
+  /* ---------- Annonces ---------- */
+
+  async function loadAnnonces() {
+    var listEl = $("annoncesList");
+    listEl.innerHTML = '<p class="admin-empty">' + escapeHtml(t("loading")) + "</p>";
+    try {
+      var res = await api("/api/annonces?files=1");
+      if (!res.ok) {
+        listEl.innerHTML = '<p class="admin-empty is-error">' + escapeHtml(t("errGeneric")) + "</p>";
+        return;
+      }
+      state.annonces = res.data.items || [];
+      renderAnnonces();
+    } catch (e) {
+      if (e.message !== "unauthorized") {
+        listEl.innerHTML = '<p class="admin-empty is-error">' + escapeHtml(t("errNetwork")) + "</p>";
+      }
+    }
+  }
+
+  function renderAnnonces() {
+    var listEl = $("annoncesList");
+    $("annonceCount").textContent = t("annoncesCount", { n: state.annonces.length });
+
+    if (!state.annonces.length) {
+      listEl.innerHTML = '<p class="admin-empty">' + escapeHtml(t("noneAnnonce")) + "</p>";
+      return;
+    }
+
+    listEl.innerHTML = "";
+    state.annonces.forEach(function (item) {
+      var article = document.createElement("article");
+      article.className = "annonce-admin-item";
+
+      var body = document.createElement("div");
+      body.className = "annonce-admin-body";
+      // Style applique par propriete DOM : aucune valeur ne transite par du HTML.
+      body.style.fontFamily = item.police || "Cairo";
+      body.style.color = item.couleur || "#f5f0e1";
+
+      var h3 = document.createElement("h3");
+      h3.className = "annonce-card-title annonce-admin-title";
+      h3.textContent = item.titre;
+
+      var date = document.createElement("p");
+      date.className = "annonce-card-date";
+      date.textContent = formatDate(item.date);
+
+      var p = document.createElement("p");
+      p.className = "annonce-card-text annonce-admin-text";
+      p.textContent = item.texte;
+
+      body.appendChild(h3);
+      body.appendChild(date);
+      body.appendChild(p);
+
+      var files = item.fichiers || [];
+      if (files.length) {
+        var badge = document.createElement("p");
+        badge.className = "annonce-admin-files";
+        badge.textContent = t("files", { n: files.length });
+        body.appendChild(badge);
+      }
+
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "nh-btn nh-btn-danger annonce-delete-btn";
+      btn.setAttribute("data-id", item.id);
+      btn.textContent = t("del");
+
+      article.appendChild(body);
+      article.appendChild(btn);
+      listEl.appendChild(article);
+    });
+  }
+
   function fileToBase64(file) {
     return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.onload = function () {
         resolve({
-          filename: file.name || "file",
+          filename: file.name || "fichier",
           contentType: file.type || "application/octet-stream",
           data: String(reader.result || ""),
         });
@@ -207,222 +299,96 @@
     });
   }
 
-  /* —— Annonces —— */
-  async function loadAnnonces() {
-    var listEl = document.getElementById("annoncesList");
-    listEl.innerHTML = "<p class='nh-text'>" + t("loading") + "</p>";
-    var res = await api("/api/annonces?files=1");
-    if (!res.ok) {
-      listEl.innerHTML = "<p class='admin-status-inline is-error'>Erreur</p>";
-      return;
-    }
-    var items = res.data.items || [];
-    if (!items.length) {
-      listEl.innerHTML = "<p class='nh-text' style='color:rgba(245,240,228,0.55)'>" + t("noneAnnonce") + "</p>";
-      return;
-    }
-    listEl.innerHTML = items
-      .map(function (item) {
-        var style =
-          "font-family:" +
-          escapeHtml(item.police || "Cairo") +
-          ";color:" +
-          escapeHtml(item.couleur || "#f5f0e1");
-        return (
-          "<article class='annonce-admin-item'>" +
-          "<div style='" +
-          style +
-          "'>" +
-          "<h3 class='annonce-card-title' style='color:inherit;font-family:inherit'>" +
-          escapeHtml(item.titre) +
-          "</h3>" +
-          "<p class='annonce-card-text' style='color:inherit;font-family:inherit'>" +
-          escapeHtml(item.texte) +
-          "</p>" +
-          "</div>" +
-          "<button type='button' class='admin-btn-delete annonce-delete-btn' data-id='" +
-          escapeHtml(item.id) +
-          "'>" +
-          t("delete") +
-          "</button>" +
-          "</article>"
-        );
-      })
-      .join("");
-  }
+  /* ---------- Evenements ---------- */
 
-  /* —— Catégories —— */
-  async function loadCategories() {
-    var res = await api("/api/categories");
-    state.categories = res.ok ? res.data.items || [] : [];
-    var root = document.getElementById("categoriesList");
-    if (!state.categories.length) {
-      root.innerHTML = "<p class='nh-text' style='color:rgba(245,240,228,0.55)'>—</p>";
-      return;
-    }
-    root.innerHTML = state.categories
-      .map(function (c) {
-        return (
-          "<article class='annonce-admin-item' data-cat='" +
-          escapeHtml(c.id) +
-          "'>" +
-          "<div><strong style='color:#c9a84c'>" +
-          escapeHtml(c.nom) +
-          "</strong></div>" +
-          "<div class='admin-inline-btns'>" +
-          "<button type='button' class='nh-btn nh-btn-outline cat-rename-btn' data-id='" +
-          escapeHtml(c.id) +
-          "' data-nom='" +
-          escapeHtml(c.nom) +
-          "'>" +
-          t("rename") +
-          "</button>" +
-          "<button type='button' class='admin-btn-delete cat-delete-btn' data-id='" +
-          escapeHtml(c.id) +
-          "'>" +
-          t("delete") +
-          "</button>" +
-          "</div>" +
-          "</article>"
-        );
-      })
-      .join("");
-  }
-
-  function categoryOptions(selectedId) {
-    return state.categories
-      .map(function (c) {
-        return (
-          "<option value='" +
-          escapeHtml(c.id) +
-          "'" +
-          (c.id === selectedId ? " selected" : "") +
-          ">" +
-          escapeHtml(c.nom) +
-          "</option>"
-        );
-      })
-      .join("");
-  }
-
-  /* —— Photos —— */
-  async function loadPhotos() {
-    var grid = document.getElementById("photosGrid");
-    grid.innerHTML = "<p class='nh-text'>" + t("loading") + "</p>";
-    var res = await api("/api/photos");
-    if (!res.ok) {
-      grid.innerHTML =
-        "<p class='admin-status-inline is-error'>" +
-        escapeHtml((res.data && res.data.error) || "Erreur") +
-        "</p>";
-      return;
-    }
-    state.photos = res.data.items || [];
-    state.selected = {};
-    updateSelectionUi();
-    renderPhotos();
-  }
-
-  function renderPhotos() {
-    var grid = document.getElementById("photosGrid");
-    if (!state.photos.length) {
-      grid.innerHTML =
-        "<p class='nh-text admin-photos-empty' style='color:rgba(245,240,228,0.55)'>" + t("nonePhoto") + "</p>";
-      return;
-    }
-    grid.innerHTML = state.photos
-      .map(function (item, index) {
-        var enc = encodeURIComponent(item.name);
-        var checked = state.selected[item.name] ? " checked" : "";
-        return (
-          "<figure class='mosquee-masonry-item admin-photo-card' data-name='" +
-          enc +
-          "' data-index='" +
-          index +
-          "'>" +
-          "<div class='mosquee-masonry-inner admin-photo-inner'>" +
-          (item.url
-            ? "<img src='" + escapeHtml(item.url) + "' alt='' loading='lazy' />"
-            : "<div class='admin-photo-missing'>—</div>") +
-          "<label class='admin-photo-check'><input type='checkbox' class='photo-check' data-name='" +
-          enc +
-          "'" +
-          checked +
-          " /></label>" +
-          "<div class='admin-photo-controls'>" +
-          "<button type='button' class='admin-icon-btn photo-up' data-index='" +
-          index +
-          "' title='Up'>⬆</button>" +
-          "<button type='button' class='admin-icon-btn photo-down' data-index='" +
-          index +
-          "' title='Down'>⬇</button>" +
-          "<button type='button' class='admin-icon-btn photo-trash' data-name='" +
-          enc +
-          "' title='Delete'>🗑</button>" +
-          "</div>" +
-          "</div>" +
-          "<div class='admin-photo-meta'>" +
-          "<select class='photo-cat-select' data-name='" +
-          enc +
-          "'>" +
-          categoryOptions(item.category_id) +
-          "</select>" +
-          "</div>" +
-          "</figure>"
-        );
-      })
-      .join("");
-  }
-
-  function movePhoto(index, dir) {
-    var j = index + dir;
-    if (j < 0 || j >= state.photos.length) return;
-    var tmp = state.photos[index];
-    state.photos[index] = state.photos[j];
-    state.photos[j] = tmp;
-    state.orderDirty = true;
-    markDirty();
-    renderPhotos();
-  }
-
-  async function saveAllChanges() {
-    var order = state.photos.map(function (p) {
-      return p.name;
-    });
-    var assignments = state.photos.map(function (p) {
-      return { name: p.name, category_id: p.category_id || null };
-    });
-    var res = await api("/api/photos", {
-      method: "POST",
-      jsonBody: { action: "saveAll", order: order, assignments: assignments },
-    });
-    if (!res.ok) throw new Error(res.data.error || "save failed");
-    clearDirty();
-  }
-
-  /* —— Init UI —— */
-  var palette = document.getElementById("colorPalette");
+  var palette = $("colorPalette");
   COLORS.forEach(function (c) {
     var b = document.createElement("button");
     b.type = "button";
     b.className = "admin-color-swatch";
     b.style.background = c;
-    b.setAttribute("data-color", c);
+    b.title = c;
+    b.setAttribute("aria-label", "Couleur " + c);
     b.addEventListener("click", function () {
-      document.getElementById("couleur").value = c;
-      document.getElementById("texte").style.color = c;
+      $("couleur").value = c;
+      updatePreview();
     });
     palette.appendChild(b);
   });
 
-  document.getElementById("police").addEventListener("change", function () {
-    document.getElementById("texte").style.fontFamily = this.value;
-  });
-  document.getElementById("couleur").addEventListener("input", function () {
-    document.getElementById("texte").style.color = this.value;
+  ["titre", "texte", "police", "couleur"].forEach(function (id) {
+    $(id).addEventListener("input", updatePreview);
+    $(id).addEventListener("change", updatePreview);
   });
 
-  document.getElementById("adminLangSwitch").addEventListener("click", function (e) {
+  $("annonceForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var status = $("formStatus");
+    var submit = $("submitBtn");
+    submit.disabled = true;
+    setStatus(status, t("publishing"));
+
+    try {
+      var fichiers = [];
+      var input = $("annonceFiles");
+      if (input.files && input.files.length) {
+        for (var i = 0; i < input.files.length; i++) {
+          fichiers.push(await fileToBase64(input.files[i]));
+        }
+      }
+
+      var res = await api("/api/annonces", {
+        method: "POST",
+        jsonBody: {
+          titre: $("titre").value.trim(),
+          texte: $("texte").value.trim(),
+          police: $("police").value,
+          couleur: $("couleur").value,
+          fichiers: fichiers,
+        },
+      });
+
+      if (!res.ok) {
+        setStatus(status, (res.data && res.data.error) || t("errGeneric"), true);
+        return;
+      }
+
+      e.target.reset();
+      $("couleur").value = "#f5f0e1";
+      updatePreview();
+      setStatus(status, "");
+      toast(t("published"));
+      await loadAnnonces();
+    } catch (err) {
+      if (err.message !== "unauthorized") {
+        setStatus(status, t("errNetwork"), true);
+        toast(t("errNetwork"), true);
+      }
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  $("annoncesList").addEventListener("click", async function (e) {
+    var btn = e.target.closest(".annonce-delete-btn");
+    if (!btn) return;
+    if (!window.confirm(t("confirmDelete"))) return;
+    try {
+      var res = await api("/api/annonces?id=" + encodeURIComponent(btn.getAttribute("data-id")), {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        toast((res.data && res.data.error) || t("errGeneric"), true);
+        return;
+      }
+      toast(t("deleted"));
+      await loadAnnonces();
+    } catch (err) {
+      if (err.message !== "unauthorized") toast(t("errNetwork"), true);
+    }
+  });
+
+  $("adminLangSwitch").addEventListener("click", function (e) {
     var btn = e.target.closest("button[data-lang]");
     if (!btn) return;
     state.lang = btn.getAttribute("data-lang") === "ar" ? "ar" : "fr";
@@ -430,186 +396,31 @@
       localStorage.setItem(LANG_KEY, state.lang);
     } catch (err) {}
     applyAdminI18n();
-    renderPhotos();
-    loadAnnonces();
-    loadCategories();
+    updatePreview();
+    renderAnnonces();
   });
 
-  try {
-    var saved = localStorage.getItem(LANG_KEY);
-    if (saved === "ar" || saved === "fr") state.lang = saved;
-  } catch (e) {}
-  applyAdminI18n();
-
-  document.getElementById("annonceForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var status = document.getElementById("formStatus");
-    setStatus(status, t("loading"));
-    try {
-      var fichiers = [];
-      var input = document.getElementById("annonceFiles");
-      if (input.files && input.files.length) {
-        for (var i = 0; i < input.files.length; i++) {
-          fichiers.push(await fileToBase64(input.files[i]));
-        }
-      }
-      var res = await api("/api/annonces", {
-        method: "POST",
-        jsonBody: {
-          titre: document.getElementById("titre").value.trim(),
-          texte: document.getElementById("texte").value.trim(),
-          police: document.getElementById("police").value,
-          couleur: document.getElementById("couleur").value,
-          fichiers: fichiers,
-        },
-      });
-      if (!res.ok) {
-        setStatus(status, res.data.error || "Erreur", true);
-        return;
-      }
-      e.target.reset();
-      document.getElementById("texte").style.fontFamily = "";
-      document.getElementById("texte").style.color = "";
-      setStatus(status, t("saved"));
-      await loadAnnonces();
-    } catch (err) {
-      if (err.message !== "unauthorized") setStatus(status, "Erreur réseau", true);
-    }
-  });
-
-  document.getElementById("annoncesList").addEventListener("click", async function (e) {
-    var btn = e.target.closest(".annonce-delete-btn");
-    if (!btn) return;
-    if (!window.confirm(t("confirmDelete"))) return;
-    await api("/api/annonces?id=" + encodeURIComponent(btn.getAttribute("data-id")), { method: "DELETE" });
-    await loadAnnonces();
-  });
-
-  document.getElementById("catForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    var nom = document.getElementById("catNom").value.trim();
-    if (!nom) return;
-    await api("/api/categories", { method: "POST", jsonBody: { nom: nom } });
-    document.getElementById("catNom").value = "";
-    await loadCategories();
-    renderPhotos();
-  });
-
-  document.getElementById("categoriesList").addEventListener("click", async function (e) {
-    var ren = e.target.closest(".cat-rename-btn");
-    var del = e.target.closest(".cat-delete-btn");
-    if (ren) {
-      var next = window.prompt(t("rename"), ren.getAttribute("data-nom") || "");
-      if (!next || !next.trim()) return;
-      await api("/api/categories", {
-        method: "PUT",
-        jsonBody: { id: ren.getAttribute("data-id"), nom: next.trim() },
-      });
-      await loadCategories();
-      renderPhotos();
-    }
-    if (del) {
-      if (!window.confirm(t("confirmDelete"))) return;
-      await api("/api/categories", {
-        method: "DELETE",
-        jsonBody: { id: del.getAttribute("data-id") },
-      });
-      await loadCategories();
-      await loadPhotos();
-    }
-  });
-
-  document.getElementById("photosGrid").addEventListener("click", async function (e) {
-    var up = e.target.closest(".photo-up");
-    var down = e.target.closest(".photo-down");
-    var trash = e.target.closest(".photo-trash");
-    if (up) movePhoto(Number(up.getAttribute("data-index")), -1);
-    if (down) movePhoto(Number(down.getAttribute("data-index")), 1);
-    if (trash) {
-      var name = decodeURIComponent(trash.getAttribute("data-name"));
-      if (!window.confirm(t("confirmDelete"))) return;
-      await api("/api/photos?name=" + encodeURIComponent(name), { method: "DELETE" });
-      await loadPhotos();
-    }
-  });
-
-  document.getElementById("photosGrid").addEventListener("change", function (e) {
-    if (e.target.classList.contains("photo-check")) {
-      var name = decodeURIComponent(e.target.getAttribute("data-name"));
-      state.selected[name] = !!e.target.checked;
-      updateSelectionUi();
-    }
-    if (e.target.classList.contains("photo-cat-select")) {
-      var n = decodeURIComponent(e.target.getAttribute("data-name"));
-      var photo = state.photos.find(function (p) {
-        return p.name === n;
-      });
-      if (photo) {
-        photo.category_id = e.target.value || null;
-        state.categoryDirty = true;
-        markDirty();
-      }
-    }
-  });
-
-  document.getElementById("btnDeleteSelected").addEventListener("click", async function () {
-    var names = Object.keys(state.selected).filter(function (k) {
-      return state.selected[k];
-    });
-    if (!names.length || !window.confirm(t("confirmDelete"))) return;
-    await api("/api/photos", { method: "POST", jsonBody: { action: "deleteMany", names: names } });
-    await loadPhotos();
-  });
-
-  document.getElementById("btnSaveOrder").addEventListener("click", async function () {
-    try {
-      await saveAllChanges();
-      setStatus(document.getElementById("photoStatus"), t("saved"));
-    } catch (e) {
-      setStatus(document.getElementById("photoStatus"), "Erreur", true);
-    }
-  });
-
-  document.getElementById("btnGlobalSave").addEventListener("click", async function () {
-    try {
-      await saveAllChanges();
-      setStatus(document.getElementById("photoStatus"), t("saved"));
-    } catch (e) {
-      setStatus(document.getElementById("photoStatus"), "Erreur", true);
-    }
-  });
-
-  document.getElementById("photoInput").addEventListener("change", async function () {
-    var files = this.files;
-    if (!files || !files.length) return;
-    setStatus(document.getElementById("photoStatus"), t("loading"));
-    try {
-      var payload = [];
-      for (var i = 0; i < files.length; i++) payload.push(await fileToBase64(files[i]));
-      var res = await api("/api/photos", { method: "POST", jsonBody: { files: payload } });
-      if (!res.ok) {
-        setStatus(document.getElementById("photoStatus"), res.data.error || "Erreur", true);
-        return;
-      }
-      this.value = "";
-      setStatus(document.getElementById("photoStatus"), t("saved"));
-      await loadPhotos();
-    } catch (err) {
-      if (err.message !== "unauthorized") setStatus(document.getElementById("photoStatus"), "Erreur réseau", true);
-    }
-  });
-
-  document.getElementById("logoutBtn").addEventListener("click", function () {
+  $("logoutBtn").addEventListener("click", function () {
     sessionStorage.removeItem(TOKEN_KEY);
     window.location.href = "/admin.html";
   });
 
-  api("/api/annonces", { method: "POST", jsonBody: { action: "verify" } })
-    .then(function (res) {
-      if (!res.ok) throw new Error("unauthorized");
-      return Promise.all([loadCategories(), loadAnnonces(), loadPhotos()]);
-    })
-    .catch(function () {
-      redirectLogin();
+  var navToggle = document.querySelector(".nh-nav-toggle");
+  if (navToggle) {
+    navToggle.addEventListener("click", function () {
+      var list = document.querySelector(".nh-nav-list");
+      var open = list.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
     });
+  }
+
+  /* ---------- Demarrage ---------- */
+
+  try {
+    var savedLang = localStorage.getItem(LANG_KEY);
+    if (savedLang === "ar" || savedLang === "fr") state.lang = savedLang;
+  } catch (e) {}
+  applyAdminI18n();
+  updatePreview();
+  loadAnnonces();
 })();
