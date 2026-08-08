@@ -80,7 +80,7 @@
     </script>
   </head>
   <body class="nh-site home-nh">
-    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <a class="skip-link" href="#contenu" data-i18n="skipToContent">Aller au contenu</a>
     <div class="nh-bg" aria-hidden="true"></div>
 
     <!-- TOP BAR -->
@@ -400,57 +400,68 @@
 
     <script src="script.js"></script>
     <script>
-      async function loadGalleryFromSupabase() {
-        const thumbsContainer = document.querySelector("#gallery .nh-gallery-thumbs");
-        const mainImg = document.querySelector("#gallery .nh-gallery-main img");
-        const quadImgs = document.querySelectorAll("#gallery .nh-gallery-quad .nh-gallery-tile img");
-        if (!thumbsContainer) return;
-
-        let data;
-        try {
-          const r = await fetch("/api/photos");
-          data = await r.json();
-        } catch (e) {
-          return;
+      (function () {
+        function T(key) {
+          return window.mbT ? window.mbT(key) : key;
         }
 
-        const items = data && data.items ? data.items : [];
-        const urls = items.map(function (it) {
-          return it.url;
-        }).filter(Boolean);
-
-        if (!urls.length) {
-          return;
+        function isArabic() {
+          return window.mbLang && window.mbLang() === "ar";
         }
 
-        thumbsContainer.innerHTML = "";
-        urls.forEach(function (src) {
-          const img = document.createElement("img");
-          img.src = src;
-          img.alt = "Photo galerie";
-          img.loading = "lazy";
-          thumbsContainer.appendChild(img);
-        });
+        /**
+         * Remplace les visuels de la section galerie par les photos gérées
+         * en administration. L'ordre reçu de l'API fait foi : la première
+         * photo devient l'image principale.
+         */
+        async function loadGallery() {
+          var thumbs = document.querySelector("#gallery .nh-gallery-thumbs");
+          var main = document.querySelector("#gallery .nh-gallery-main img");
+          var tiles = document.querySelectorAll("#gallery .nh-gallery-quad .nh-gallery-tile img");
+          if (!thumbs) return;
 
-        if (mainImg && urls[0]) {
-          mainImg.src = urls[0];
-        }
-        if (quadImgs && quadImgs.length) {
-          for (let i = 0; i < quadImgs.length; i++) {
-            if (urls[i + 1]) {
-              quadImgs[i].src = urls[i + 1];
-            }
+          var items;
+          try {
+            var r = await fetch("/api/photos");
+            var data = await r.json();
+            items = ((data && data.items) || []).filter(function (p) {
+              return p && p.url;
+            });
+          } catch (e) {
+            return; // on garde les visuels livrés avec la page
           }
-        }
-      }
 
-      async function loadHeroAnnonces() {
-        var root = document.getElementById("heroAnnonces");
-        if (!root) return;
+          // Sans photo en base, les images d'origine restent affichées.
+          if (!items.length) return;
+
+          var frag = document.createDocumentFragment();
+          items.forEach(function (item) {
+            var img = document.createElement("img");
+            img.src = item.url;
+            img.alt = item.category && item.category.nom ? item.category.nom : "Photo de la mosquée";
+            img.loading = "lazy";
+            img.decoding = "async";
+            frag.appendChild(img);
+          });
+          thumbs.replaceChildren(frag);
+
+          if (main && items[0]) {
+            main.src = items[0].url;
+            main.alt = items[0].category && items[0].category.nom ? items[0].category.nom : "Mosquée Bilal";
+          }
+          tiles.forEach(function (img, k) {
+            var item = items[k + 1];
+            if (!item) return;
+            img.src = item.url;
+            img.alt = item.category && item.category.nom ? item.category.nom : "Photo de la mosquée";
+          });
+        }
+
+        var annonces = null;
 
         function formatDate(iso) {
           try {
-            return new Date(iso).toLocaleDateString("fr-FR", {
+            return new Date(iso).toLocaleDateString(isArabic() ? "ar" : "fr-FR", {
               day: "numeric",
               month: "short",
               year: "numeric",
@@ -459,56 +470,78 @@
             return "";
           }
         }
-        function escapeHtml(s) {
-          return String(s || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
-        }
 
-        root.innerHTML = '<p class="hero-annonces-loading">Chargement des annonces…</p>';
+        function renderAnnonces() {
+          var root = document.getElementById("heroAnnonces");
+          if (!root || !annonces) return;
 
-        try {
-          var r = await fetch("/api/annonces?limit=3");
-          var data = await r.json();
-          var items = (data && data.items) || [];
-          if (!items.length) {
-            root.innerHTML = "";
+          if (!annonces.length) {
+            root.replaceChildren();
             root.setAttribute("hidden", "");
             return;
           }
           root.removeAttribute("hidden");
-          root.innerHTML =
-            '<div class="hero-annonces-list">' +
-            items
-              .slice(0, 3)
-              .map(function (item) {
-                return (
-                  '<article class="hero-annonce-item">' +
-                  '<span class="hero-annonce-date">' +
-                  escapeHtml(formatDate(item.date)) +
-                  "</span>" +
-                  '<strong class="hero-annonce-title">' +
-                  escapeHtml(item.titre) +
-                  "</strong>" +
-                  '<p class="hero-annonce-text">' +
-                  escapeHtml(item.texte) +
-                  "</p>" +
-                  "</article>"
-                );
-              })
-              .join("") +
-            '</div><a class="hero-annonces-link" href="annonces.html">Voir toutes les annonces</a>';
-        } catch (e) {
-          root.innerHTML = "";
-        }
-      }
 
-      window.addEventListener("DOMContentLoaded", function () {
-        loadGalleryFromSupabase();
-        loadHeroAnnonces();
-      });
+          var list = document.createElement("div");
+          list.className = "hero-annonces-list";
+
+          annonces.slice(0, 3).forEach(function (item) {
+            var article = document.createElement("article");
+            article.className = "hero-annonce-item";
+
+            var date = document.createElement("span");
+            date.className = "hero-annonce-date";
+            date.textContent = formatDate(item.date);
+
+            var title = document.createElement("strong");
+            title.className = "hero-annonce-title";
+            title.textContent = item.titre || "";
+
+            var text = document.createElement("p");
+            text.className = "hero-annonce-text";
+            text.textContent = item.texte || "";
+
+            article.appendChild(date);
+            article.appendChild(title);
+            article.appendChild(text);
+            list.appendChild(article);
+          });
+
+          var link = document.createElement("a");
+          link.className = "hero-annonces-link";
+          link.href = "annonces.html";
+          link.textContent = T("seeAllAnnonces");
+
+          root.replaceChildren(list, link);
+        }
+
+        async function loadAnnonces() {
+          var root = document.getElementById("heroAnnonces");
+          if (!root) return;
+
+          var loading = document.createElement("p");
+          loading.className = "hero-annonces-loading";
+          loading.textContent = T("loadingAnnonces");
+          root.replaceChildren(loading);
+
+          try {
+            var r = await fetch("/api/annonces?limit=3");
+            var data = await r.json();
+            annonces = (data && data.items) || [];
+            renderAnnonces();
+          } catch (e) {
+            root.replaceChildren();
+            root.setAttribute("hidden", "");
+          }
+        }
+
+        document.addEventListener("translationsApplied", renderAnnonces);
+
+        window.addEventListener("DOMContentLoaded", function () {
+          loadGallery();
+          loadAnnonces();
+        });
+      })();
     </script>
   </body>
 </html>

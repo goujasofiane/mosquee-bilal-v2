@@ -30,7 +30,7 @@
     />
   </head>
   <body class="nh-site">
-    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <a class="skip-link" href="#contenu" data-i18n="skipToContent">Aller au contenu</a>
     <div class="nh-bg" aria-hidden="true"></div>
 
     <div class="nh-topbar">
@@ -54,8 +54,8 @@
 
     <div id="donation-banner" class="donation-banner">
       <span class="donation-banner-text">
-        🕌 Aidez-nous à achever la Mosquée Bilal !
-        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer">FAIRE UN DON ❤️</a>
+        <span data-i18n="donationBannerMessage">🕌 Aidez-nous à achever la Mosquée Bilal !</span>
+        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer" data-i18n="donationHeroButton">FAIRE UN DON ❤️</a>
       </span>
       <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">&#10005;</button>
     </div>
@@ -135,153 +135,182 @@
     <script src="script.js"></script>
     <script>
       (function () {
-        var allPhotos = [];
+        var tabsEl = document.getElementById("galleryTabs");
+        var rootEl = document.getElementById("mosqueeGalleryRoot");
+
+        var photos = [];
         var categories = [];
         var activeCat = "all";
+        var loaded = false;
 
-        function escapeHtml(s) {
-          return String(s || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+        function T(key) {
+          return window.mbT ? window.mbT(key) : key;
+        }
+
+        function message(text, isError) {
+          var p = document.createElement("p");
+          p.className = "nh-text gallery-message" + (isError ? " is-error" : "");
+          p.textContent = text;
+          rootEl.replaceChildren(p);
         }
 
         function renderTabs() {
-          var tabs = document.getElementById("galleryTabs");
-          var html =
-            '<button type="button" class="gallery-tab' +
-            (activeCat === "all" ? " is-active" : "") +
-            '" data-cat="all">Tous</button>';
-          categories.forEach(function (c) {
-            html +=
-              '<button type="button" class="gallery-tab' +
-              (activeCat === c.id ? " is-active" : "") +
-              '" data-cat="' +
-              escapeHtml(c.id) +
-              '">' +
-              escapeHtml(c.nom) +
-              "</button>";
-          });
-          tabs.innerHTML = html;
-        }
+          var frag = document.createDocumentFragment();
 
-        function filtered() {
-          if (activeCat === "all") return allPhotos;
-          return allPhotos.filter(function (p) {
-            return p.category_id === activeCat;
-          });
-        }
-
-        function renderGrid() {
-          var root = document.getElementById("mosqueeGalleryRoot");
-          var photos = filtered();
-
-          if (activeCat === "all" && categories.length) {
-            var html = "";
-            categories.forEach(function (c) {
-              var list = allPhotos.filter(function (p) {
-                return p.category_id === c.id;
-              });
-              if (!list.length) return;
-              html +=
-                '<section class="gallery-cat-block">' +
-                '<h2 class="gallery-cat-title">' +
-                escapeHtml(c.nom) +
-                "</h2>" +
-                '<div class="mosquee-masonry-grid">' +
-                list
-                  .map(function (item) {
-                    return (
-                      '<figure class="mosquee-masonry-item">' +
-                      '<div class="mosquee-masonry-inner">' +
-                      '<img src="' +
-                      escapeHtml(item.url) +
-                      '" alt="' +
-                      escapeHtml(c.nom) +
-                      '" loading="lazy" />' +
-                      '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
-                      "</div></figure>"
-                    );
-                  })
-                  .join("") +
-                "</div></section>";
-            });
-            var uncat = allPhotos.filter(function (p) {
-              return !p.category_id;
-            });
-            if (uncat.length) {
-              html +=
-                '<section class="gallery-cat-block"><h2 class="gallery-cat-title">Autres</h2><div class="mosquee-masonry-grid">' +
-                uncat
-                  .map(function (item) {
-                    return (
-                      '<figure class="mosquee-masonry-item"><div class="mosquee-masonry-inner">' +
-                      '<img src="' +
-                      escapeHtml(item.url) +
-                      '" alt="" loading="lazy" />' +
-                      '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
-                      "</div></figure>"
-                    );
-                  })
-                  .join("") +
-                "</div></section>";
-            }
-            root.innerHTML =
-              html ||
-              '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune photo pour le moment.</p>';
-            return;
+          function tab(id, label, count) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "gallery-tab" + (activeCat === id ? " is-active" : "");
+            b.setAttribute("role", "tab");
+            b.setAttribute("aria-selected", activeCat === id ? "true" : "false");
+            b.dataset.cat = id;
+            b.textContent = label;
+            var c = document.createElement("span");
+            c.className = "gallery-tab-count";
+            c.textContent = count;
+            b.appendChild(c);
+            return b;
           }
+
+          frag.appendChild(tab("all", T("galleryAll"), photos.length));
+          categories.forEach(function (cat) {
+            var n = photos.filter(function (p) {
+              return p.category_id === cat.id;
+            }).length;
+            // Une catégorie vide n'a pas d'intérêt pour le visiteur.
+            if (n) frag.appendChild(tab(cat.id, cat.nom, n));
+          });
+          var other = photos.filter(function (p) {
+            return !p.category_id;
+          }).length;
+          if (other) frag.appendChild(tab("none", T("galleryOther"), other));
+
+          tabsEl.replaceChildren(frag);
+        }
+
+        function figure(item, altText) {
+          var fig = document.createElement("figure");
+          fig.className = "mosquee-masonry-item";
+
+          var inner = document.createElement("div");
+          inner.className = "mosquee-masonry-inner";
+
+          var img = document.createElement("img");
+          img.src = item.url;
+          img.alt = altText || "";
+          img.loading = "lazy";
+          img.decoding = "async";
+
+          var overlay = document.createElement("div");
+          overlay.className = "mosquee-masonry-overlay";
+          var icon = document.createElement("i");
+          icon.className = "fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon";
+          icon.setAttribute("aria-hidden", "true");
+          overlay.appendChild(icon);
+
+          inner.appendChild(img);
+          inner.appendChild(overlay);
+          fig.appendChild(inner);
+          return fig;
+        }
+
+        function grid(list, altText) {
+          var g = document.createElement("div");
+          g.className = "mosquee-masonry-grid";
+          list.forEach(function (item) {
+            g.appendChild(figure(item, altText));
+          });
+          return g;
+        }
+
+        function block(title, list) {
+          var section = document.createElement("section");
+          section.className = "gallery-cat-block";
+          var h2 = document.createElement("h2");
+          h2.className = "gallery-cat-title";
+          h2.textContent = title;
+          section.appendChild(h2);
+          section.appendChild(grid(list, title));
+          return section;
+        }
+
+        function render() {
+          if (!loaded) return;
 
           if (!photos.length) {
-            root.innerHTML =
-              '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune photo dans cette catégorie.</p>';
+            message(T("galleryEmpty"));
             return;
           }
-          root.innerHTML =
-            '<div class="mosquee-masonry-grid" id="mosqueeMasonryGrid">' +
-            photos
-              .map(function (item) {
-                return (
-                  '<figure class="mosquee-masonry-item"><div class="mosquee-masonry-inner">' +
-                  '<img src="' +
-                  escapeHtml(item.url) +
-                  '" alt="" loading="lazy" />' +
-                  '<div class="mosquee-masonry-overlay"><i class="fa-solid fa-magnifying-glass mosquee-masonry-zoom-icon" aria-hidden="true"></i></div>' +
-                  "</div></figure>"
-                );
-              })
-              .join("") +
-            "</div>";
+
+          // Vue « tous » : une section par catégorie, dans l'ordre défini
+          // en administration.
+          if (activeCat === "all") {
+            var frag = document.createDocumentFragment();
+            categories.forEach(function (cat) {
+              var list = photos.filter(function (p) {
+                return p.category_id === cat.id;
+              });
+              if (list.length) frag.appendChild(block(cat.nom, list));
+            });
+            var other = photos.filter(function (p) {
+              return !p.category_id;
+            });
+            if (other.length) frag.appendChild(block(T("galleryOther"), other));
+            if (!frag.childNodes.length) frag.appendChild(grid(photos, ""));
+            rootEl.replaceChildren(frag);
+            return;
+          }
+
+          var selected =
+            activeCat === "none"
+              ? photos.filter(function (p) {
+                  return !p.category_id;
+                })
+              : photos.filter(function (p) {
+                  return p.category_id === activeCat;
+                });
+
+          if (!selected.length) {
+            message(T("galleryEmptyCat"));
+            return;
+          }
+
+          var cat = categories.find(function (c) {
+            return c.id === activeCat;
+          });
+          rootEl.replaceChildren(grid(selected, cat ? cat.nom : ""));
         }
 
-        document.getElementById("galleryTabs").addEventListener("click", function (e) {
+        tabsEl.addEventListener("click", function (e) {
           var btn = e.target.closest(".gallery-tab");
           if (!btn) return;
-          activeCat = btn.getAttribute("data-cat") || "all";
+          activeCat = btn.dataset.cat || "all";
           renderTabs();
-          renderGrid();
+          render();
+        });
+
+        document.addEventListener("translationsApplied", function () {
+          if (!loaded) return;
+          renderTabs();
+          render();
         });
 
         document.addEventListener("DOMContentLoaded", async function () {
+          message(T("loading"));
           try {
-            var [catsRes, photosRes] = await Promise.all([
-              fetch("/api/categories").then(function (r) {
-                return r.json();
-              }),
-              fetch("/api/photos").then(function (r) {
-                return r.json();
-              }),
-            ]);
-            categories = catsRes.items || [];
-            allPhotos = (photosRes.items || []).filter(function (p) {
-              return p.url;
+            // Une seule requête : /api/photos renvoie aussi les catégories,
+            // déjà triées dans l'ordre d'affichage.
+            var r = await fetch("/api/photos");
+            var data = await r.json();
+            categories = (data && data.categories) || [];
+            photos = ((data && data.items) || []).filter(function (p) {
+              return p && p.url;
             });
+            loaded = true;
             renderTabs();
-            renderGrid();
+            render();
           } catch (e) {
-            document.getElementById("mosqueeGalleryRoot").innerHTML =
-              '<p class="nh-text" style="text-align:center;color:#ff9f9f">Impossible de charger la galerie.</p>';
+            message(T("galleryError"), true);
           }
         });
       })();

@@ -32,7 +32,7 @@
     />
   </head>
   <body class="nh-site">
-    <a class="skip-link" href="#contenu">Aller au contenu</a>
+    <a class="skip-link" href="#contenu" data-i18n="skipToContent">Aller au contenu</a>
     <div class="nh-bg" aria-hidden="true"></div>
 
     <div class="nh-topbar">
@@ -56,8 +56,8 @@
 
     <div id="donation-banner" class="donation-banner">
       <span class="donation-banner-text">
-        🕌 Aidez-nous à achever la Mosquée Bilal !
-        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer">FAIRE UN DON ❤️</a>
+        <span data-i18n="donationBannerMessage">🕌 Aidez-nous à achever la Mosquée Bilal !</span>
+        <a href="https://www.cotizup.com/achever-mosquee-bilal" class="donation-banner-button" target="_blank" rel="noopener noreferrer" data-i18n="donationHeroButton">FAIRE UN DON ❤️</a>
       </span>
       <button type="button" class="donation-banner-close" aria-label="Fermer le bandeau">&#10005;</button>
     </div>
@@ -104,7 +104,7 @@
             Les dernières informations de la Mosquée Bilal.
           </p>
           <div id="annoncesList" class="annonces-list" aria-live="polite">
-            <p class="nh-text" style="text-align: center; color: rgba(245, 240, 228, 0.55)">Chargement…</p>
+            <p class="nh-text" style="text-align: center; color: rgba(245, 240, 228, 0.55)" data-i18n="loading">Chargement…</p>
           </div>
         </div>
       </section>
@@ -132,9 +132,22 @@
     <script src="script.js"></script>
     <script>
       (function () {
+        var root = document.getElementById("annoncesList");
+        var items = null;
+
+        // Les contenus viennent de l'API : ils sont rendus après l'application
+        // des attributs data-i18n et passent donc par le dictionnaire partagé.
+        function T(key) {
+          return window.mbT ? window.mbT(key) : key;
+        }
+
+        function isArabic() {
+          return window.mbLang && window.mbLang() === "ar";
+        }
+
         function formatDate(iso) {
           try {
-            return new Date(iso).toLocaleDateString("fr-FR", {
+            return new Date(iso).toLocaleDateString(isArabic() ? "ar" : "fr-FR", {
               day: "numeric",
               month: "long",
               year: "numeric",
@@ -143,74 +156,90 @@
             return "";
           }
         }
-        function escapeHtml(s) {
-          return String(s || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;");
+
+        function message(text, isError) {
+          var p = document.createElement("p");
+          p.className = "nh-text annonce-message" + (isError ? " is-error" : "");
+          p.textContent = text;
+          root.replaceChildren(p);
         }
 
+        /**
+         * Construction par le DOM plutôt que par concaténation de chaînes :
+         * la police et la couleur choisies en administration sont appliquées
+         * comme propriétés de style, jamais injectées dans du balisage.
+         */
+        function card(item) {
+          var article = document.createElement("article");
+          article.className = "annonce-card reveal is-visible";
+
+          var title = document.createElement("h2");
+          title.className = "annonce-card-title";
+          title.textContent = item.titre || "";
+
+          var date = document.createElement("p");
+          date.className = "annonce-card-date";
+          date.textContent = formatDate(item.date);
+
+          var text = document.createElement("p");
+          text.className = "annonce-card-text";
+          text.textContent = item.texte || "";
+
+          [title, text].forEach(function (el) {
+            el.style.fontFamily = (item.police || "Cairo") + ", sans-serif";
+            el.style.color = item.couleur || "#f5f0e1";
+          });
+
+          article.appendChild(title);
+          article.appendChild(date);
+          article.appendChild(text);
+
+          var files = item.fichiers || [];
+          if (files.length) {
+            var wrap = document.createElement("div");
+            wrap.className = "annonce-files";
+            files.forEach(function (f) {
+              if (!f || !f.url) return;
+              var a = document.createElement("a");
+              a.className = "nh-btn nh-btn-outline annonce-download-btn";
+              a.href = f.url;
+              a.target = "_blank";
+              a.rel = "noopener";
+              a.setAttribute("download", f.nom_original || "fichier");
+              a.textContent = T("download") + " — " + (f.nom_original || "fichier");
+              wrap.appendChild(a);
+            });
+            article.appendChild(wrap);
+          }
+          return article;
+        }
+
+        function render() {
+          if (!items) return;
+          if (!items.length) {
+            message(T("noAnnonce"));
+            return;
+          }
+          var frag = document.createDocumentFragment();
+          items.forEach(function (item) {
+            frag.appendChild(card(item));
+          });
+          root.replaceChildren(frag);
+        }
+
+        // Le changement de langue doit rafraîchir dates et libellés.
+        document.addEventListener("translationsApplied", render);
+
         document.addEventListener("DOMContentLoaded", async function () {
-          var root = document.getElementById("annoncesList");
           if (!root) return;
+          message(T("loading"));
           try {
             var r = await fetch("/api/annonces?files=1");
             var data = await r.json();
-            var items = (data && data.items) || [];
-            if (!items.length) {
-              root.innerHTML =
-                '<p class="nh-text" style="text-align:center;color:rgba(245,240,228,0.55)">Aucune annonce pour le moment.</p>';
-              return;
-            }
-            root.innerHTML = items
-              .map(function (item) {
-                var style =
-                  "font-family:" +
-                  escapeHtml(item.police || "Cairo") +
-                  ",sans-serif;color:" +
-                  escapeHtml(item.couleur || "#f5f0e1");
-                var files = item.fichiers || [];
-                var filesHtml = files.length
-                  ? '<div class="annonce-files">' +
-                    files
-                      .map(function (f) {
-                        return (
-                          '<a class="nh-btn nh-btn-outline annonce-download-btn" href="' +
-                          escapeHtml(f.url) +
-                          '" target="_blank" rel="noopener" download="' +
-                          escapeHtml(f.nom_original || "fichier") +
-                          '">Télécharger — ' +
-                          escapeHtml(f.nom_original || "fichier") +
-                          "</a>"
-                        );
-                      })
-                      .join("") +
-                    "</div>"
-                  : "";
-                return (
-                  '<article class="annonce-card">' +
-                  '<h2 class="annonce-card-title" style="' +
-                  style +
-                  '">' +
-                  escapeHtml(item.titre) +
-                  "</h2>" +
-                  '<p class="annonce-card-date">' +
-                  escapeHtml(formatDate(item.date)) +
-                  "</p>" +
-                  '<p class="annonce-card-text" style="' +
-                  style +
-                  '">' +
-                  escapeHtml(item.texte) +
-                  "</p>" +
-                  filesHtml +
-                  "</article>"
-                );
-              })
-              .join("");
+            items = (data && data.items) || [];
+            render();
           } catch (e) {
-            root.innerHTML =
-              '<p class="nh-text" style="text-align:center;color:#ff9f9f">Impossible de charger les annonces.</p>';
+            message(T("annoncesError"), true);
           }
         });
       })();

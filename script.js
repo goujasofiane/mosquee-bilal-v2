@@ -121,6 +121,12 @@ const translations = {
     socialYoutubeName: "YouTube",
     socialYoutubeDesc:
       "Khutbas, cours et conférences en vidéo, à revoir librement.",
+    socialWhatsappName: "WhatsApp",
+    socialWhatsappDesc: "Messages et annonces de la mosquée.",
+    socialTwitchName: "Twitch",
+    socialTwitchDesc: "Directs et discussions.",
+    socialXName: "X",
+    socialXDesc: "Actualités et annonces rapides.",
     socialFollowLabel: "Suivre",
     footerBrand: "MOSQUÉE BILAL",
     footerLocation: "Clichy-sous-Bois",
@@ -136,6 +142,18 @@ const translations = {
     notFoundText:
       "Le lien que vous avez suivi n’existe plus ou comporte une erreur. Voici les pages les plus consultées.",
     notFoundHome: "Retour à l’accueil",
+    skipToContent: "Aller au contenu",
+    loadingAnnonces: "Chargement des annonces…",
+    loading: "Chargement…",
+    noAnnonce: "Aucune annonce pour le moment.",
+    annoncesError: "Impossible de charger les annonces.",
+    seeAllAnnonces: "Voir toutes les annonces",
+    download: "Télécharger",
+    galleryAll: "Tous",
+    galleryOther: "Autres",
+    galleryEmpty: "Aucune photo pour le moment.",
+    galleryEmptyCat: "Aucune photo dans cette catégorie.",
+    galleryError: "Impossible de charger la galerie.",
     prayerFajr: "Fajr",
     prayerDhuhr: "Dhuhr",
     prayerAsr: "Asr",
@@ -264,12 +282,30 @@ const translations = {
     socialYoutubeName: "يوتيوب",
     socialYoutubeDesc:
       "خطب الجمعة، دروس ومحاضرات مصورة يمكنكم مشاهدتها في أي وقت.",
+    socialWhatsappName: "واتساب",
+    socialWhatsappDesc: "رسائل وإعلانات المسجد.",
+    socialTwitchName: "تويتش",
+    socialTwitchDesc: "بث مباشر ونقاشات.",
+    socialXName: "إكس",
+    socialXDesc: "أخبار وإعلانات سريعة.",
     socialFollowLabel: "متابعة",
     footerBrand: "مسجد بلال",
     footerLocation: "كليشي-سوس-بوا",
     footerText: "© {year} مسجد بلال",
     annoncesPageTitle: "إعلانات",
     annoncesPageSubtitle: "آخر أخبار مسجد بلال.",
+    skipToContent: "الانتقال إلى المحتوى",
+    loadingAnnonces: "جاري تحميل الإعلانات…",
+    loading: "جاري التحميل…",
+    noAnnonce: "لا توجد إعلانات حاليًا.",
+    annoncesError: "تعذّر تحميل الإعلانات.",
+    seeAllAnnonces: "عرض جميع الإعلانات",
+    download: "تنزيل",
+    galleryAll: "الكل",
+    galleryOther: "أخرى",
+    galleryEmpty: "لا توجد صور حاليًا.",
+    galleryEmptyCat: "لا توجد صور في هذا التصنيف.",
+    galleryError: "تعذّر تحميل المعرض.",
     basmalaTranslit: "بسم الله الرحمن الرحيم",
     notFoundTitle: "الصفحة غير موجودة",
     notFoundText:
@@ -336,6 +372,20 @@ function applyTranslations(lang) {
     document.dispatchEvent(new CustomEvent("translationsApplied"));
   } catch (e) {}
 }
+
+/**
+ * Traduction accessible aux scripts embarqués dans les pages.
+ * Les contenus chargés depuis l'API sont rendus après coup : ils ne peuvent
+ * pas s'appuyer sur les attributs data-i18n et passent donc par cette fonction.
+ */
+window.mbT = function (key, fallback) {
+  const dict = translations[currentLang] || translations.fr;
+  return dict[key] || translations.fr[key] || fallback || key;
+};
+
+window.mbLang = function () {
+  return currentLang;
+};
 
 function initLanguageSwitch() {
   document

@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0d1117" />
     <link rel="icon" type="image/png" href="assets/logo1.png" />
     <link rel="apple-touch-icon" href="assets/logo1.png" />
     <title>Administration — Mosquée Bilal</title>
@@ -27,42 +29,53 @@
     <header class="nh-header">
       <div class="nh-header-inner">
         <a class="nh-brand" href="index.html" aria-label="Mosquée Bilal">
-          <img src="assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" />
+          <img src="assets/logo1.png" class="nh-brand-logo" alt="Logo Mosquée Bilal" width="44" height="44" />
           <span class="nh-brand-text">Mosquée Bilal</span>
         </a>
         <nav class="nh-nav" aria-label="Navigation principale">
-          <button class="nh-nav-toggle" type="button" aria-label="Menu">
+          <button class="nh-nav-toggle" type="button" aria-label="Menu" aria-expanded="false">
             <span></span><span></span><span></span>
           </button>
           <ul class="nh-nav-list">
-            <li><a href="index.html" data-i18n="navHome">ACCUEIL</a></li>
-            <li><a href="mosquee.html" data-i18n="navGallery">GALERIE</a></li>
-            <li><a href="annonces.html" data-i18n="navAnnonces">ANNONCES</a></li>
-            <li><a href="admin.html" class="nh-nav-admin-active" aria-current="page">ADMIN</a></li>
+            <li><a href="index.html" data-i18n-admin="backSite">RETOUR AU SITE</a></li>
           </ul>
         </nav>
+        <div class="lang-switch nh-lang-switch" id="adminLangSwitch">
+          <button type="button" data-lang="fr" class="active" lang="fr">FR</button>
+          <button type="button" data-lang="ar" lang="ar">AR</button>
+        </div>
       </div>
     </header>
 
-    <main class="nh-main">
+    <main class="nh-main" id="contenu">
       <section class="admin-login-wrap">
         <div class="admin-login-card">
-          <h1>Connexion admin</h1>
-          <p>Gérez les annonces de la Mosquée Bilal.</p>
-          <form id="loginForm">
+          <img src="assets/logo1.png" alt="" class="admin-login-logo" width="72" height="72" />
+          <p class="mb-basmala admin-login-basmala" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+
+          <h1 data-i18n-admin="title">Connexion admin</h1>
+          <p data-i18n-admin="subtitle">Gérez les annonces et la galerie de la Mosquée Bilal.</p>
+
+          <form id="loginForm" novalidate>
             <div class="admin-field">
-              <label for="email">Email</label>
-              <input id="email" type="email" autocomplete="username" required />
+              <label for="email" data-i18n-admin="labelEmail">Email</label>
+              <input id="email" type="email" autocomplete="username" required autocapitalize="none" spellcheck="false" />
             </div>
             <div class="admin-field">
-              <label for="password">Mot de passe</label>
-              <input id="password" type="password" autocomplete="current-password" required />
+              <label for="password" data-i18n-admin="labelPassword">Mot de passe</label>
+              <div class="admin-password-wrap">
+                <input id="password" type="password" autocomplete="current-password" required />
+                <button type="button" id="togglePassword" class="admin-password-toggle" aria-label="Afficher le mot de passe" aria-pressed="false">
+                  <i class="fa-solid fa-eye" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
-            <button class="nh-btn nh-btn-gold" type="submit" style="width: 100%; margin-top: 8px">
+            <button class="nh-btn nh-btn-gold admin-login-submit" type="submit" id="submitBtn" data-i18n-admin="submit">
               Se connecter
             </button>
           </form>
-          <div id="loginMessage" class="admin-login-msg" role="alert"></div>
+
+          <div id="loginMessage" class="admin-login-msg" role="alert" aria-live="assertive"></div>
         </div>
       </section>
     </main>
@@ -70,15 +83,100 @@
     <script src="script.js"></script>
     <script>
       (function () {
+        "use strict";
+
         var TOKEN_KEY = "mosquee_admin_jwt";
+        var LANG_KEY = "mosquee_admin_lang";
+
+        var i18n = {
+          fr: {
+            backSite: "RETOUR AU SITE",
+            title: "Connexion admin",
+            subtitle: "Gérez les annonces et la galerie de la Mosquée Bilal.",
+            labelEmail: "Email",
+            labelPassword: "Mot de passe",
+            submit: "Se connecter",
+            connecting: "Connexion…",
+            fillAll: "Renseignez votre email et votre mot de passe.",
+            wrong: "Identifiants incorrects.",
+            network: "Connexion impossible. Vérifiez votre réseau.",
+            showPassword: "Afficher le mot de passe",
+            hidePassword: "Masquer le mot de passe",
+          },
+          ar: {
+            backSite: "العودة إلى الموقع",
+            title: "دخول الإدارة",
+            subtitle: "إدارة إعلانات ومعرض مسجد بلال.",
+            labelEmail: "البريد الإلكتروني",
+            labelPassword: "كلمة المرور",
+            submit: "تسجيل الدخول",
+            connecting: "جاري الاتصال…",
+            fillAll: "أدخل بريدك الإلكتروني وكلمة المرور.",
+            wrong: "بيانات الدخول غير صحيحة.",
+            network: "تعذّر الاتصال. تحقق من الشبكة.",
+            showPassword: "إظهار كلمة المرور",
+            hidePassword: "إخفاء كلمة المرور",
+          },
+        };
+
+        var lang = "fr";
+        try {
+          var saved = localStorage.getItem(LANG_KEY);
+          if (saved === "ar" || saved === "fr") lang = saved;
+        } catch (e) {}
+
+        function t(key) {
+          return (i18n[lang] && i18n[lang][key]) || i18n.fr[key] || key;
+        }
+
+        function applyI18n() {
+          document.documentElement.lang = lang;
+          document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+          document.querySelectorAll("[data-i18n-admin]").forEach(function (el) {
+            var k = el.getAttribute("data-i18n-admin");
+            if (k) el.textContent = t(k);
+          });
+          document.querySelectorAll("#adminLangSwitch button").forEach(function (b) {
+            b.classList.toggle("active", b.getAttribute("data-lang") === lang);
+          });
+          syncPasswordToggle();
+        }
+
         var form = document.getElementById("loginForm");
         var msg = document.getElementById("loginMessage");
+        var submit = document.getElementById("submitBtn");
+        var passwordInput = document.getElementById("password");
+        var toggle = document.getElementById("togglePassword");
 
         function setMsg(text, isError) {
           msg.textContent = text || "";
           msg.className = "admin-login-msg" + (isError ? " error" : text ? " success" : "");
         }
 
+        function syncPasswordToggle() {
+          var shown = passwordInput.type === "text";
+          toggle.setAttribute("aria-pressed", shown ? "true" : "false");
+          toggle.setAttribute("aria-label", t(shown ? "hidePassword" : "showPassword"));
+          toggle.querySelector("i").className = shown ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+        }
+
+        toggle.addEventListener("click", function () {
+          passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+          syncPasswordToggle();
+          passwordInput.focus();
+        });
+
+        document.getElementById("adminLangSwitch").addEventListener("click", function (e) {
+          var btn = e.target.closest("button[data-lang]");
+          if (!btn) return;
+          lang = btn.getAttribute("data-lang") === "ar" ? "ar" : "fr";
+          try {
+            localStorage.setItem(LANG_KEY, lang);
+          } catch (err) {}
+          applyI18n();
+        });
+
+        // Une session encore valide évite de redemander les identifiants.
         if (sessionStorage.getItem(TOKEN_KEY)) {
           window.location.replace("/admin/dashboard.html");
           return;
@@ -86,10 +184,16 @@
 
         form.addEventListener("submit", async function (e) {
           e.preventDefault();
-          setMsg("Connexion…", false);
 
           var email = document.getElementById("email").value.trim();
-          var password = document.getElementById("password").value;
+          var password = passwordInput.value;
+          if (!email || !password) {
+            setMsg(t("fillAll"), true);
+            return;
+          }
+
+          submit.disabled = true;
+          setMsg(t("connecting"), false);
 
           try {
             var r = await fetch("/api/login", {
@@ -102,16 +206,24 @@
             });
 
             if (!r.ok || !data.token) {
-              setMsg(data.error || "Identifiants incorrects.", true);
+              // Le serveur distingue désormais mauvais identifiants,
+              // trop de tentatives et configuration incomplète.
+              setMsg(data.error || t("wrong"), true);
+              passwordInput.value = "";
+              passwordInput.focus();
               return;
             }
 
             sessionStorage.setItem(TOKEN_KEY, data.token);
             window.location.href = "/admin/dashboard.html";
           } catch (err) {
-            setMsg("Identifiants incorrects.", true);
+            setMsg(t("network"), true);
+          } finally {
+            submit.disabled = false;
           }
         });
+
+        applyI18n();
       })();
     </script>
   </body>

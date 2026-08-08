@@ -5403,3 +5403,18 @@ body.nh-toggle-header-page .nh-header {
   position: relative;
   z-index: 70;
 }
+
+/* ---------- Messages des listes chargées depuis l'API ---------- */
+
+.annonce-message,
+.gallery-message {
+  text-align: center;
+  color: var(--mb-cream-faint);
+  padding: 28px 16px;
+  margin: 0;
+}
+
+.annonce-message.is-error,
+.gallery-message.is-error {
+  color: var(--mb-danger);
+}
